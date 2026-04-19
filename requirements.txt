@@ -1,4 +1,6 @@
 ollama
+langchain
 langchain-ollama
+langchain-mcp-adapters
 langgraph
 fastmcp

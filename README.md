@@ -23,17 +23,17 @@ You start with zero LLM experience and end up building **KubeHealer** — an AI 
 | Module | What You'll Build |
 |--------|-------------------|
 | [Module 0 — Know Before You Go](module-0/) | Set up your environment and verify everything works |
-| Module 1 — Docker Error Explainer | Paste a Docker error, get a human-readable fix (your first LLM tool) |
-| Module 2 — Docker Troubleshooter Agent | An AI agent that inspects containers and diagnoses crashes on its own |
-| Module 3 — Multi-Tool DevOps Agent + MCP | Combine Docker + K8s tools, intro to LangChain and MCP |
+| [Module 1 — Docker Error Explainer](module-1/) | Paste a Docker error, get a human-readable fix (your first LLM tool) |
+| [Module 2 — Docker Troubleshooter Agent](module-2/) | An AI agent that inspects containers and diagnoses crashes on its own |
+| [Module 3 — Multi-Tool DevOps Agent + MCP](module-3/) | Combine Docker + K8s tools, intro to LangChain and MCP |
 
 ### Day 2 — Production-Grade Agents
 
 | Module | What You'll Build |
 |--------|-------------------|
-| Module 4 — AIOps Demystified | The AIOps landscape, guardrails, and why durability matters |
-| Module 5 — KubeHealer | Self-healing K8s agent with Temporal and the Kubernetes API |
-| Module 6 — Build Your Own AIOps Agent | Pick a template and build your own agent from scratch |
+| [Module 4 — AIOps Demystified](module-4/) | The AIOps landscape, guardrails, and why durability matters |
+| [Module 5 — KubeHealer](module-5/) | Self-healing K8s agent with Temporal and Claude ([separate repo](https://github.com/TrainWithShubham/kubehealer)) |
+| [Module 6 — Build Your Own AIOps Agent](module-6/) | CI/CD Failure Analyzer — diagnose GitHub Actions failures with an AI agent |
 
 ---
 
@@ -46,6 +46,9 @@ You start with zero LLM experience and end up building **KubeHealer** — an AI 
 | **Kind** | Local K8s clusters for testing |
 | **Python 3.10+** | All code is Python |
 | **Ollama** | Run LLMs locally, no API keys needed |
+| **Temporal CLI** | Durable workflow execution (Module 5) |
+| **gh CLI** | GitHub CLI for CI/CD analysis (Module 6) |
+| **Anthropic API key** | Claude AI for KubeHealer (Module 5) |
 
 Already have Docker, kubectl, and Kind? Head to **[Module 0](module-0/)** to set up the rest.
 
@@ -73,10 +76,13 @@ See **[Module 0](module-0/)** for the full step-by-step setup.
 | Category | Tools |
 |----------|-------|
 | Language | Python 3.10+ |
-| LLM | Ollama + Gemma 4 (local, free) |
+| LLM (Day 1) | Ollama + Gemma 4 (local, free) |
+| LLM (Day 2) | Anthropic Claude (KubeHealer) |
 | Containers | Docker |
 | Orchestration | Kubernetes (Kind) |
-| Frameworks | LangChain, Temporal |
+| Agent Framework | LangChain |
+| Durable Execution | Temporal |
+| MCP | FastMCP |
 
 ---
 
