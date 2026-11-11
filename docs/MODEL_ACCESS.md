@@ -56,6 +56,18 @@ Offline mode does not test a real model's tool choice, factual support, latency,
 
 ## Provider acceptance check
 
+The first provider check is in `scripts/check_openrouter.py`. It uses Python's standard library, reads only the requested key setting, and rejects models that are not currently listed as free with tool support. It performs a read-only synthetic health-check exchange using two model requests. Authentication and catalog checks are separate requests.
+
+```bash
+python3 scripts/check_openrouter.py --list
+python3 scripts/check_openrouter.py --env-file /path/to/your/.env --model <free-model-id>
+python3 -m unittest discover -s tests
+```
+
+Do not copy a key into the command line or course notes. The script does not execute `.env` contents or copy credentials into this repository.
+
+On 11 November, the public catalog was fetched, but this environment's authenticated request failed at DNS resolution. The key has been located locally; its validity and a model's live tool exchange are **not yet verified**. Catalog tool-support metadata alone does not pass the provider check.
+
 Before publishing learner instructions, verify:
 
 1. A plain model response succeeds.
