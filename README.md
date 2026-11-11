@@ -100,7 +100,7 @@ Open `http://127.0.0.1:8000/docs`. In another terminal, `uv run python scripts/d
 | `deploy/agentcore` | Instructor build, deployment, invocation, update, log, and cleanup tools |
 | `.devcontainer` | Browser development environment for Codespaces |
 
-Run from the repository checkout. Do not use the previous edition's `requirements.txt` for V2; use the locked uv environment.
+Run from the `v2` checkout and use the locked uv environment.
 
 ## Instructor AWS demo
 
@@ -112,8 +112,11 @@ uv run --extra aws python deploy/agentcore/invoke.py
 
 The [deployment guide](deploy/agentcore/README.md) covers recreation and cleanup. It uses DynamoDB to preserve approval and graph state across Runtime sessions. Keep the local development signing key while using that deployment. Credentials and state are ignored by Git.
 
-## Previous course
+## Course branches
 
-The original `module-0` through `module-6` files are preserved. See [the previous README](README-v1.md) for Docker, MCP, Temporal, KubeHealer, and CI/CD material. They are separate from the V2 learner setup.
+- `v1`: the original course, including Docker tools, KubeHealer/Temporal material, and the CI/CD analyzer.
+- `v2`: this RunbookOps course, its lessons, resources, and tests.
 
-Development stays on `course-v2-runbookops`. Nothing has been pushed or merged for this build. [DECISIONS.md](DECISIONS.md) records the implementation choices, failures, and fixes.
+The editions live on separate local branches. Switch editions with `git switch v1` or `git switch v2` after saving your work. V1 setup instructions are in its own README.
+
+Nothing has been pushed or merged for this build. [DECISIONS.md](DECISIONS.md) records the implementation choices, failures, and fixes.

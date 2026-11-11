@@ -2,7 +2,7 @@ name: Course checks
 on:
   workflow_dispatch:
   push:
-    branches: [course-v2-runbookops]
+    branches: [v2]
 permissions:
   contents: read
 jobs:

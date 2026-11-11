@@ -25,7 +25,7 @@ The technical build was completed on November 11. Use November 12–13 for instr
 7. Same application on AgentCore Runtime, with the same MCP tools and external DynamoDB checkpoint/approval storage.
 8. Lesson prompts, starter/completed checkpoints, devcontainer, troubleshooting, and saved rehearsal evidence.
 
-Keep the previous course's modules in place. Reuse small patterns after reviewing them; do not bring the old Kubernetes/Ollama prerequisites into the learner path.
+Keep the previous course on the separate `v1` branch. Reuse small patterns after reviewing them; do not bring the old Kubernetes/Ollama prerequisites into the learner path.
 
 ## What must be real before class
 
@@ -52,4 +52,4 @@ The implemented learner flow, OpenRouter path, and deployed Runtime have passed 
 
 ## Git policy
 
-Work on `course-v2-runbookops`. Use short commit messages. Do not add co-author trailers, create a PR, change the default branch, or merge into `main` for this delivery. Do not tag an assumed historical teaching commit; identify it with the instructor first.
+Work on `v2`. Use short commit messages. Do not add co-author trailers, create a PR, change the default branch, or merge into `main` for this delivery. Do not tag an assumed historical teaching commit; identify it with the instructor first.

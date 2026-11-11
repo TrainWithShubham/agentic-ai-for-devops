@@ -4,7 +4,7 @@ Work completed on 11 November 2026 for the November 14 and 15 workshop. This rec
 
 ## Repository and scope
 
-Keep the existing repository and work on `course-v2-runbookops`. Preserve the previous modules and their README. Do not push to GitHub, open a PR, merge, or invent a historical release tag. The root workspace holds the curriculum; the actual Git checkout is in `repository`.
+The initial build used `course-v2-runbookops` and preserved the previous modules in the same checkout. The instructor later requested separate editions: `v1` preserves the original course and `v2` contains only the new course. Do not push to GitHub, open a PR, merge, or invent a historical release tag. The root workspace holds the curriculum; the actual Git checkout is in `repository`.
 
 Use one capstone across both days. Gada Electronics and the named characters provide a familiar fictional setting. Their online store, incident, and operational duties are course inventions. Technical names and error messages remain descriptive.
 
@@ -106,3 +106,9 @@ The instructor asked to delete the AWS resources after reviewing billing. Limit 
 Removed the two DynamoDB tables, ECR repository with all images, dedicated IAM role and inline policy, and both Runtime CloudWatch log groups. AWS requires custom endpoints to finish asynchronous deletion before accepting runtime deletion; an immediate runtime delete returned ConflictException. Waited for the workshop endpoint to disappear, then requested runtime removal. Updated the cleanup script to wait for endpoints and table deletion and tolerate an already-removed runtime. Updated the teaching docs to require redeployment before a live cloud demo.
 
 Final AWS read-back confirmed the runtime, custom/default endpoints, both tables, repository, role, and matching log groups were absent. Archived the ignored deployment record as `aws-deployment-cleaned.json` and saved a sanitized cleanup report. MCP verification initially exposed a missing advertised `ClientError` binding and blocked `getattr`; used the returned exception response fields directly and reran all checks successfully. Historical usage charges may still post after deletion.
+
+## Separate course branches
+
+At the instructor's request, created local `v1` at the original `main` commit (`5f328ff`) so its files match the previous course exactly. Renamed `course-v2-runbookops` to `v2` and removed the legacy modules, legacy requirements file, and duplicate V1 README from that branch. Updated the learner/instructor docs and CI branch filter. `main` remains unchanged; no GitHub push or history rewrite was performed. V1 files remain available by switching branches, and V2 keeps its normal development history.
+
+Verified V1 and original main have identical Git trees. V2 has no tracked legacy modules, requirements file, or duplicate V1 README. The offline approval/recovery demo passed after separation, and all local links plus both 180-minute schedules passed validation.

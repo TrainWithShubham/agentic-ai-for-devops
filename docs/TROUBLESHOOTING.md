@@ -2,7 +2,7 @@
 
 ## Python or installation problems
 
-Run from the repository directory, which contains `pyproject.toml`. Use `uv sync --frozen`. The project selects Python 3.12 and supports 3.11 through 3.13. Do not install the old course's `requirements.txt` for V2.
+Run from the repository directory, which contains `pyproject.toml`. Use `uv sync --frozen`. The project selects Python 3.12 and supports 3.11 through 3.13. The old course and its separate setup are on `v1`; `v2` uses the locked uv environment.
 
 If a managed workplace laptop blocks installs, use the supplied devcontainer or GitHub Codespaces. Codespaces account allowances and model API limits are separate.
 
