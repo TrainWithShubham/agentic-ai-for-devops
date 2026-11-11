@@ -441,11 +441,11 @@ Do not add multi-agent orchestration, fine-tuning, Kubernetes, a vector database
 
 The application must have a no-purchase learner path. Claude Pro is optional for AI-assisted coding; it includes Claude Code access but does not include application API usage. Prepared code patches cover learners without a coding subscription. See [Claude Pro details](https://support.claude.com/en/articles/8325606-what-is-the-pro-plan).
 
-Offer individual OpenRouter accounts with a tested free, tool-capable model as a bring-your-own-key option. Current free-variant limits are 20 requests per minute and 50 per day without a credit purchase. Agent loops consume several requests per investigation, and failed requests count. This is a backup rather than guaranteed class capacity. See [OpenRouter free-model limits](https://openrouter.ai/collections/free-models/).
+Use individual OpenRouter accounts with a tested free, tool-capable model as the primary learner route. Current free-variant limits are 20 requests per minute and 50 per day without a credit purchase. Agent loops consume several requests per investigation, and failed requests count. This is the selected route, with no guarantee of free-provider capacity. See [OpenRouter free-model limits](https://openrouter.ai/collections/free-models/).
 
-Plan a workshop-only model gateway funded by the instructor's AWS credits as the reliable free-to-attendees route. It must use individual expiring learner tokens, server-side Bedrock credentials, permitted model IDs, input/output and request limits, concurrency control, and observable usage. Verify actual Bedrock quotas and credit coverage before calling it ready. Do not distribute shared AWS credentials. The gateway is planned work, not a deployed service.
+Reserve the instructor's AWS credits for instructor Bedrock and AgentCore demonstrations. Learners do not need an AWS account and do not call a sponsored gateway. Test Groq as the first alternative provider, with per-account limits verified in its console. Use only explicitly free model choices for learner labs and never silently switch to paid inference. Keep provider configuration separate from RAG, tools, and approval.
 
-All policy, approval, and simulator checks must also run in a clearly labeled offline practice mode. Recorded or deterministic responses allow free practice without provider calls; they do not demonstrate live model quality. Local embeddings avoid a separate paid embedding API. The final provider/model choice requires a real tool-calling rehearsal and a 100-attendee load check.
+All policy, approval, and simulator checks must also run in a clearly labeled offline practice mode. Recorded or deterministic responses allow free practice without provider calls; they do not demonstrate live model quality. Local embeddings avoid a separate paid embedding API. Select the exact free model after a real tool-calling rehearsal. Measure each lab against a design target of no more than 30 model calls per learner per day, leaving room below the current OpenRouter cap. Rehearse with a small volunteer group; public free-tier capacity for 100 people cannot be guaranteed.
 
 
 Allow approximately 30–45 minutes before the event. This is setup, not extra course content.
@@ -457,7 +457,7 @@ Allow approximately 30–45 minutes before the event. This is setup, not extra c
 - A successful provider smoke check for one text/tool-capable model, simulator health check, and MCP connection.
 - A local virtual environment or the supplied browser development environment. Recommend 8 GB RAM for the planned small local workload, subject to a rehearsal on representative laptops; no local generative-model/GPU requirement.
 
-Publish a one-command preflight that reports missing components, plus Windows/macOS/Linux instructions. Learners without model credentials can use clearly labeled recorded model responses to inspect control flow; this mode does not count as a live model demonstration. Arrange sponsored, individually scoped access before the event if live API access is to be included for every attendee. Do not distribute shared unrestricted AWS credentials or provider keys.
+Publish a one-command preflight that reports missing components, plus Windows/macOS/Linux instructions. Learners without model credentials can use clearly labeled recorded model responses to inspect control flow; this mode does not count as a live model demonstration. Ask attendees to create individual OpenRouter keys before the event and verify the selected free model. Document the backup provider and offline practice route. Do not distribute shared unrestricted AWS credentials or provider keys.
 
 ### Browser-based and free learning options
 

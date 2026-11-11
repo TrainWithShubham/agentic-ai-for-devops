@@ -8,7 +8,7 @@ Course dates: 14 and 15 November 2026. Expected attendance: 50 to 100. Each day 
 |---|---|---|
 | November 11 | Preserve existing modules, prepare the V2 branch and docs, choose model-access approach | Separate branch and explicit build status |
 | November 12 | Build the local checkout simulator, knowledge loaders/retrieval, agent, and MCP tools; implement approval and role checks | One incident runs from failure to approved recovery, with denial checks |
-| November 13 | Finish model gateway, validate provider tool calling, deploy the instructor Runtime demo, rehearse both days, freeze learner setup | Clean-machine install, live-provider run, 100-attendee load check, recorded fallback, timed rehearsal |
+| November 13 | Validate OpenRouter and backup-provider tool calling, deploy the instructor Runtime demo, rehearse both days, freeze learner setup | Clean-machine install, free-account request budget, small-group rehearsal, recorded fallback, timed rehearsal |
 | November 14 | Deliver Day 1 | Learners save the working investigation checkpoint |
 | November 15 | Deliver Day 2 | Learners save capstone evidence and actual evaluation results |
 
@@ -21,7 +21,7 @@ This is a tight schedule. Freeze the core when it works. Move optional integrati
 3. Bounded LangGraph investigation using retrieved evidence and MCP tools.
 4. Proposal, role-authorized approval, persistence, expiry, and replay protection.
 5. Scenario runner and structured traces, including denied and failed cases.
-6. Sponsored Bedrock model gateway and independently revocable learner access.
+6. Individual OpenRouter keys, free-only model configuration, measured call budget, and a tested backup provider.
 7. Same application on AgentCore Runtime, with reachable remote tools and external checkpoint/approval storage.
 8. Lesson prompts, starter/completed checkpoints, devcontainer, troubleshooting, and rehearsal recording.
 
@@ -42,13 +42,13 @@ For 50 to 100 attendees, avoid live account creation and package/model downloads
 
 The exact support channel or helper arrangement is not yet confirmed. Provide written recovery steps so setup debugging does not stop the main session. A helper is useful if available, but do not design the labs around one being present.
 
-Keep a stable incident seed and learner-specific namespaces. One attendee must not alter another attendee's simulator state. Publish endpoint shutdown and cleanup instructions.
+Keep a stable incident seed and learner-specific namespaces. One attendee must not alter another attendee's simulator state. Keep learner API keys private and publish cleanup instructions for local data and instructor AWS resources.
 
 ## Scope cuts if rehearsal fails
 
 Preserve foundations, RAG inspection, MCP tools, authorized approval, and recovery verification. Keep caching/routing to a prepared configuration exercise. Use the Runtime recording if cloud provisioning or service limits interfere. Managed Knowledge Bases, full OAuth provider setup, Gateway/Identity integration, and Temporal remain extensions.
 
-Do not call the gateway, cloud demo, or learner labs ready until their checks pass. The documents on this branch currently describe planned implementation.
+Do not call the provider setup, cloud demo, or learner labs ready until their checks pass. The documents on this branch currently describe planned implementation.
 
 ## Git policy
 

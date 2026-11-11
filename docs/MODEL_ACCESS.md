@@ -10,25 +10,15 @@ Learners may use Claude Code or Codex to edit code. RunbookOps separately calls 
 
 A paid coding subscription is optional. Provide the lab prompt and a reviewed patch for each exercise, so someone without Claude Code can still finish.
 
-## Recommended class setup
+## Selected class setup
 
-Use a workshop model gateway funded by the instructor's AWS credits. Learners receive an expiring workshop token and endpoint URL, not AWS credentials. Their local LangGraph agent runs retrieval and simulator tools locally, and calls the gateway only for model responses and tool-call decisions.
+Each learner uses an individual OpenRouter account and API key with a preflighted free model. The instructor's AWS credits are reserved for instructor Bedrock and AgentCore demonstrations. We will not build a sponsored learner gateway or distribute workshop model tokens.
 
-The instructor pays through AWS credits, subject to actual credit eligibility. This is free to the attendee, not universally free infrastructure. The endpoint still needs to be built, deployed, and load-tested.
+OpenRouter is the chosen course default because one interface gives learners access to several model options. This is a course-design choice, not evidence that it has the largest free allowance or guaranteed capacity. Keep a Groq adapter as the first alternative to test, and offline practice for exhausted quotas or network failures.
 
-Required gateway behavior:
+Use a single provider configuration layer so switching provider, base URL, and model does not require rewriting RAG, tools, or approval. The app must reject paid model choices in its free-only mode and must never switch to a paid endpoint automatically. Store keys in ignored environment files and redact them from logs.
 
-- One independently revocable token per learner; store hashes server-side and transmit tokens over HTTPS.
-- An allowlist of preflighted Bedrock models. Ignore or reject arbitrary upstream URLs and unauthorized model choices.
-- Limits on input size, output tokens, requests per learner, and simultaneous requests. Reject excess work with a useful retry response.
-- Preserve structured tool calls and tool results. A successful text response alone is not a provider compatibility test.
-- Bound retries and timeouts. Make failures visible to the learner instead of silently switching to fixtures.
-- Keep credentials server-side and out of logs. Track learner token ID, selected model, usage, errors, and latency without recording secrets.
-- Expire access after the workshop. Include a revocation procedure and delete credentials from local example files.
-
-Workshop tokens authorize model access only. They do not authorize simulator changes or grant Jethalal's approver role.
-
-## OpenRouter: optional free API access
+## OpenRouter: primary learner route
 
 OpenRouter offers models with a `:free` variant and the `openrouter/free` router. Its [official free-model page](https://openrouter.ai/collections/free-models/) currently lists 20 requests per minute and 50 requests per day for free variants without a credit purchase. Failed attempts count. The higher daily allowance requires a credit purchase and is not a zero-purchase recommendation.
 
@@ -44,11 +34,19 @@ For a class of 50 to 100:
 
 Use only the synthetic course documents with these public endpoints. Provider data policies differ.
 
-## Gemini free tier: secondary option
+## Groq: first alternative to test
 
-Some Gemini models have a free API tier. Actual limits depend on the project, model, and account and must be checked in AI Studio. Availability and stated limits are not guaranteed. See [rate limits](https://ai.google.dev/gemini-api/docs/rate-limits) and [pricing](https://ai.google.dev/gemini-api/docs/pricing).
+Groq has a [Free tier](https://console.groq.com/docs/billing-faqs), an [OpenAI-compatible API](https://console.groq.com/docs/openai), and [local tool calling](https://console.groq.com/docs/tool-use/overview). Our app can run operational tools and MCP locally, then return their results to the model.
 
-Keep this as another candidate, not a promise that every attendee can create an eligible project in the live session. Do not add a third provider integration before the main route works.
+Its [rate limits](https://console.groq.com/docs/rate-limits) apply at organization level and include requests and tokens. Check the learner's actual account and the Free Plan view; do not copy numbers from the Developer plan table into learner instructions. A large daily request allowance would still be constrained by per-minute or daily token limits.
+
+Test a free account with the full RAG context and multi-step tool flow before choosing the backup model. Switching providers must be explicit, and a different model's behavior needs a fresh compatibility check. No live Groq account/model test has been completed for this course yet.
+
+## Gemini free tier: additional option
+
+Some Gemini models have a free API tier. Actual limits depend on the project, model, and account and must be checked in AI Studio. Availability and stated limits are not guaranteed. See [rate limits](https://ai.google.dev/gemini-api/docs/rate-limits) and [pricing](https://ai.google.dev/gemini-api/docs/pricing). Gemini supports [function calling](https://ai.google.dev/gemini-api/docs/function-calling); India is listed among [supported regions](https://ai.google.dev/gemini-api/docs/available-regions).
+
+Keep this as a documented alternative. Implement and verify OpenRouter first, then Groq, before adding another provider adapter. Account setup belongs in prework.
 
 ## Offline practice
 
@@ -66,12 +64,13 @@ Before publishing learner instructions, verify:
 4. A retrieved document answer cites a source supplied in the context.
 5. A bounded failure produces a useful error; no secrets appear in output.
 6. An investigation reaches the proposal checkpoint without executing the proposed fix.
-7. The 100-attendee concurrency test stays within discovered AWS request/token quotas and the configured queue limits.
+7. Measure requests and tokens per lab on a fresh free account. Target at most 30 model requests per learner per day, including preflight and retries, to leave room below the currently documented 50-request OpenRouter cap. This is a design target until the completed labs are measured.
+8. Verify a second provider configuration and label offline results separately. Rehearse synchronized requests with a small volunteer group; this cannot establish guaranteed public free-tier capacity for 100 people.
 
-Credit balance does not establish service capacity. Check quotas and model access in the instructor's actual region before rehearsal.
+The 50 to 100 attendees use independent accounts. More API keys under the same account do not create extra quota. Keep documents small, bound model steps, and run policy regression checks without provider calls. Check Bedrock access and quotas separately for the instructor's AWS demonstration.
 
 ## Learner message to publish after validation
 
-> You do not need to buy model API credits for the core exercises. We will provide workshop model access. If you already use Claude Code, you can use it to edit the project; it is optional. Bring a laptop and complete the setup check before November 14. An offline practice mode is included if your network or model access fails.
+> Create your own OpenRouter account and API key before November 14. We will use a tested free model; no API credit purchase or AWS account is required for the learner labs. Free models have usage limits. Complete the setup check in advance. Claude Code is optional, and offline practice is included if live model access fails.
 
-This message is a draft. Publish it only when sponsored access passes the checks above.
+This message is a draft. Publish it with the exact model and setup instructions only after the free-account checks pass.

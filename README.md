@@ -21,7 +21,7 @@ The company knowledge pack will include PDF, DOCX, PPTX, Markdown, and text file
 
 ## Development status
 
-This branch currently contains the revised curriculum, model-access decision, and delivery plan. The V2 application, starter checkpoints, document pack, gateway, and AWS deployment still need implementation and rehearsal. The existing `module-0` through `module-6` files belong to the previous course and remain unchanged.
+This branch currently contains the revised curriculum, model-access decision, and delivery plan. The V2 application, starter checkpoints, document pack, provider adapters, and AWS deployment still need implementation and rehearsal. The existing `module-0` through `module-6` files belong to the previous course and remain unchanged.
 
 Do not follow the old installation instructions expecting the V2 capstone. Publish the V2 setup command here once its clean-machine check passes.
 
@@ -29,7 +29,7 @@ Do not follow the old installation instructions expecting the V2 capstone. Publi
 
 A Claude Pro subscription can be used for Claude Code, but does not pay for API calls from the Python application. A paid coding subscription is optional; learners will receive prepared code patches.
 
-We are planning a free-to-attendees model endpoint funded by instructor AWS credits, an optional OpenRouter free-model path, and a labeled offline practice mode. No learner endpoint is available yet. Read the [model-access plan](docs/MODEL_ACCESS.md) before buying anything.
+Learners use their own OpenRouter keys with a tested free model. Groq is the first backup provider to test, and a labeled offline practice mode covers provider failures or exhausted quotas. The instructor uses a separate AWS account for Bedrock and AgentCore demonstrations. Provider compatibility still needs live testing. Read the [model-access plan](docs/MODEL_ACCESS.md) before buying anything.
 
 ## Branch policy
 
