@@ -89,4 +89,6 @@ Groq is implemented and documented but has no live test because no Groq key was 
 
 The simulator proves an approved configuration transition and recovery within this teaching system. It is not evidence of production incident remediation or a complete AIOps platform. Live model answers still need source-support review; passing deterministic controls does not prove hallucination or prompt injection is impossible.
 
-AWS resources remain available in the instructor account for the workshop. The ignored deployment record identifies them, and [cleanup](../deploy/agentcore/README.md#cleanup) removes only those project resources afterward.
+The tested AWS deployment was subsequently deleted on November 12 (India time) at the instructor's request. Historical evidence remains in this repository. Recreate the deployment before another live cloud demonstration; the learner capstone still works locally.
+
+[Cleanup verification](evidence/aws-cleanup.json) confirms every recorded workshop resource is absent. The local capstone and historical live evidence remain available.

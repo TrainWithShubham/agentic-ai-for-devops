@@ -367,6 +367,8 @@ Use an occasional Hinglish line if it fits the delivery. Keep explanations under
 
 ## 6. AgentCore Runtime deployment plan
 
+The verified deployment was removed on November 12 (India time) at the instructor's request. Recreate it before class using the deployment guide, or use the saved evidence. Local learner labs remain available.
+
 **One codebase, two environments:** run RunbookOps locally first, then invoke the same LangGraph workflow on AgentCore Runtime. This follows the official [Harness vs. Runtime distinction](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/harness-vs-runtime.html). Runtime supplies hosting; application code still owns tool integration, policy enforcement, checkpointing, and trace instrumentation.
 
 ```text

@@ -1,0 +1,39 @@
+{
+  "project": "runbookops-v2",
+  "region": "us-east-1",
+  "verified_at": "2026-11-11T18:34:18.086179+00:00",
+  "all_absent": true,
+  "checks": {
+    "runtime": {
+      "absent": true,
+      "aws_code": "ResourceNotFoundException"
+    },
+    "workshop_endpoint": {
+      "absent": true,
+      "aws_code": "ResourceNotFoundException"
+    },
+    "default_endpoint": {
+      "absent": true,
+      "aws_code": "ResourceNotFoundException"
+    },
+    "operations": {
+      "absent": true,
+      "aws_code": "ResourceNotFoundException"
+    },
+    "checkpoints": {
+      "absent": true,
+      "aws_code": "ResourceNotFoundException"
+    },
+    "images": {
+      "absent": true,
+      "aws_code": "RepositoryNotFoundException"
+    },
+    "role": {
+      "absent": true,
+      "aws_code": "NoSuchEntity"
+    },
+    "logs": {
+      "absent": true
+    }
+  }
+}

@@ -23,23 +23,35 @@ def main():
         raise ValueError("Current AWS account differs from the deployment record")
     control = session.client("bedrock-agentcore-control")
     if data.get("runtime_id"):
-        if data.get("qualifier"):
-            try:
+        try:
+            current = control.get_agent_runtime(agentRuntimeId=data["runtime_id"])
+        except control.exceptions.ResourceNotFoundException:
+            current = None
+        if current and current["status"] != "DELETING":
+            endpoints = control.list_agent_runtime_endpoints(agentRuntimeId=data["runtime_id"])
+            for endpoint in endpoints["runtimeEndpoints"]:
+                if endpoint["name"] == "DEFAULT" or endpoint["status"] == "DELETING":
+                    continue
                 control.delete_agent_runtime_endpoint(
-                    agentRuntimeId=data["runtime_id"], endpointName=data["qualifier"]
+                    agentRuntimeId=data["runtime_id"], endpointName=endpoint["name"]
                 )
-            except control.exceptions.ResourceNotFoundException:
-                pass
-            time.sleep(3)
-        control.delete_agent_runtime(agentRuntimeId=data["runtime_id"])
-        for _ in range(120):
-            try:
-                control.get_agent_runtime(agentRuntimeId=data["runtime_id"])
-            except control.exceptions.ResourceNotFoundException:
-                break
-            time.sleep(3)
-        else:
-            raise RuntimeError("Runtime deletion is still pending. Retry cleanup later.")
+            for _ in range(120):
+                endpoints = control.list_agent_runtime_endpoints(agentRuntimeId=data["runtime_id"])
+                if not any(e["name"] != "DEFAULT" for e in endpoints["runtimeEndpoints"]):
+                    break
+                time.sleep(3)
+            else:
+                raise RuntimeError("Endpoint deletion still pending; retry cleanup.")
+            control.delete_agent_runtime(agentRuntimeId=data["runtime_id"])
+        if current:
+            for _ in range(120):
+                try:
+                    control.get_agent_runtime(agentRuntimeId=data["runtime_id"])
+                except control.exceptions.ResourceNotFoundException:
+                    break
+                time.sleep(3)
+            else:
+                raise RuntimeError("Runtime deletion is still pending. Retry cleanup later.")
     ddb = session.client("dynamodb")
     for name in (data["operations_table"], data["checkpoint_table"]):
         if not name.startswith(data["prefix"]):
@@ -48,6 +60,8 @@ def main():
             ddb.delete_table(TableName=name)
         except ddb.exceptions.ResourceNotFoundException:
             pass
+    for name in (data["operations_table"], data["checkpoint_table"]):
+        ddb.get_waiter("table_not_exists").wait(TableName=name)
     ecr = session.client("ecr")
     try:
         ecr.delete_repository(repositoryName=data["repository"], force=True)

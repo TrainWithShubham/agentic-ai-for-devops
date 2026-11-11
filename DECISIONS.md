@@ -83,7 +83,7 @@ Read `instructor/VERIFICATION.md` for the current test results and command evide
 
 Do not equate a passing offline suite with live-model quality. Public free-provider capacity, every learner's network/account, Windows execution, and a real 100-attendee rehearsal cannot be guaranteed from this machine. Codespaces files and CI are supplied; GitHub has not been pushed or run for this build.
 
-AWS workshop resources are kept available for the course and have a project-specific cleanup script. No real production service is modified. API credentials, private issuer keys, deployment records, local traces, and model caches stay out of Git.
+AWS workshop resources were initially kept available for the course; the instructor later requested their removal. See the cleanup record below. No real production service is modified. API credentials, private issuer keys, deployment records, local traces, and model caches stay out of Git.
 
 ## Final rehearsal notes
 
@@ -98,3 +98,11 @@ Keep the tested in-process cloud MCP topology in the curriculum; remote HTTP MCP
 The existing public free account was used only for a few instructor verification runs. No shared learner key or key copied into the repo was introduced. The final measured request budget supports a 27-call daily lesson allocation including retries, but is not a promise about public capacity or a substitute for a human teaching rehearsal.
 
 Git treated the small generated PDF as text and reported whitespace inside its cross-reference table. Marked PDF, DOCX, and PPTX as binary in `.gitattributes`; their file content remains unchanged. The candidate-file secret check found no match for the actual provider key and no private PEM material. Temporary local HTTP servers were stopped after verification so teaching ports are available.
+
+## AWS cleanup requested on November 12 (India time)
+
+The instructor asked to delete the AWS resources after reviewing billing. Limit cleanup to the recorded RunbookOps deployment in us-east-1; leave unrelated account resources alone. Keep source code, synthetic documents, local practice, and sanitized historical evidence.
+
+Removed the two DynamoDB tables, ECR repository with all images, dedicated IAM role and inline policy, and both Runtime CloudWatch log groups. AWS requires custom endpoints to finish asynchronous deletion before accepting runtime deletion; an immediate runtime delete returned ConflictException. Waited for the workshop endpoint to disappear, then requested runtime removal. Updated the cleanup script to wait for endpoints and table deletion and tolerate an already-removed runtime. Updated the teaching docs to require redeployment before a live cloud demo.
+
+Final AWS read-back confirmed the runtime, custom/default endpoints, both tables, repository, role, and matching log groups were absent. Archived the ignored deployment record as `aws-deployment-cleaned.json` and saved a sanitized cleanup report. MCP verification initially exposed a missing advertised `ClientError` binding and blocked `getattr`; used the returned exception response fields directly and reran all checks successfully. Historical usage charges may still post after deletion.

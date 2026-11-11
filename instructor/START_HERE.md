@@ -30,7 +30,7 @@ Learners bring individual OpenRouter keys. Your AWS account is only used for the
 
 ## Day 2 cloud demo
 
-The existing deployment record and signing key are in ignored local state. Keep them together. Invoke the ready deployment rather than creating another stack:
+The verified deployment was deleted on November 12 (India time) at your request. Use the deployment guide to recreate it before the cloud segment; the commands below require a fresh deployment:
 
 ```bash
 uv run --extra aws python deploy/agentcore/invoke.py

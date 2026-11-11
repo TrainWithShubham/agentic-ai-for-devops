@@ -37,7 +37,7 @@ Do not create another stack if a step fails. Once the tables, role, and image ex
 uv run --extra aws python deploy/agentcore/deploy.py --resume
 ```
 
-A ready deployment is already recorded in this workspace. For the existing one, use invocation rather than creating more resources.
+The original verified deployment was deleted on November 12 (India time) at the instructor's request. Run the build/deploy steps above to recreate it before the live workshop. Saved evidence remains available for an offline walkthrough.
 
 ## Update the existing deployment
 

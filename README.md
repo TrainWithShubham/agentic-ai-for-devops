@@ -104,7 +104,7 @@ Run from the repository checkout. Do not use the previous edition's `requirement
 
 ## Instructor AWS demo
 
-The existing deployment is recorded locally under `.state/aws-deployment.json`:
+The tested cloud deployment was deleted on November 12 (India time) at the instructor's request to avoid further resource charges. Recreate it using the deployment guide before running:
 
 ```bash
 uv run --extra aws python deploy/agentcore/invoke.py
