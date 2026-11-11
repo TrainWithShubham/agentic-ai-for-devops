@@ -1,0 +1,10 @@
+Gada Electronics checkout architecture
+
+Service dependencies
+Customers browse the catalogue, then call checkout. Checkout calls the payment service. A working catalogue does not prove checkout is healthy.
+
+Approved payment endpoint
+The simulator payment service listens at http://payments:9000. Checkout reads PAYMENT_SERVICE_URL from its configuration. An incorrect port can cause connection refused and HTTP 503.
+
+Evidence and ownership
+Bagha investigates operational evidence. Nattu Kaka maintains support records. Jethalal approves changes. This is a course simulator with synthetic data.

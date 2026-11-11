@@ -1,0 +1,60 @@
+{
+  "mode": "offline",
+  "live_model_quality_tested": false,
+  "cases": [
+    {
+      "scenario": "current_runbook_retrieved",
+      "passed": true
+    },
+    {
+      "scenario": "viewer_document_isolation",
+      "passed": true
+    },
+    {
+      "scenario": "approver_document_visible",
+      "passed": true
+    },
+    {
+      "scenario": "cache_does_not_cross_roles",
+      "passed": true
+    },
+    {
+      "scenario": "logs_redact_keys",
+      "passed": true
+    },
+    {
+      "scenario": "wrong_audience_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "proposal_without_execution",
+      "passed": true
+    },
+    {
+      "scenario": "viewer_approval_denied",
+      "passed": true
+    },
+    {
+      "scenario": "changed_proposal_denied",
+      "passed": true
+    },
+    {
+      "scenario": "restart_resume_and_recovery",
+      "passed": true
+    },
+    {
+      "scenario": "executor_idempotency",
+      "passed": true
+    },
+    {
+      "scenario": "approval_replay_denied",
+      "passed": true
+    },
+    {
+      "scenario": "rejection_preserves_service",
+      "passed": true
+    }
+  ],
+  "passed": 13,
+  "failed": 0
+}

@@ -12,7 +12,7 @@ Course dates: 14 and 15 November 2026. Expected attendance: 50 to 100. Each day 
 | November 14 | Deliver Day 1 | Learners save the working investigation checkpoint |
 | November 15 | Deliver Day 2 | Learners save capstone evidence and actual evaluation results |
 
-This is a tight schedule. Freeze the core when it works. Move optional integrations to follow-up material rather than rushing untested setup into class.
+The technical build was completed on November 11. Use November 12–13 for instructor rehearsal and the final provider check. Freeze the core when it works. Move optional integrations to follow-up material rather than rushing untested setup into class.
 
 ## Build order
 
@@ -22,8 +22,8 @@ This is a tight schedule. Freeze the core when it works. Move optional integrati
 4. Proposal, role-authorized approval, persistence, expiry, and replay protection.
 5. Scenario runner and structured traces, including denied and failed cases.
 6. Individual OpenRouter keys, free-only model configuration, measured call budget, and a tested backup provider.
-7. Same application on AgentCore Runtime, with reachable remote tools and external checkpoint/approval storage.
-8. Lesson prompts, starter/completed checkpoints, devcontainer, troubleshooting, and rehearsal recording.
+7. Same application on AgentCore Runtime, with the same MCP tools and external DynamoDB checkpoint/approval storage.
+8. Lesson prompts, starter/completed checkpoints, devcontainer, troubleshooting, and saved rehearsal evidence.
 
 Keep the previous course's modules in place. Reuse small patterns after reviewing them; do not bring the old Kubernetes/Ollama prerequisites into the learner path.
 
@@ -46,9 +46,9 @@ Keep a stable incident seed and learner-specific namespaces. One attendee must n
 
 ## Scope cuts if rehearsal fails
 
-Preserve foundations, RAG inspection, MCP tools, authorized approval, and recovery verification. Keep caching/routing to a prepared configuration exercise. Use the Runtime recording if cloud provisioning or service limits interfere. Managed Knowledge Bases, full OAuth provider setup, Gateway/Identity integration, and Temporal remain extensions.
+Preserve foundations, RAG inspection, MCP tools, authorized approval, and recovery verification. Keep caching/routing to a prepared configuration exercise. Use the saved Runtime evidence if cloud provisioning or service limits interfere. Managed Knowledge Bases, full OAuth provider setup, Gateway/Identity integration, and Temporal remain extensions.
 
-Do not call the provider setup, cloud demo, or learner labs ready until their checks pass. The documents on this branch currently describe planned implementation.
+The implemented learner flow, OpenRouter path, and deployed Runtime have passed technical checks. See [verification](VERIFICATION.md). Timed teaching rehearsal and a volunteer group rehearsal remain instructor preparation; they are not implied by automated tests.
 
 ## Git policy
 

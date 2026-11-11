@@ -1,0 +1,13 @@
+Checkout incident 042
+
+Incident record
+Author: Nattu Kaka. Date: 7 November 2026. Environment: simulator. Customers could browse products but checkout returned HTTP 503.
+
+Evidence
+Checkout logs showed connection refused while contacting http://payments:9009. A deployment had changed PAYMENT_SERVICE_URL from http://payments:9000 to http://payments:9009.
+
+Recovery
+The payment service was healthy on port 9000. Jethalal approved restoring PAYMENT_SERVICE_URL to http://payments:9000. Checkout health returned HTTP 200 after the configuration change.
+
+Follow up
+Compare current logs and deployment history before reusing this explanation. Similar symptoms do not establish the cause of a new incident.

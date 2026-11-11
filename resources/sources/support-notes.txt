@@ -1,0 +1,7 @@
+Support notes
+
+Customer report
+Bagha reports: the televisions and refrigerators load, but placing an order returns HTTP 503. The issue began after the most recent deployment.
+
+Support observation
+Nattu Kaka found incident 042. Check the current evidence before assuming it is the same cause. The assistant must not invent customer counts or lost revenue.

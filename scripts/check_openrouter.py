@@ -3,12 +3,12 @@
 import argparse
 import json
 import os
-from pathlib import Path
 import re
+import ssl
 import sys
 import urllib.error
 import urllib.request
-
+from pathlib import Path
 
 BASE_URL = "https://openrouter.ai/api/v1"
 
@@ -47,12 +47,20 @@ def request(path, key=None, payload=None):
         data = json.dumps(payload).encode()
     req = urllib.request.Request(BASE_URL + path, data=data, headers=headers)
     try:
-        with urllib.request.urlopen(req, timeout=60) as response:
+        context = ssl.create_default_context()
+        system_bundle = Path("/etc/ssl/cert.pem")
+        if system_bundle.is_file():
+            context.load_verify_locations(cafile=str(system_bundle))
+        with urllib.request.urlopen(req, timeout=60, context=context) as response:
             return json.load(response)
     except urllib.error.HTTPError as exc:
         # Provider error bodies can contain request details. Keep them out of logs.
         raise RuntimeError(f"OpenRouter returned HTTP {exc.code}") from None
-    except urllib.error.URLError:
+    except urllib.error.URLError as exc:
+        if isinstance(exc.reason, ssl.SSLError):
+            raise RuntimeError(
+                "TLS verification failed; configure SSL_CERT_FILE with a trusted CA bundle"
+            ) from None
         raise RuntimeError("Cannot reach OpenRouter; check network access") from None
 
 
@@ -126,18 +134,22 @@ def run(args):
 
     # Echo the full assistant message: providers may need reasoning metadata.
     messages.append(message)
-    messages.append({
-        "role": "tool",
-        "tool_call_id": call["id"],
-        "content": json.dumps({"service": "checkout", "status": "unhealthy", "http_status": 503}),
-    })
+    messages.append(
+        {
+            "role": "tool",
+            "tool_call_id": call["id"],
+            "content": json.dumps({"service": "checkout", "status": "unhealthy", "http_status": 503}),
+        }
+    )
     body["tool_choice"] = "none"
     second = request("/chat/completions", key=key, payload=body)
     if "error" in second:
         raise RuntimeError("Provider returned an inference error; no response body logged")
     final = second["choices"][0]["message"]
     answer = final.get("content") or ""
-    grounded = "503" in answer and any(word in answer.lower() for word in ("unhealthy", "unavailable", "failing", "down"))
+    grounded = "503" in answer and any(
+        word in answer.lower() for word in ("unhealthy", "unavailable", "failing", "down")
+    )
     result = {
         "model": args.model,
         "mode": "live",
@@ -149,7 +161,11 @@ def run(args):
     }
     # Print only allowlisted usage fields; never dump provider metadata or request headers.
     result["usage"] = [
-        {field: usage[field] for field in ("prompt_tokens", "completion_tokens", "total_tokens", "cost") if field in usage}
+        {
+            field: usage[field]
+            for field in ("prompt_tokens", "completion_tokens", "total_tokens", "cost")
+            if field in usage
+        }
         for usage in result["usage"]
     ]
     if key in answer:
@@ -172,5 +188,8 @@ if __name__ == "__main__":
         sys.exit(1)
     except (ValueError, KeyError, IndexError, OSError):
         # Do not print arbitrary exception messages: external content may contain secrets.
-        print("Check failed. Verify connectivity, the key, free-model availability, and tool support.", file=sys.stderr)
+        print(
+            "Check failed. Verify connectivity, the key, free-model availability, and tool support.",
+            file=sys.stderr,
+        )
         sys.exit(1)

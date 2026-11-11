@@ -1,36 +1,119 @@
-# Agentic AI for DevOps, V2
+# Agentic AI for DevOps
 
-Build RunbookOps, an assistant that investigates Gada Electronics' checkout failure using company documents and operational tools. It prepares a fix, waits for an authorized human, and checks whether recovery worked.
+A two-day live workshop on November 14 and 15, 2026. Three hours each day, including breaks and questions.
 
-Two live sessions on 14 and 15 November 2026, three hours each including breaks and questions. The course starts with AI fundamentals. Basic Python and Linux help; previous agent experience is not required.
+Build RunbookOps, an assistant for Gada Electronics' online store. Checkout is returning HTTP 503. The assistant reads company documents, checks operational evidence, and prepares a correction. Bagha can investigate; Jethalal must approve the exact change before it runs.
 
-## Start here
+The store's online system and incident are fictional. The code operates on a simulator, so learners need no Kubernetes cluster or AWS account.
 
-- [Curriculum and timed exercises](CURRICULUM.md)
-- [Model access: what is free and what needs a key](docs/MODEL_ACCESS.md)
-- [Build and rehearsal plan](instructor/DELIVERY_PLAN.md)
-- [Previous course: Docker, MCP, and KubeHealer](README-v1.md)
+## Run it
 
-## What we build
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then run these commands from this repository:
 
-Day 1 covers LLMs, system prompts, a simple agent, retrieval from company documents, and operational tools through MCP.
+```bash
+uv sync --frozen
+uv run runbookops preflight
+uv run runbookops demo
+```
 
-Day 2 adds permissions, human approval, guardrails, caching, model routing, traces, and evaluations. The instructor demonstrates the same LangGraph project on Amazon Bedrock AgentCore Runtime. Managed AgentCore Harness is a separate architecture and receives a brief comparison.
+The default is clearly labeled offline practice. The demo checks Bagha cannot approve, reloads persisted graph state, approves as Jethalal, and verifies checkout returns HTTP 200. It saves evidence under `.state/demo-latest.json`.
 
-The company knowledge pack will include PDF, DOCX, PPTX, Markdown, and text files. The incident runs against a small simulator, so learners do not need Kubernetes.
+For semantic retrieval, download the small embedding model before class:
 
-## Development status
+```bash
+uv run runbookops --embedding semantic index
+uv run runbookops --embedding semantic search "checkout payment connection refused"
+```
 
-This branch currently contains the revised curriculum, model-access decision, and delivery plan. The V2 application, starter checkpoints, document pack, provider adapters, and AWS deployment still need implementation and rehearsal. The existing `module-0` through `module-6` files belong to the previous course and remain unchanged.
+Hash mode is an offline lexical fallback. Semantic mode uses local embeddings and Chroma; it needs no paid embedding API.
 
-Do not follow the old installation instructions expecting the V2 capstone. Publish the V2 setup command here once its clean-machine check passes.
+## Use a live free model
 
-## Cost and access
+Create your own OpenRouter account and API key. Copy `.env.example` to `.env` and add your key there. Keep `RUNBOOKOPS_FREE_ONLY=true`.
 
-A Claude Pro subscription can be used for Claude Code, but does not pay for API calls from the Python application. A paid coding subscription is optional; learners will receive prepared code patches.
+```bash
+cp .env.example .env
+uv run runbookops models
+uv run runbookops --mode openrouter --embedding semantic demo
+```
 
-Learners use their own OpenRouter keys with a tested free model. Groq is the first backup provider to test, and a labeled offline practice mode covers provider failures or exhausted quotas. The instructor uses a separate AWS account for Bedrock and AgentCore demonstrations. Provider compatibility still needs live testing. Read the [model-access plan](docs/MODEL_ACCESS.md) before buying anything.
+The initial tested model is `nvidia/nemotron-3.5-lightning:free`. Check the current catalog before the workshop. Free capacity and quotas can change. The application rejects nonfree OpenRouter choices in free-only mode and never silently switches to paid inference.
 
-## Branch policy
+Claude Code or Codex can help with edits. A Claude Pro subscription does not provide this application's API access. Paid coding tools are optional; examples, an exercise solution, and recovery commands are included. See [model access](docs/MODEL_ACCESS.md).
 
-V2 work stays on `course-v2-runbookops`. No pull request or changes to `main` are planned for this delivery. The old course remains available on `main`.
+## The two days
+
+| Day | What learners build |
+|---|---|
+| Day 1 | A bounded investigator using system instructions, a health tool, company RAG, and MCP |
+| Day 2 | Role checks, saved human approval, guardrails, caching/routing configuration, traces, and evaluations |
+
+The instructor demonstrates the same LangGraph application on AgentCore Runtime. Managed AgentCore Harness is a separate architecture, explained briefly. Instructor AWS credits are not shared with learners.
+
+- [Full curriculum and timing](CURRICULUM.md)
+- [All lessons and coding prompts](lessons/README.md)
+- [Setup](lessons/00-setup/README.md)
+- [Recovery checkpoints](checkpoints/README.md)
+- [Architecture](docs/ARCHITECTURE.md)
+- [Security and identity boundaries](docs/SECURITY.md)
+- [Troubleshooting](docs/TROUBLESHOOTING.md)
+- [Instructor start page](instructor/START_HERE.md)
+- [Instructor teaching notes](instructor/TEACHING_NOTES.md)
+
+## Check the result
+
+```bash
+uv run runbookops evaluate
+uv run pytest -q
+uv run python scripts/trace_report.py
+```
+
+The evaluation report records actual pass/fail outcomes. Offline tests check application behavior; they do not claim live model quality. The HTML trace is written to `artifacts/trace.html`.
+
+For the optional AWS backend tests and deployment tools:
+
+```bash
+uv sync --frozen --extra aws
+uv run pytest -q
+```
+
+Live OpenRouter, Bedrock, local HTTP/stdio MCP, and AgentCore Runtime have been exercised separately. Read [verification results](instructor/VERIFICATION.md) for the exact scope and remaining limits.
+
+## Inspect the HTTP API
+
+```bash
+uv run runbookops serve
+```
+
+Open `http://127.0.0.1:8000/docs`. In another terminal, `uv run python scripts/demo_api.py` demonstrates the authenticated flow without displaying tokens. See [API instructions](docs/API.md).
+
+## Code and resources
+
+| Path | Contents |
+|---|---|
+| `src/runbookops` | Graph, providers, retrieval, tools, permissions, stores, API, and CLI |
+| `examples` | Small runnable examples used before the full project |
+| `exercises` and `solutions` | Isolated learner exercise and completed version |
+| `resources/company-knowledge` | PDF, DOCX, PPTX, MD, and TXT documents with source/access metadata |
+| `resources/sources` | Editable text and slide source for the synthetic documents |
+| `tests` | Meaningful application, transport, approval, and provider-boundary checks |
+| `deploy/agentcore` | Instructor build, deployment, invocation, update, log, and cleanup tools |
+| `.devcontainer` | Browser development environment for Codespaces |
+
+Run from the repository checkout. Do not use the previous edition's `requirements.txt` for V2; use the locked uv environment.
+
+## Instructor AWS demo
+
+The existing deployment is recorded locally under `.state/aws-deployment.json`:
+
+```bash
+uv run --extra aws python deploy/agentcore/invoke.py
+```
+
+The [deployment guide](deploy/agentcore/README.md) covers recreation and cleanup. It uses DynamoDB to preserve approval and graph state across Runtime sessions. Keep the local development signing key while using that deployment. Credentials and state are ignored by Git.
+
+## Previous course
+
+The original `module-0` through `module-6` files are preserved. See [the previous README](README-v1.md) for Docker, MCP, Temporal, KubeHealer, and CI/CD material. They are separate from the V2 learner setup.
+
+Development stays on `course-v2-runbookops`. Nothing has been pushed or merged for this build. [DECISIONS.md](DECISIONS.md) records the implementation choices, failures, and fixes.

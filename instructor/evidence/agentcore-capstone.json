@@ -1,0 +1,114 @@
+{
+  "mode": "live-bedrock-agentcore",
+  "viewer_approval_denied": true,
+  "separate_runtime_sessions": true,
+  "initial": {
+    "incident_id": "gada-170c05ed350a",
+    "user": "bagha",
+    "question": "Investigate checkout HTTP 503. Check health, logs, deployments and the current runbook, then prepare the documented correction for approval.",
+    "mode": "bedrock",
+    "diagnosis": "Validated tool evidence and the current checkout-runbook support restoring PAYMENT_SERVICE_URL from http://payments:9009 to http://payments:9000. Proposal proposal:gada-170c05ed350a:8892d4c1d2 awaits Jethalal. This application summary is based on the validated proposal; no change has been applied.",
+    "proposal_id": "proposal:gada-170c05ed350a:8892d4c1d2",
+    "model_calls": 2,
+    "error": null,
+    "waiting_for_approval": true,
+    "pending_nodes": [
+      "review"
+    ],
+    "health": {
+      "service": "checkout",
+      "status": "unhealthy",
+      "http_status": 503,
+      "revision": 1
+    },
+    "proposal": {
+      "approved_hash": null,
+      "approver": null,
+      "expires": 1794411085.9245183,
+      "hash": "6b18d9bb8f8801f7dad66825aa3daa8ac86414f7fce9870f7cb44e5c88a9131d",
+      "id": "proposal:gada-170c05ed350a:8892d4c1d2",
+      "incident": "gada-170c05ed350a",
+      "owner": "bagha",
+      "plan": {
+        "after": "http://payments:9000",
+        "before": "http://payments:9009",
+        "environment": "simulator",
+        "evidence": [
+          "get_service_health",
+          "get_recent_logs",
+          "get_recent_deployments",
+          "architecture",
+          "incident-042"
+        ],
+        "key": "PAYMENT_SERVICE_URL",
+        "risk": "Checkout requests may fail during the configuration reload.",
+        "rollback": {
+          "key": "PAYMENT_SERVICE_URL",
+          "value": "http://payments:9009"
+        },
+        "service": "checkout",
+        "validation": "Check checkout returns HTTP 200 after the change."
+      },
+      "revision": 1,
+      "status": "pending"
+    }
+  },
+  "recovered": {
+    "incident_id": "gada-170c05ed350a",
+    "user": "bagha",
+    "question": "Investigate checkout HTTP 503. Check health, logs, deployments and the current runbook, then prepare the documented correction for approval.",
+    "mode": "bedrock",
+    "diagnosis": "Validated tool evidence and the current checkout-runbook support restoring PAYMENT_SERVICE_URL from http://payments:9009 to http://payments:9000. Proposal proposal:gada-170c05ed350a:8892d4c1d2 awaits Jethalal. This application summary is based on the validated proposal; no change has been applied.",
+    "proposal_id": "proposal:gada-170c05ed350a:8892d4c1d2",
+    "model_calls": 2,
+    "error": null,
+    "result": {
+      "applied": true,
+      "health": {
+        "service": "checkout",
+        "status": "healthy",
+        "http_status": 200,
+        "revision": 2
+      }
+    },
+    "waiting_for_approval": false,
+    "pending_nodes": [],
+    "health": {
+      "service": "checkout",
+      "status": "healthy",
+      "http_status": 200,
+      "revision": 2
+    },
+    "proposal": {
+      "approved_hash": "6b18d9bb8f8801f7dad66825aa3daa8ac86414f7fce9870f7cb44e5c88a9131d",
+      "approver": "jethalal",
+      "expires": 1794411085.9245183,
+      "hash": "6b18d9bb8f8801f7dad66825aa3daa8ac86414f7fce9870f7cb44e5c88a9131d",
+      "id": "proposal:gada-170c05ed350a:8892d4c1d2",
+      "incident": "gada-170c05ed350a",
+      "owner": "bagha",
+      "plan": {
+        "after": "http://payments:9000",
+        "before": "http://payments:9009",
+        "environment": "simulator",
+        "evidence": [
+          "get_service_health",
+          "get_recent_logs",
+          "get_recent_deployments",
+          "architecture",
+          "incident-042"
+        ],
+        "key": "PAYMENT_SERVICE_URL",
+        "risk": "Checkout requests may fail during the configuration reload.",
+        "rollback": {
+          "key": "PAYMENT_SERVICE_URL",
+          "value": "http://payments:9009"
+        },
+        "service": "checkout",
+        "validation": "Check checkout returns HTTP 200 after the change."
+      },
+      "revision": 1,
+      "status": "applied"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "source": "workshop-alert-fixture",
+  "service": "checkout",
+  "status": 503,
+  "description": "Checkout returns HTTP 503 after a configuration deployment.",
+  "synthetic": true
+}

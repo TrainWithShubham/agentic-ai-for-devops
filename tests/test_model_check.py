@@ -2,11 +2,10 @@
 
 import importlib.util
 import os
-from pathlib import Path
 import tempfile
 import unittest
+from pathlib import Path
 from unittest.mock import patch
-
 
 spec = importlib.util.spec_from_file_location(
     "check_openrouter", Path(__file__).resolve().parents[1] / "scripts/check_openrouter.py"
@@ -48,11 +47,15 @@ class ModelCheckTests(unittest.TestCase):
 
     def test_unknown_prices_or_missing_tool_support_are_rejected(self):
         self.assertFalse(check.is_free_tool_model({"id": "example/model:free"}))
-        self.assertFalse(check.is_free_tool_model({
-            "id": "example/model:free",
-            "pricing": {"prompt": "0", "completion": "0"},
-            "supported_parameters": None,
-        }))
+        self.assertFalse(
+            check.is_free_tool_model(
+                {
+                    "id": "example/model:free",
+                    "pricing": {"prompt": "0", "completion": "0"},
+                    "supported_parameters": None,
+                }
+            )
+        )
 
 
 if __name__ == "__main__":

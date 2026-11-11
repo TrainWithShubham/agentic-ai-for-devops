@@ -14,7 +14,7 @@ Learners build an assistant that reads company runbooks, investigates a broken s
 
 We start by explaining AI, generative AI, LLMs, chatbots, workflows, and agents. Then we build the project in small steps using Claude Code or Codex. After each change, learners read the code and check what the assistant does.
 
-In six hours, learners implement RAG, tool use, approval, and application permissions with starter code. OAuth integration and AWS deployment use prepared demonstrations, with instructions for trying them afterward. Production integrations need further work beyond the course.
+In six hours, learners implement RAG, tool use, approval, and application permissions with starter code. Token validation and AWS deployment use prepared demonstrations; full OAuth login is an extension, with instructions for trying them afterward. Production integrations need further work beyond the course.
 
 ### Learning outcomes
 
@@ -66,7 +66,7 @@ RunbookOps checks company documents against current service evidence to establis
 
 ### Keep the operational environment simple
 
-Use a provided Python HTTP service simulator with a small configuration file, log fixtures, deployment history, and controllable health state. No Kubernetes cluster is required. The simulated dependency failure should follow the selected configuration so verification demonstrates an actual state change in the lab.
+Use the provided Python simulator behind CLI, MCP, and HTTP interfaces, with a persisted configuration setting, log fixtures, deployment history, and controllable health state. No Kubernetes cluster is required. The simulated dependency failure should follow the selected configuration so verification demonstrates an actual state change in the lab.
 
 The simulator represents operational APIs; it is not a production remediation system. An optional extension replaces it with a Dockerized service. Use synthetic but realistic company documents and credentials throughout.
 
@@ -83,7 +83,7 @@ The simulator represents operational APIs; it is not a production remediation sy
 | Superseded runbook | Teach freshness and conflicting evidence |
 | Document containing an injected instruction | Show why retrieved content is untrusted |
 
-Each document carries source ID, version, updated date, service, environment, and allowed roles. Supply the corpus, sample questions, expected sources, and a prebuilt index for recovery from setup problems.
+Each document carries source ID, version, updated date, service, environment, and allowed roles. The corpus, sample questions, expected sources, and indexing commands are supplied. Hash mode rebuilds an index without a model download; semantic mode is prepared before class.
 
 ### Tools
 
@@ -104,19 +104,19 @@ The caller identity comes from trusted application context. The model cannot cho
 |---|---|---|
 | Coding | Claude Code or Codex | AI-assisted implementation; learners review diffs and behavior |
 | Language | Python 3.11+ with a tested lockfile | Small codebase and familiar DevOps scripting |
-| Agent | LangChain integrations + a small LangGraph workflow | Introduce the loop first, then visible state and approval flow |
+| Agent | A small LangGraph workflow with explicit provider adapters | Introduce the loop first, then visible state and approval flow |
 | Knowledge retrieval | Local Chroma with a small local embedding model | Learners see the pipeline without provisioning a cloud database |
 | Tools | A prepared Python MCP server, using FastMCP | Learners expose a tool and connect the agent client |
 | State and approval | LangGraph interrupt/resume with SQLite persistence | Demonstrate pause/resume without a separate workflow platform |
 | Model access | Preflighted hosted model adapter; instructor demonstrates Amazon Bedrock | Keep provider setup outside live teaching |
-| Identity | Prepared local roles; preconfigured OAuth/OIDC demo | Implement application checks and observe real token validation |
+| Identity | Prepared local roles and signed JWT validation | Implement application checks and observe real token validation |
 | Observability | Local structured JSON traces and a summary viewer | No tracing SaaS account required |
 | Evaluations | Small provided scenario dataset with deterministic checks | Inspect task outcomes and safety failures |
 | Managed AWS deployment | Same LangGraph project on AgentCore Runtime, invoking Bedrock | Prepared instructor deployment; learners inspect the adapter and cloud trace |
 | AgentCore Harness | Brief architecture comparison | Alternative managed loop powered by Strands; does not host our LangGraph orchestration |
 | Temporal | Optional post-course extension | Avoid a second orchestration system in the beginner path |
 
-The selected local retrieval stack is an educational implementation choice. Keep the small read-only corpus/index packaged with the cloud agent for the core deployment, using the same tested embedding model and collection configuration. Parsing, embedding, and indexing happen before class. Updating the packaged corpus requires a new artifact. A preconfigured **Bedrock Managed Knowledge Base** is an optional extension, following the current [AWS recommendation](https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html); a second RAG implementation is not part of the live core.
+The selected local retrieval stack is an educational implementation choice. Keep the small read-only corpus and embedding model packaged with the cloud agent for the core deployment, using the same tested embedding model and collection configuration. The deployed agent builds its small local index from packaged documents; the embedding model is downloaded at build time. Updating the packaged corpus requires a new artifact. A preconfigured **Bedrock Managed Knowledge Base** is an optional extension, following the current [AWS recommendation](https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html); a second RAG implementation is not part of the live core.
 
 **Deployment decision:** host the Day 1 LangGraph project on **AgentCore Runtime**. LangGraph owns the agent loop, tool decisions, and approval control flow; Runtime supplies the managed hosting environment. **AgentCore Harness** is a separate managed loop powered by Strands and is covered only in comparison. Do not describe creating a Harness as hosting our LangGraph project. See the official [Harness vs. Runtime comparison](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/harness-vs-runtime.html).
 
@@ -205,11 +205,11 @@ Nattu Kaka remembers a similar outage, but the details are spread across differe
 | Current recovery runbook, MD | Checks, correction, validation, and rollback |
 | Support notes, TXT | Customer reports and investigation notes |
 
-These are planned course resources. Supply tested loaders, editable sources, and reference extractions. Use mostly text-based files in the core exercise. Show a scanned page or diagram briefly to explain OCR and information that text extraction can miss. Convert legacy PPT files before the live lab.
+These course resources, tested loaders, and editable sources are included. Use mostly text-based files in the core exercise. Show a scanned page or diagram briefly to explain OCR and information that text extraction can miss. Convert legacy PPT files before the live lab.
 
 Work through the pipeline: extract text and structure, split it into chunks, attach metadata, create embeddings, index, retrieve, and answer with citations. Learners index the small corpus using the supplied loaders and inspect the chunks returned for a question.
 
-The cloud artifact includes the prepared index and extraction results. Locally, learners run the indexing exercise and inspect what it produces.
+The cloud artifact includes the documents and embedding model; the application builds the small index locally. Locally, learners run the indexing exercise and inspect what it produces.
 
 Use this question:
 
@@ -254,7 +254,7 @@ Today the agent gains controlled execution. Learners add permissions, connect ap
 | Time | Minutes | Topic | What happens |
 |---|---:|---|---|
 | 00:00 to 00:10 | 10 | Recover yesterday's investigation | Run the checkpoint and inspect the proposed correction |
-| 00:10 to 00:30 | 20 | Identity, RBAC, and OAuth/OIDC | Add role checks and watch a prepared authenticated remote-tool demonstration |
+| 00:10 to 00:30 | 20 | Identity, RBAC, and OAuth/OIDC | Add role checks and watch a prepared authenticated API/MCP demonstration |
 | 00:30 to 00:55 | 25 | Human approval and saved state | Prepare an exact change, pause, restart, and resume after approval |
 | 00:55 to 01:10 | 15 | Guardrails | Try malicious document instructions, invalid arguments, and a bounded tool failure |
 | 01:10 to 01:20 | 10 | Break | Catch up from the supplied checkpoint |
@@ -277,7 +277,7 @@ Use the characters to explain the role model. Bagha can investigate and prepare 
 
 Learners spend 12 minutes connecting the provided role checks in retrieval and tool handlers. Demonstrate that a restricted document never reaches a viewer's model context, including through the cache. Identity comes from trusted application context, not the question or model output.
 
-Spend eight minutes on the prepared OAuth/OIDC demonstration. Explain authentication, delegated access, identity, scopes, and the application's role mapping. Show one valid request, an invalid token, and a token with insufficient scope. The server checks signature, issuer, audience, expiry, and required scope. Separate inbound caller identity from credentials used to access downstream tools.
+Spend eight minutes on the prepared signed-token demonstration. Explain authentication, delegated access, identity, scopes, and the application's role mapping. Show one valid request, an invalid token, and a token with insufficient scope. The server checks signature, issuer, audience, expiry, and required scope. Separate inbound caller identity from credentials used to access downstream tools.
 
 Classroom test:
 
@@ -339,11 +339,11 @@ Change one prompt or retrieval setting and rerun the scenarios. Learner check: s
 
 Use the prepared deployment described in Section 6. AgentCore Runtime hosts our LangGraph code. AgentCore Harness supplies a different managed loop and gets a brief comparison; we do not rebuild the project around it.
 
-Inspect the entrypoint and deployment configuration, then invoke the already-ready endpoint. The hosted agent retrieves the packaged knowledge, calls authenticated remote MCP tools, and prepares the fix. Demonstrate denied approval, authorized approval/resume, and simulator recovery. Inspect the instrumented cloud trace.
+Inspect the entrypoint and deployment configuration, then invoke the already-ready endpoint. The hosted agent retrieves the packaged knowledge, calls the same in-process MCP tools with verified application identity, and prepares the fix. Demonstrate denied approval, authorized approval/resume, and simulator recovery. Inspect the instrumented cloud trace.
 
-Explain two changes that moving off a laptop requires: the runtime needs reachable remote tools, and approval/checkpoint state must survive runtime replacement. Show the prepared external state store. Conversation memory is not automatically a graph checkpointer.
+Explain two changes that moving off a laptop requires: real external operational APIs must be reachable, and approval/checkpoint state must survive runtime replacement. Our self-contained simulator runs beside the graph; a remote MCP transport is demonstrated separately. Show the prepared external state store. Conversation memory is not automatically a graph checkpointer.
 
-Learners inspect the adapter and compare the cloud result with their local project. AWS accounts and provisioning are not live prerequisites. Learners with preflighted access can deploy independently afterward. If AWS access fails, play the labeled recording and retain the local verification exercise.
+Learners inspect the adapter and compare the cloud result with their local project. AWS accounts and provisioning are not live prerequisites. Learners with preflighted access can deploy independently afterward. If AWS access fails, show the labeled saved cloud evidence and retain the local verification exercise.
 
 ### 02:25 to 02:40: finish the incident
 
@@ -370,25 +370,23 @@ Use an occasional Hinglish line if it fits the delivery. Keep explanations under
 **One codebase, two environments:** run RunbookOps locally first, then invoke the same LangGraph workflow on AgentCore Runtime. This follows the official [Harness vs. Runtime distinction](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/harness-vs-runtime.html). Runtime supplies hosting; application code still owns tool integration, policy enforcement, checkpointing, and trace instrumentation.
 
 ```text
-Authenticated learner/instructor client
+Instructor client: IAM request + signed application identity
                   |
           AgentCore Runtime
           RunbookOps / LangGraph
             |       |       |
-         Bedrock    |    Packaged read-only RAG index
+         Bedrock    |    Packaged documents + embedding model
                     |
-           Authenticated remote MCP service
-           Health / logs / deployment / simulator changes
+          In-process MCP tools / isolated simulator
+                    |
+          DynamoDB operations + graph checkpoint tables
 
-LangGraph checkpoints + proposal/approval records
-          -> prepared external PostgreSQL store
-
-Instrumented graph/tool calls -> AgentCore Observability / CloudWatch
+Sanitized application events -> CloudWatch
 ```
 
-The prepared external store preserves graph state and approval records across runtime replacement. Session-local files or the local SQLite file are not presented as durable cloud approval storage. AgentCore conversational Memory is not automatically a LangGraph checkpointer. Use separate tenant/user/incident namespaces and authorize resume requests against the stored incident owner and roles.
+DynamoDB preserves graph checkpoints, incident state, and exact approval records across Runtime sessions. Session-local files are not durable cloud approval storage. AgentCore conversational Memory is not automatically a LangGraph checkpointer. The application checks incident ownership and roles before status, approval, or resume.
 
-The cloud runtime cannot reach a learner's `localhost`. Prepare an authenticated remote MCP endpoint backed by an isolated simulator and persistent change records. It exposes the same tool contracts as the local server. Keep downstream credentials server-side, verify actual caller authorization, and do not trust model-generated identity fields. A session owns its own simulator incident so one class invocation cannot alter another's exercise.
+The deployed capstone uses the same in-process MCP server as the laptop. This keeps one simulator and avoids adding an unnecessary network service to a beginner workshop. A separate authenticated HTTP MCP example teaches remote transport. Connecting real operational services requires their own reachable endpoints and credentials.
 
 ### Thirty-minute live segment
 
@@ -396,22 +394,22 @@ The cloud runtime cannot reach a learner's `localhost`. Prepare an authenticated
 |---|---|---|
 | 0–4 | Explain Runtime vs. managed Harness and show the architecture | Identify which component owns the LangGraph loop |
 | 4–10 | Inspect the prepared HTTP entrypoint, configuration, ARM64 artifact, and deployment steps | Review the small adapter diff and deployment manifest |
-| 10–18 | Invoke the already-ready endpoint using authenticated requests; inspect retrieved evidence and remote tools | Compare cloud behavior with the local incident |
+| 10–18 | Invoke the already-ready endpoint using authenticated requests; inspect retrieved evidence and MCP tools | Compare cloud behavior with the local incident |
 | 18–25 | Pause on a proposal, deny an unauthorized approval, then approve and resume to verify simulator recovery | Identify approval identity, exact proposal, and validation result |
 | 25–30 | Inspect the instrumented trace and discuss version rollback and cleanup | Explain one cloud-specific risk and one observed check |
 
 ### Instructor preflight and materials
 
-1. Verify current service/API availability, model access, region, permissions, and SDK/CLI versions. This curriculum authorizes planning only; no AWS resources are provisioned by writing it.
-2. Select the HTTP runtime protocol and supply a tested AgentCore entrypoint and health/invocation contract. Prepare the ARM64 container, push it to ECR, create the runtime/endpoint, and verify readiness before teaching. Show captured build/deployment output rather than spending live time waiting for provisioning.
-3. Package the small corpus/index and embedding dependencies; verify retrieval on the deployed architecture. Keep document permissions active in both environments.
-4. Configure the external checkpointer/proposal store and secured remote MCP simulator before class. Verify pause/resume across runtime replacement, authorization denial, expired/changed approval rejection, and replay protection.
-5. Configure a precreated OAuth/OIDC authorizer for the prepared user-facing demo and scoped execution-role permissions for AWS calls. Keep tool authorization and runtime admission checks distinct. Do not place secrets in the artifact or visible environment configuration.
-6. Instrument LangGraph, retrieval, and remote tool calls explicitly. Verify a useful cloud trace rather than assuming Runtime automatically captures every application-level step.
-7. Prepare an incident-start client accepting a seeded alert payload as well as a manual request. Demonstrate one prepared availability alert initiating the same investigation; building monitoring/alert delivery infrastructure remains an extension.
-8. Provide deployment files, a recording, a sample trace, cost guidance, and resource cleanup instructions. Learners with independently preflighted AWS access can deploy afterward; other learners complete and verify the local capstone during class.
+1. Recheck the existing endpoint, selected model, region, and role before class. The instructor deployment has been provisioned and invoked; see [verification](instructor/VERIFICATION.md).
+2. Inspect the tested HTTP entrypoint, ARM64 container, readiness contract, and deployment scripts. Build and provisioning happen before class.
+3. Verify the packaged knowledge and semantic embedding model. Keep document permissions active in both environments.
+4. Use the external DynamoDB operation and checkpoint stores. Demonstrate investigation and approval from separate Runtime sessions; use regression tests for expiry, tampering, replay, and crash recovery.
+5. Explain IAM admission separately from the signed application identity forwarded in an allowlisted header. This is a workshop JWT demonstration. A production OAuth issuer and user consent flow are extensions.
+6. Inspect sanitized JSON events in CloudWatch. Full managed trace instrumentation is not assumed or claimed.
+7. Use the supplied seeded checkout alert and invocation client. Building monitoring/alert delivery infrastructure remains an extension.
+8. Keep the saved cloud evidence and local demo available if live services fail. Deployment, update, and cleanup instructions are included under [deploy/agentcore](deploy/agentcore/README.md).
 
-Bedrock Knowledge Bases, Gateway, Identity token-vault integrations, and managed Harness creation are optional extensions. Do not provision all AgentCore capabilities to demonstrate this one hosted agent. If service access fails, use the labeled recording and preserve the local acceptance run.
+Bedrock Knowledge Bases, Gateway, Identity token-vault integrations, and managed Harness creation are optional extensions. Do not provision all AgentCore capabilities to demonstrate this one hosted agent. If service access fails, use the labeled saved evidence and preserve the local acceptance run.
 
 ## 7. Hands-on depth and scope
 
@@ -422,7 +420,7 @@ Bedrock Knowledge Bases, Gateway, Identity token-vault integrations, and managed
 | RAG | Index corpus, retrieve chunks, cite answers | Same packaged index on Runtime | Managed Knowledge Base, hybrid retrieval/reranking |
 | MCP | Expose one tool; connect supplied server/client | Remote-tool identity | Deploy a secured remote server |
 | RBAC | Enforce tool and document access | Role/scope mapping | Multi-team policy model |
-| OAuth/OIDC | Exercise prepared valid/invalid token requests | Real issuer, token validation, scopes | Configure own issuer and consent flow |
+| OAuth/OIDC | Exercise prepared valid/invalid token requests | Development issuer, token validation, scopes | Configure own issuer and consent flow |
 | HITL | Connect approval and verify pause/resume | Approval integrity and replay denial | Notifications and external approval UI |
 | Guardrails | Run adversarial cases; edit validation | Managed content filtering concepts | Bedrock Guardrails integration |
 | Caching | Configure authorized retrieval cache | Prompt vs response caching | Measure provider prompt caching |
@@ -453,7 +451,7 @@ Allow approximately 30–45 minutes before the event. This is setup, not extra c
 - GitHub account, editor/terminal, Python, and the supplied locked dependencies.
 - A working Claude Code or Codex setup, or an alternative instructor code patch for attendees without access. Explain the basic prompt → diff → verify workflow in the session.
 - Model API access verified separately from coding-assistant access. A coding-assistant subscription does not establish that the course application can call a model API.
-- A downloaded small embedding model and successful local indexing smoke check; provide a prebuilt index matching the exact embedding model/version.
+- A downloaded small embedding model and successful local indexing smoke check; use hash mode if the embedding download fails; never reuse an index with a different embedding model.
 - A successful provider smoke check for one text/tool-capable model, simulator health check, and MCP connection.
 - A local virtual environment or the supplied browser development environment. Recommend 8 GB RAM for the planned small local workload, subject to a rehearsal on representative laptops; no local generative-model/GPU requirement.
 
@@ -482,11 +480,11 @@ Example approval request:
 
 > Connect the supplied approval checkpoint. The executor must require a stored, unexpired approval for the exact proposal hash and reject replay. Read role identity from trusted application context. Demonstrate that “I approve” in model output cannot execute a change.
 
-Provide module-specific prompts and expected behavior. Avoid asking learners to generate the entire application in one prompt. Supplied patches and checkpoint branches let attendees recover without missing the next explanation.
+Provide module-specific prompts and expected behavior. Avoid asking learners to generate the entire application in one prompt. Supplied examples, the exercise solution, and recovery commands let attendees recover without missing the next explanation.
 
 ## 10. Capstone acceptance and portfolio evidence
 
-Supply a small scenario runner before class. These are planned project checks, not claims that an implementation already exists.
+The supplied scenario runner and regression tests check the application outcomes below. Offline checks do not establish live model quality; review that separately. See [verification](instructor/VERIFICATION.md).
 
 | Scenario | Acceptance criterion |
 |---|---|
@@ -547,7 +545,7 @@ Use **LangChain/LangGraph as the core teaching stack**. The sample supports its 
 
 | Candidate | Course decision |
 |---|---|
-| LangChain + LangGraph | Core: model/tool integrations plus explicit workflow state and HITL |
+| LangGraph with explicit provider adapters | Core: model/tool integrations plus explicit workflow state and HITL |
 | AgentCore Runtime | Host the existing LangGraph project in the prepared AWS demonstration |
 | Strands + AgentCore Harness | Brief alternative-architecture comparison; no second learner agent implementation |
 | CrewAI / AutoGen | Mention in the ecosystem comparison; present in relevant postings, but a multi-agent build adds scope without advancing this capstone |
@@ -560,14 +558,14 @@ Refresh the sample before marketing a specific framework-demand claim. A larger 
 
 Build and verify these materials before delivering the course.
 
-- Provide the simulator, corpus, dependency lockfile, devcontainer, provider adapters, trace viewer, evaluation runner, and checkpoint branches.
-- Prebuild the OAuth issuer/client and demonstrate real token validation; label local development identities as development-only.
+- Provide the simulator, corpus, dependency lockfile, devcontainer, provider adapters, trace viewer, evaluation runner, and recovery commands.
+- Use the supplied development issuer/client to demonstrate real token validation; label local development identities as development-only.
 - Preconfigure the role filter, approval persistence, cache/router skeletons, and scenario runner. Learners modify and connect small pieces rather than authoring all infrastructure live.
-- Prepare the Runtime adapter, ARM64 artifact, remote MCP simulator, external checkpoint/proposal store, authorizer, and trace instrumentation before class. Provide a small seeded-alert client to connect the capstone to the incident lifecycle.
+- Prepare the Runtime adapter, ARM64 artifact, in-process MCP simulator, external checkpoint/proposal stores, IAM admission, signed application identity, and JSON event logging before class. Provide a small seeded-alert client to connect the capstone to the incident lifecycle.
 - Rehearse both sessions to the stated clock, including embedding download avoidance, model latency, local and cloud restart/resume, and every AWS demo.
-- Keep fallback recordings and recorded model fixtures available and visibly labeled.
+- Keep saved cloud evidence and deterministic offline practice available and visibly labeled.
 - Use one checkpoint after every lab. Take extended setup debugging out of the main teaching path using written recovery steps or a support channel.
-- If time slips, shorten the AWS demonstration with its recording and reduce routing discussion; preserve RAG inspection, tool use, approval enforcement, capstone verification, breaks, and Q&A.
+- If time slips, shorten the AWS demonstration with saved evidence and reduce routing discussion; preserve RAG inspection, tool use, approval enforcement, capstone verification, breaks, and Q&A.
 - Learners who finish early inspect conflicting runbooks or add one evaluation case. Do not branch the live class into multiple framework implementations.
 
 ### Improvements over the previous course

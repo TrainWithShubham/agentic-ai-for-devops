@@ -1,0 +1,20 @@
+name: Course checks
+on:
+  workflow_dispatch:
+  push:
+    branches: [course-v2-runbookops]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.10.2"
+          enable-cache: true
+      - run: uv sync --frozen --extra aws
+      - run: uv run ruff check src examples scripts tests deploy/agentcore
+      - run: uv run pytest -q
+      - run: uv run runbookops evaluate

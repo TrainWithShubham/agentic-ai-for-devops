@@ -22,7 +22,7 @@ Use a single provider configuration layer so switching provider, base URL, and m
 
 OpenRouter offers models with a `:free` variant and the `openrouter/free` router. Its [official free-model page](https://openrouter.ai/collections/free-models/) currently lists 20 requests per minute and 50 requests per day for free variants without a credit purchase. Failed attempts count. The higher daily allowance requires a credit purchase and is not a zero-purchase recommendation.
 
-One agent investigation may require several model calls. For example, six calls per investigation would use 48 requests after eight investigations, before setup checks and retries. This is an illustration, not a measured budget for the unfinished application.
+One agent investigation may require several model calls. For example, six calls per investigation would use 48 requests after eight investigations, before setup checks and retries. The application enforces a six-call maximum. The live capstone was also measured; see the verification report.
 
 For a class of 50 to 100:
 
@@ -61,12 +61,14 @@ The first provider check is in `scripts/check_openrouter.py`. It uses Python's s
 ```bash
 python3 scripts/check_openrouter.py --list
 python3 scripts/check_openrouter.py --env-file /path/to/your/.env --model <free-model-id>
-python3 -m unittest discover -s tests
+uv run pytest -q
 ```
 
 Do not copy a key into the command line or course notes. The script does not execute `.env` contents or copy credentials into this repository.
 
-On 11 November, the public catalog was fetched, but this environment's authenticated request failed at DNS resolution. The key has been located locally; its validity and a model's live tool exchange are **not yet verified**. Catalog tool-support metadata alone does not pass the provider check.
+On 11 November, the account and named free model were verified with the supplied private key file. The read-only two-request tool exchange passed. A full semantic-RAG investigation reached an approval proposal, viewer approval was denied, and authorized recovery returned HTTP 200. The provider reported zero inference cost for that run. No key was copied into the repository. See [verification](../instructor/VERIFICATION.md) for the exact test scope.
+
+The tested model is `nvidia/nemotron-3.5-lightning:free`. Availability can change, so run the catalog and tool smoke checks again on November 13. Groq remains implemented but not live-verified because no Groq key was supplied.
 
 Before publishing learner instructions, verify:
 
@@ -85,4 +87,4 @@ The 50 to 100 attendees use independent accounts. More API keys under the same a
 
 > Create your own OpenRouter account and API key before November 14. We will use a tested free model; no API credit purchase or AWS account is required for the learner labs. Free models have usage limits. Complete the setup check in advance. Claude Code is optional, and offline practice is included if live model access fails.
 
-This message is a draft. Publish it with the exact model and setup instructions only after the free-account checks pass.
+Use the tested model above and the [setup guide](../lessons/00-setup/README.md). Recheck the provider before sending the final learner reminder. A synchronized class rehearsal and timed teaching rehearsal still require people and instructor time.

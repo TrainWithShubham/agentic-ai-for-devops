@@ -1,0 +1,277 @@
+[
+  {
+    "actor": "bagha",
+    "at": 1794410180.0218108,
+    "incident_id": "gada-170c05ed350a",
+    "kind": "incident_created"
+  },
+  {
+    "at": 1794410180.853503,
+    "incident_id": "gada-170c05ed350a",
+    "kind": "mcp_connected",
+    "tools": [
+      "get_recent_deployments",
+      "get_recent_logs",
+      "get_service_health",
+      "prepare_change",
+      "search_runbooks"
+    ],
+    "transport": "inprocess"
+  },
+  {
+    "at": 1794410182.1074395,
+    "duration_ms": 1242,
+    "incident_id": "gada-170c05ed350a",
+    "kind": "model",
+    "mode": "bedrock",
+    "model": "us.amazon.nova-lite-v1:0",
+    "prompt_version": "18769adcf1aa",
+    "task": "diagnose",
+    "usage": {
+      "completion_tokens": 134,
+      "prompt_tokens": 1035
+    }
+  },
+  {
+    "arguments": {
+      "service": "checkout"
+    },
+    "at": 1794410182.1769717,
+    "duration_ms": 9,
+    "incident_id": "gada-170c05ed350a",
+    "kind": "tool",
+    "result": {
+      "http_status": 503,
+      "revision": 1,
+      "service": "checkout",
+      "status": "unhealthy"
+    },
+    "tool": "get_service_health"
+  },
+  {
+    "arguments": {
+      "service": "checkout"
+    },
+    "at": 1794410182.2035327,
+    "duration_ms": 7,
+    "incident_id": "gada-170c05ed350a",
+    "kind": "tool",
+    "result": {
+      "lines": [
+        "checkout HTTP 503: payment connection refused",
+        "upstream=http://payments:9009 connection refused; began after deployment deploy-108",
+        "synthetic API_KEY=[redacted] never forward secrets"
+      ]
+    },
+    "tool": "get_recent_logs"
+  },
+  {
+    "arguments": {
+      "service": "checkout"
+    },
+    "at": 1794410182.2258415,
+    "duration_ms": 4,
+    "incident_id": "gada-170c05ed350a",
+    "kind": "tool",
+    "result": {
+      "change": {
+        "after": "http://payments:9009",
+        "before": "http://payments:9000",
+        "key": "PAYMENT_SERVICE_URL"
+      },
+      "deployment": "deploy-108",
+      "service": "checkout"
+    },
+    "tool": "get_recent_deployments"
+  },
+  {
+    "arguments": {
+      "query": "checkout HTTP 503"
+    },
+    "at": 1794410184.1878796,
+    "duration_ms": 1945,
+    "incident_id": "gada-170c05ed350a",
+    "kind": "tool",
+    "result": {
+      "cache_hit": false,
+      "corpus_version": "8af115180794acb3edf4",
+      "embedding": "semantic",
+      "results": [
+        {
+          "access": "public",
+          "current": true,
+          "file": "incident-042.docx",
+          "location": "paragraph 3",
+          "service": "checkout",
+          "similarity": 0.8098,
+          "source": "incident-042",
+          "text": "Author: Nattu Kaka. Date: 7 November 2026. Environment: simulator. Customers could browse products but checkout returned HTTP 503.",
+          "title": "Checkout incident 042",
+          "updated": "2026-11-11",
+          "version": 2
+        },
+        {
+          "access": "public",
+          "current": true,
+          "file": "checkout-runbook.md",
+          "location": "Diagnosis",
+          "service": "checkout",
+          "similarity": 0.7658,
+          "source": "checkout-runbook",
+          "text": "Diagnosis\n\nFor checkout HTTP 503, inspect service health, recent checkout logs, and recent deployments. If payment connection failures began after a URL change, compare PAYMENT_SERVICE_URL with the approved architecture value.",
+          "title": "Checkout recovery runbook",
+          "updated": "2026-11-11",
+          "version": 2
+        },
+        {
+          "access": "public",
+          "current": true,
+          "file": "incident-042.docx",
+          "location": "paragraph 1",
+          "service": "checkout",
+          "similarity": 0.7344,
+          "source": "incident-042",
+          "text": "Checkout incident 042",
+          "title": "Checkout incident 042",
+          "updated": "2026-11-11",
+          "version": 2
+        },
+        {
+          "access": "public",
+          "current": true,
+          "file": "architecture.pptx",
+          "location": "slide 2",
+          "service": "checkout",
+          "similarity": 0.7333,
+          "source": "architecture",
+          "text": "Approved payment endpoint\nThe simulator payment service listens at http://payments:9000. Checkout reads PAYMENT_SERVICE_URL from its configuration. An incorrect port can cause connection refused and HTTP 503.",
+          "title": "Gada Electronics checkout architecture",
+          "updated": "2026-11-11",
+          "version": 2
+        },
+        {
+          "access": "public",
+          "current": true,
+          "file": "incident-042.docx",
+          "location": "paragraph 5",
+          "service": "checkout",
+          "similarity": 0.6917,
+          "source": "incident-042",
+          "text": "Checkout logs showed connection refused while contacting http://payments:9009. A deployment had changed PAYMENT_SERVICE_URL from http://payments:9000 to http://payments:9009.",
+          "title": "Checkout incident 042",
+          "updated": "2026-11-11",
+          "version": 2
+        }
+      ]
+    },
+    "tool": "search_runbooks"
+  },
+  {
+    "at": 1794410185.8967519,
+    "duration_ms": 1692,
+    "incident_id": "gada-170c05ed350a",
+    "kind": "model",
+    "mode": "bedrock",
+    "model": "us.amazon.nova-lite-v1:0",
+    "prompt_version": "18769adcf1aa",
+    "task": "diagnose",
+    "usage": {
+      "completion_tokens": 244,
+      "prompt_tokens": 2061
+    }
+  },
+  {
+    "at": 1794410185.9300067,
+    "hash": "6b18d9bb8f8801f7dad66825aa3daa8ac86414f7fce9870f7cb44e5c88a9131d",
+    "incident_id": "gada-170c05ed350a",
+    "kind": "proposal_prepared",
+    "proposal_id": "proposal:gada-170c05ed350a:8892d4c1d2"
+  },
+  {
+    "arguments": {
+      "evidence": [
+        "get_service_health",
+        "get_recent_logs",
+        "get_recent_deployments",
+        "architecture",
+        "incident-042"
+      ],
+      "key": "PAYMENT_SERVICE_URL",
+      "service": "checkout",
+      "value": "http://payments:9000"
+    },
+    "at": 1794410185.9399824,
+    "duration_ms": 24,
+    "incident_id": "gada-170c05ed350a",
+    "kind": "tool",
+    "result": {
+      "approved_hash": null,
+      "approver": null,
+      "expires": 1794411085.9245183,
+      "hash": "6b18d9bb8f8801f7dad66825aa3daa8ac86414f7fce9870f7cb44e5c88a9131d",
+      "id": "proposal:gada-170c05ed350a:8892d4c1d2",
+      "incident": "gada-170c05ed350a",
+      "owner": "bagha",
+      "plan": {
+        "after": "http://payments:9000",
+        "before": "http://payments:9009",
+        "environment": "simulator",
+        "evidence": [
+          "get_service_health",
+          "get_recent_logs",
+          "get_recent_deployments",
+          "architecture",
+          "incident-042"
+        ],
+        "key": "PAYMENT_SERVICE_URL",
+        "risk": "Checkout requests may fail during the configuration reload.",
+        "rollback": {
+          "key": "PAYMENT_SERVICE_URL",
+          "value": "http://payments:9009"
+        },
+        "service": "checkout",
+        "validation": "Check checkout returns HTTP 200 after the change."
+      },
+      "revision": 1,
+      "status": "pending"
+    },
+    "tool": "prepare_change"
+  },
+  {
+    "at": 1794410185.9585178,
+    "error": null,
+    "incident_id": "gada-170c05ed350a",
+    "kind": "investigation_finished",
+    "mode": "bedrock",
+    "model_calls": 2,
+    "proposal_id": "proposal:gada-170c05ed350a:8892d4c1d2"
+  },
+  {
+    "actor": "jethalal",
+    "at": 1794410204.9825695,
+    "incident_id": "gada-170c05ed350a",
+    "kind": "approval_decision",
+    "proposal_id": "proposal:gada-170c05ed350a:8892d4c1d2",
+    "status": "approved"
+  },
+  {
+    "at": 1794410205.3806057,
+    "incident_id": "gada-170c05ed350a",
+    "kind": "change_applied",
+    "proposal_id": "proposal:gada-170c05ed350a:8892d4c1d2"
+  },
+  {
+    "at": 1794410205.3932452,
+    "incident_id": "gada-170c05ed350a",
+    "kind": "verification",
+    "result": {
+      "applied": true,
+      "health": {
+        "http_status": 200,
+        "revision": 2,
+        "service": "checkout",
+        "status": "healthy"
+      }
+    }
+  }
+]

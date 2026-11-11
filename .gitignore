@@ -13,6 +13,15 @@ env/
 
 # Environment variables
 .env
+.env.*
+!.env.example
+.state/
+.cache/
+.pytest_cache/
+.ruff_cache/
+artifacts/
+site/
+*.log
 
 # IDE
 .vscode/

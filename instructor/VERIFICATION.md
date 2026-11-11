@@ -1,0 +1,92 @@
+# Verification on 11 November 2026
+
+The learner capstone and instructor cloud demonstration were run successfully. These results apply to this branch and the tested environment: macOS ARM64, uv 0.10.2, Python 3.12.12, and the committed lockfile. The cloud image is Linux ARM64.
+
+## Results
+
+| Check | Observed result |
+|---|---|
+| Full regression suite, including mocked AWS persistence | 31 passed; one upstream Authlib deprecation warning |
+| Outcome evaluation runner | 13 passed, 0 failed; explicitly offline |
+| Ruff | Passed for new source, examples, scripts, tests, and deployment code |
+| Separate clean-directory install | Frozen lockfile installed with no `.env`, `.state`, or previous virtual environment |
+| Clean learner flow | Preflight, demo, evaluations, all local examples, identity checks, exercise solution, and trace export passed |
+| Semantic retrieval | Real local FastEmbed model and Chroma; current runbook retrieved with source locations |
+| Mixed-format documents | PDF, DOCX, PPTX, MD, and TXT extracted; policy, Word report, and all three architecture slides rendered and visually checked |
+| MCP | Real in-process and stdio client/server exchanges; signed-token HTTP MCP call on localhost passed |
+| HTTP API | Anonymous request denied, viewer approval denied, approver recovery verified; separate API tests cover scope/audience/ownership |
+| OpenRouter | Free account and structured tool exchange verified; final semantic-RAG capstone completed in five model calls |
+| Bedrock | Nova Lite Converse and full application flow passed using instructor credentials |
+| AgentCore Runtime | Updated endpoint version 2 invoked successfully; Bagha investigated, Bagha approval was denied, Jethalal approved in another Runtime session, checkout returned HTTP 200 |
+| Cloud logs | Sanitized JSON incident events retrieved from CloudWatch; no claim of automatic native graph traces |
+
+The clean learner suite skips the optional AWS saver test when the AWS extra is absent. The instructor suite installs that extra and runs it against Moto, not a paid live database. Live cloud behavior was checked separately through the deployed endpoint.
+
+## Reviewable evidence
+
+- [Live OpenRouter capstone](evidence/openrouter-capstone.json): actual source/tool events, five model responses, denied approval, authorized execution, and verification.
+- [Live AgentCore capstone](evidence/agentcore-capstone.json): investigation and recovered states, viewer denial, and separate Runtime-session approval.
+- [Offline evaluation results](evidence/offline-evaluation.json): thirteen actual application checks; `live_model_quality_tested` is false.
+- [CloudWatch events](evidence/agentcore-events.json): sanitized events from the final cloud incident.
+
+These are saved results from November 11. They are useful fallback evidence when the network fails; they are not a fresh live run. Approval IDs in these records are historical and should not be reused.
+
+Generate an interactive local trace from the saved OpenRouter evidence:
+
+```bash
+uv run python scripts/trace_report.py --input instructor/evidence/openrouter-capstone.json
+```
+
+Open `artifacts/trace.html`. The viewer expands each event so learners can inspect evidence and policy transitions without exposing private model reasoning.
+
+## Measured learner request budget
+
+The final live OpenRouter investigation used five model calls and 7,980 total tokens summed across requests. The provider reported cost zero for each call. Repeated context counts again in those token totals. Approval and resume made no additional inference calls. An earlier bounded run reached six calls; the implementation now stops as soon as a validated proposal exists.
+
+| Activity per learner per day | Reserved model calls |
+|---|---:|
+| Provider tool smoke check | 2 |
+| First-call prompt comparison | 2 |
+| Simple health-tool exchange | 2 |
+| Three RAG questions | 3 |
+| Two complete investigations at the enforced maximum | 12 |
+| Retry allowance | 6 |
+| Total planned maximum | 27 |
+
+This is a teaching allocation, not a measured timed delivery of every activity. The documented free allowance is currently 50 requests/day, but public provider capacity, account limits, failed attempts, and synchronized demand can affect class. Each learner needs an independent account. Recheck the catalog and tool exchange on November 13.
+
+## Repeat the checks
+
+```bash
+uv sync --frozen --extra aws
+uv run ruff check src examples scripts tests deploy
+uv run pytest -q
+uv run runbookops demo
+uv run runbookops evaluate
+uv run python scripts/verify_docs.py
+uv run python examples/mcp_client.py
+uv run python scripts/demo_identity.py
+```
+
+For live free inference, configure your own ignored `.env`, then run:
+
+```bash
+uv run runbookops --mode openrouter --embedding semantic demo
+```
+
+For the existing instructor deployment:
+
+```bash
+uv run --extra aws python deploy/agentcore/invoke.py
+uv run --extra aws python deploy/agentcore/logs.py
+```
+
+## Limits and remaining instructor preparation
+
+A timed teaching rehearsal and a volunteer group rehearsal still need the instructor and real attendees. Windows execution, Codespaces provisioning, and GitHub Actions have not been run from this environment. The devcontainer and workflow are supplied, but no code was pushed to GitHub.
+
+Groq is implemented and documented but has no live test because no Groq key was supplied. The optional PostgreSQL store, production OAuth login/consent, managed AgentCore Harness creation, Gateway/Identity, Managed Knowledge Bases, Bedrock Guardrails, full managed trace export, and Temporal are extensions. They are not presented as completed live integrations.
+
+The simulator proves an approved configuration transition and recovery within this teaching system. It is not evidence of production incident remediation or a complete AIOps platform. Live model answers still need source-support review; passing deterministic controls does not prove hallucination or prompt injection is impossible.
+
+AWS resources remain available in the instructor account for the workshop. The ignored deployment record identifies them, and [cleanup](../deploy/agentcore/README.md#cleanup) removes only those project resources afterward.
