@@ -122,3 +122,7 @@ The instructor explicitly authorized pushing the repository. Publish local `v1` 
 The instructor asked to start the project and document the steps. Port 8000 was occupied by an unrelated Docker service, so use localhost port 8002 and leave that service alone. Start the live OpenRouter adapter with the previously authorized external key file and semantic retrieval; do not recreate AWS resources or copy the key into the repository. Add a configurable base URL to the HTTP demo so it can exercise a nondefault port. Provide RUNBOOK.md for setup, offline and live operation, API tokens/approval, evidence, and shutdown.
 
 Verified `/health` and `/docs` returned HTTP 200 on port 8002 with mode `openrouter`. The real HTTP demo passed anonymous denial, viewer approval denial, and authorized recovery to HTTP 200. Lint, Markdown links, and schedule validation passed. Leave the local server running for the instructor; no AWS resources were recreated.
+
+## Keep the local server available
+
+The first interactive tool-hosted server was gone when the instructor opened it later. Restarted the existing OpenRouter configuration as a detached background process, with its PID and output under ignored `.state/server.pid` and `.state/server.log`. Verified health after separate tool calls and opened the actual Swagger page in Chrome. The app is an API/CLI project; the Swagger explorer is not a chat frontend. Foreground startup instructions remain valid when the instructor keeps that terminal open.
