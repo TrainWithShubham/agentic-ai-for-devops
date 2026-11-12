@@ -87,6 +87,8 @@ class Engine:
             calls = 0
             tool_steps = 0
             diagnosis = ""
+            verified_reads = set()
+            completion_reminded = False
             failure = None
             try:
                 async with asyncio.timeout(INVESTIGATION_TIMEOUT):
@@ -128,6 +130,34 @@ class Engine:
                             requests = message.get("tool_calls") or []
                             if not requests:
                                 diagnosis = message.get("content") or "No diagnosis returned."
+                                required_reads = {
+                                    "get_service_health",
+                                    "get_recent_logs",
+                                    "get_recent_deployments",
+                                    "search_runbooks",
+                                }
+                                if (
+                                    verified_reads
+                                    and not completion_reminded
+                                    and (
+                                        verified_reads != required_reads or "fix" in state["question"].lower()
+                                    )
+                                ):
+                                    completion_reminded = True
+                                    messages.append(
+                                        {
+                                            "role": "user",
+                                            "content": (
+                                                "Check completion against the original task. Finish any missing health, logs, "
+                                                "deployment, and current-runbook checks using the provided tools. If the user "
+                                                "requested a fix and the evidence supports it, call prepare_change to save the "
+                                                "suggestion. That tool does not apply a change. If the current checkout-runbook "
+                                                "source was not retrieved, search_runbooks with query: checkout runbook "
+                                                "payment URL correction approval. Never invent source IDs. Otherwise explain the findings."
+                                            ),
+                                        }
+                                    )
+                                    continue
                                 break
                             for call in requests:
                                 tool_steps += 1
@@ -155,11 +185,29 @@ class Engine:
                                         result = response.data
                                         if not isinstance(result, dict):
                                             raise ValueError("Tool returned an unexpected data shape")
+                                        if name in {
+                                            "get_service_health",
+                                            "get_recent_logs",
+                                            "get_recent_deployments",
+                                            "search_runbooks",
+                                        } and not result.get("error"):
+                                            if name != "search_runbooks" or any(
+                                                item.get("source") == "checkout-runbook"
+                                                for item in result.get("results", [])
+                                            ):
+                                                verified_reads.add(name)
                                         if name == "prepare_change" and result.get("id"):
                                             proposal_id = result["id"]
                                     except Exception:
                                         result = {
-                                            "error": f"{name} failed validation or execution; no unauthorized action was performed"
+                                            "error": f"{name} failed validation or execution; no unauthorized action was performed",
+                                            "next_step": (
+                                                "Verify health, logs and deployments; retrieve the current checkout-runbook "
+                                                "using search_runbooks query 'checkout runbook payment URL correction approval'. "
+                                                "Use only exact source IDs returned by the tools."
+                                                if name == "prepare_change"
+                                                else "Check the tool input schema and use only permitted arguments."
+                                            ),
                                         }
                                         self.store.event(state["incident_id"], "tool_error", tool=name)
                                 messages.append(

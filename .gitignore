@@ -39,3 +39,8 @@ Thumbs.db
 # Kind cluster config
 kubeconfig
 CLAUDE.md
+
+# Test coverage and frontend development dependencies
+.coverage*
+htmlcov/
+node_modules/

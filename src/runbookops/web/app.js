@@ -416,7 +416,7 @@ function graphView(harness) {
   function node(css, title, symbol, meta, action, section = "") {
     return `<button class="map-node ${css}" data-action="${action}" ${section ? `data-section="${section}"` : ""}><span class="map-icon">${icon(symbol)}</span><strong>${title}</strong><small>${esc(meta)}</small></button>`;
   }
-  return `<div class="harness-map" aria-label="Agent components and execution connections"><svg class="map-lines" viewBox="0 0 600 300" preserveAspectRatio="none" aria-hidden="true"><defs><marker id="flow-arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse"><path d="M0 0 6 3 0 6"/></marker></defs><path class="path-prompt" d="M174 73H225" marker-end="url(#flow-arrow)"/><path class="path-tools" d="M374 64H425" marker-end="url(#flow-arrow)"/><path class="path-result" d="M425 91H374" marker-end="url(#flow-arrow)"/><path class="path-rag" d="M500 122V176" marker-end="url(#flow-arrow)"/><path class="path-review" d="M300 122V176" marker-end="url(#flow-arrow)"/><path class="path-execute" d="M225 225H174" marker-end="url(#flow-arrow)"/></svg>${node("map-prompt", "Rules", "file", "System prompt", "prompt")}${node("map-model " + (S.busy && S.events.at(-1)?.kind === "model_request" ? "active" : ""), "AI", "cpu", S.config.mode === "offline" ? "Fixture" : S.config.mode, "model")}${node("map-tools " + (connected ? "visited" : ""), "Tools", "network", connected ? "MCP · connected" : "MCP connection", "inspect-section", "mcp")}${node("map-rag " + (retrievedCount ? "visited" : ""), "Company notes", "database", retrievedCount !== undefined ? retrievedCount + " notes · RAG" : S.sources.length + " files · RAG", "inspect-section", "rag")}${node("map-review " + (pending ? "waiting" : "") + (done ? " visited" : ""), "Approval", "shield", pending ? "Waiting" : S.run?.proposal?.status || "A person decides", "approval-focus")}${node("map-execute " + (done ? "visited" : ""), "Apply fix", "terminal", done ? "HTTP 200" : S.run?.result ? "Verified" : "Idle", "inspect-section", "state")}</div>`;
+  return `<div class="harness-map" aria-label="Agent components and execution connections"><svg class="map-lines" viewBox="0 0 600 300" preserveAspectRatio="none" aria-hidden="true"><defs><marker id="flow-arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse"><path d="M0 0 6 3 0 6"/></marker></defs><path class="path-prompt" d="M174 73H225" marker-end="url(#flow-arrow)"/><path class="path-tools" d="M374 64H425" marker-end="url(#flow-arrow)"/><path class="path-result" d="M425 91H374" marker-end="url(#flow-arrow)"/><path class="path-rag" d="M500 122V176" marker-end="url(#flow-arrow)"/><path class="path-review" d="M300 122V176" marker-end="url(#flow-arrow)"/><path class="path-execute" d="M225 225H174" marker-end="url(#flow-arrow)"/></svg>${node("map-prompt", "System prompt", "file", "Rules", "prompt")}${node("map-model " + (S.busy && S.events.at(-1)?.kind === "model_request" ? "active" : ""), "Model", "cpu", S.config.mode === "offline" ? "Fixture" : S.config.mode, "model")}${node("map-tools " + (connected ? "visited" : ""), "MCP tools", "network", connected ? "MCP · connected" : "MCP connection", "inspect-section", "mcp")}${node("map-rag " + (retrievedCount ? "visited" : ""), "RAG", "database", retrievedCount !== undefined ? retrievedCount + " notes · RAG" : S.sources.length + " files · RAG", "inspect-section", "rag")}${node("map-review " + (pending ? "waiting" : "") + (done ? " visited" : ""), "Approval", "shield", pending ? "Waiting" : S.run?.proposal?.status || "A person decides", "approval-focus")}${node("map-execute " + (done ? "visited" : ""), "Execute", "terminal", done ? "HTTP 200" : S.run?.result ? "Verified" : "Idle", "inspect-section", "state")}</div>`;
 }
 function harnessView() {
   const h = S.harness;
@@ -1149,7 +1149,7 @@ document.addEventListener("keydown", (event) => {
     $("#task-form").requestSubmit();
   }
   if (
-    event.target.matches("[role=tab]") &&
+    event.target.matches?.("[role=tab]") &&
     ["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)
   ) {
     event.preventDefault();
@@ -1206,4 +1206,19 @@ async function boot() {
     if (S.config) render();
   }
 }
-boot();
+// Named entrypoints keep startup and the console's asynchronous operations observable.
+const ready = boot();
+export {
+  S as state,
+  ready,
+  boot,
+  connect,
+  begin,
+  loadRun,
+  decide,
+  inspect,
+  discover,
+  health,
+  render,
+  api,
+};

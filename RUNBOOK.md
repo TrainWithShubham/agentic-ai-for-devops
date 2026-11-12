@@ -172,3 +172,7 @@ Open **Examples** above the conversation for ten guided examples. Select a card,
 ## Instructor: Bedrock inference
 
 [Run the local app with Bedrock](docs/BEDROCK_DEMO.md) for the verified Nova Lite configuration, AWS credentials/API-key setup, and the billed capstone check. The instructor Bedrock console is on port 8004. Learners can keep their individual free OpenRouter setup.
+
+## Verify the complete app
+
+Follow [Testing and coverage](docs/TESTING.md) to run both 100% application coverage gates, offline evaluations, and the separately authorized live Bedrock scenarios.

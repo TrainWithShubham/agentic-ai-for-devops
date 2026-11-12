@@ -23,12 +23,13 @@ uv sync --frozen --extra aws
 export AWS_REGION=us-east-1
 export BEDROCK_MODEL_ID=us.amazon.nova-lite-v1:0
 export RUNBOOKOPS_FREE_ONLY=false
+export RUNBOOKOPS_MAX_MODEL_CALLS=8
 uv run runbookops --mode bedrock --embedding semantic serve --demo-auth --port 8004
 ```
 
-Open <http://127.0.0.1:8004/>. Confirm the header says **BEDROCK**, then check Flow → Model & limits for the exact model ID. Select Bagha for investigation and Jethalal for the approval exercise. See [HARNESS_DEMOS.md](HARNESS_DEMOS.md) for the teaching sequence.
+Open <http://127.0.0.1:8004/>. Confirm the header says **BEDROCK**, then check Harness → Model & limits for the exact model ID. Select Bagha for investigation and Jethalal for the approval exercise. See [HARNESS_DEMOS.md](HARNESS_DEMOS.md) for the teaching sequence.
 
-`RUNBOOKOPS_FREE_ONLY=false` explicitly allows billed inference. Keep the existing six-call, 16-tool-step, and 150-second investigation limits. A Bedrock invocation can still fail due to model access, IAM, quotas, or service availability.
+`RUNBOOKOPS_FREE_ONLY=false` explicitly allows billed inference. The instructor setup allows eight model calls for bounded correction/retrieval retries, with 16 tool steps and a 150-second investigation limit. The learner default remains six model calls. A Bedrock invocation can still fail due to model access, IAM, quotas, or service availability.
 
 ## Authentication
 

@@ -29,3 +29,16 @@ test("an unknown failure does not claim the operation succeeded or changed nothi
   assert.match(result, /Technical details/);
   assert.doesNotMatch(result, /succeeded|Nothing was changed|working again/);
 });
+
+for (const [input, expected] of [
+  ["HTTP 401 invalid access token", "sign-in"],
+  ["403 lacks permission", "account"],
+  ["Tool step limit reached", "allowed number"],
+  ["No API key configured", "set up"],
+  ["Cannot connect to provider", "reach"],
+  ["Investigation cancelled", "stopped"],
+  [undefined, "could not finish"],
+])
+  test("guidance for " + String(input), () =>
+    assert.match(explainError(input)[0], new RegExp(expected)),
+  );

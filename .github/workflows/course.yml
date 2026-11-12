@@ -8,13 +8,37 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
         with:
           version: "0.10.2"
           enable-cache: true
-      - run: uv sync --frozen --extra aws
-      - run: uv run ruff check src examples scripts tests deploy/agentcore
-      - run: uv run pytest -q
-      - run: uv run runbookops evaluate
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "26"
+          cache: npm
+      - name: Install locked test dependencies
+        run: |
+          uv sync --frozen --extra aws
+          npm ci
+      - name: Lint and check course links
+        run: |
+          uv run ruff check src examples scripts tests deploy/agentcore
+          uv run python scripts/verify_docs.py
+      - name: Python application coverage gate
+        run: uv run --extra aws pytest --cov=runbookops --cov-branch --cov-report=term-missing --cov-report=json:artifacts/coverage/python.json --cov-report=html -q
+      - name: JavaScript application coverage gate
+        run: npm run test:coverage
+      - name: Offline scenario evaluation
+        run: uv run --extra aws runbookops evaluate
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: course-test-reports
+          path: |
+            artifacts/coverage/
+            artifacts/evaluation.json
+          if-no-files-found: warn

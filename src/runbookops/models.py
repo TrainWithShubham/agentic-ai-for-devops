@@ -20,6 +20,8 @@ Evidence entries must be exact source IDs such as checkout-runbook, architecture
 PAYMENT_SERVICE_URL correction when the evidence supports it. prepare_change does NOT apply it.
 Never claim a proposal was approved or a change applied. An authorized human decides outside this
 model. End with a short diagnosis, cited sources, and the proposal ID if prepared.
+When the user requests a fix and the checks support the documented correction, call prepare_change.
+Preparing a suggestion does not need approval; applying it does. Do not stop to ask permission to prepare.
 Use plain language for a learner new to DevOps. Keep the diagnosis to three short sentences.
 Explain HTTP 503 as checkout unavailable and HTTP 200 as checkout working."""
 

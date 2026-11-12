@@ -16,7 +16,15 @@ async def evaluate(settings):
         cases.append({"scenario": name, "passed": bool(passed)})
 
     with tempfile.TemporaryDirectory(prefix="runbookops-eval-") as folder:
-        config = dataclasses.replace(settings, data=folder, mode="offline", database_url="", mcp_url="")
+        config = dataclasses.replace(
+            settings,
+            data=folder,
+            mode="offline",
+            database_url="",
+            mcp_url="",
+            dynamodb_table="",
+            checkpoint_table="",
+        )
         bagha, jethalal = principal("bagha"), principal("jethalal")
         retriever = Retriever(config)
         hits = retriever.search("checkout runbook payment URL connection refused", bagha)

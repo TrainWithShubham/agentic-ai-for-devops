@@ -76,7 +76,7 @@ Run an investigation, then open State. Filter the recorded Events by Model, Tool
 
 ### Which AI are we using?
 
-Open Flow → Model & limits. Compare configured diagnose and summary routes with actual model events and counters. A configured summary route is not evidence that a run invoked it. The console does not dynamically change provider configuration. Free-only inference has no silent paid fallback.
+Open Harness → Model & limits. Compare configured diagnose and summary routes with actual model events and counters. A configured summary route is not evidence that a run invoked it. The console does not dynamically change provider configuration. Free-only inference has no silent paid fallback.
 
 ### How do tools connect?
 
