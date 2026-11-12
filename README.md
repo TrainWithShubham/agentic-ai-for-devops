@@ -119,4 +119,4 @@ The [deployment guide](deploy/agentcore/README.md) covers recreation and cleanup
 
 The editions live on separate local branches. Switch editions with `git switch v1` or `git switch v2` after saving your work. V1 setup instructions are in its own README.
 
-Nothing has been pushed or merged for this build. [DECISIONS.md](DECISIONS.md) records the implementation choices, failures, and fixes.
+The course editions are published on separate `v1` and `v2` branches; `main` remains unchanged. [DECISIONS.md](DECISIONS.md) records the implementation choices, failures, and fixes.

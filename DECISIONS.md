@@ -112,3 +112,7 @@ Final AWS read-back confirmed the runtime, custom/default endpoints, both tables
 At the instructor's request, created local `v1` at the original `main` commit (`5f328ff`) so its files match the previous course exactly. Renamed `course-v2-runbookops` to `v2` and removed the legacy modules, legacy requirements file, and duplicate V1 README from that branch. Updated the learner/instructor docs and CI branch filter. `main` remains unchanged; no GitHub push or history rewrite was performed. V1 files remain available by switching branches, and V2 keeps its normal development history.
 
 Verified V1 and original main have identical Git trees. V2 has no tracked legacy modules, requirements file, or duplicate V1 README. The offline approval/recovery demo passed after separation, and all local links plus both 180-minute schedules passed validation.
+
+## Publish course branches
+
+The instructor explicitly authorized pushing the repository. Publish local `v1` and `v2` to the existing TrainWithShubham repository without force, changing `main`, opening a PR, or deploying AWS resources. The worktree was clean and neither version branch existed remotely before this push.

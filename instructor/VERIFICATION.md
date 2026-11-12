@@ -83,7 +83,7 @@ uv run --extra aws python deploy/agentcore/logs.py
 
 ## Limits and remaining instructor preparation
 
-A timed teaching rehearsal and a volunteer group rehearsal still need the instructor and real attendees. Windows execution, Codespaces provisioning, and GitHub Actions have not been run from this environment. The devcontainer and workflow are supplied, but no code was pushed to GitHub.
+A timed teaching rehearsal and a volunteer group rehearsal still need the instructor and real attendees. Windows execution, Codespaces provisioning, and GitHub Actions have not been run from this environment. The devcontainer and workflow are supplied. These results describe the original local verification; subsequent CI results appear in GitHub Actions.
 
 Groq is implemented and documented but has no live test because no Groq key was supplied. The optional PostgreSQL store, production OAuth login/consent, managed AgentCore Harness creation, Gateway/Identity, Managed Knowledge Bases, Bedrock Guardrails, full managed trace export, and Temporal are extensions. They are not presented as completed live integrations.
 

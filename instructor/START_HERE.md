@@ -1,6 +1,6 @@
 # Open this before teaching
 
-The implementation is on `v2` in this `repository` directory. The previous course is preserved separately on `v1`. No GitHub push or PR was made.
+The implementation is on `v2` in this `repository` directory. The previous course is preserved separately on `v1`. The course editions are published on separate branches; `main` remains unchanged and no PR was created.
 
 ## First five minutes
 
