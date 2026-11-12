@@ -68,7 +68,7 @@ Do not copy a key into the command line or course notes. The script does not exe
 
 On 11 November, the account and named free model were verified with the supplied private key file. The read-only two-request tool exchange passed. A full semantic-RAG investigation reached an approval proposal, viewer approval was denied, and authorized recovery returned HTTP 200. The provider reported zero inference cost for that run. No key was copied into the repository. See [verification](../instructor/VERIFICATION.md) for the exact test scope.
 
-The tested model is `nvidia/nemotron-3.5-lightning:free`. Availability can change, so run the catalog and tool smoke checks again on November 13. Groq remains implemented but not live-verified because no Groq key was supplied.
+The current tested model is `cohere/north-mini-code:free`, verified through proposal, denied viewer approval, and authorized HTTP 200 recovery on November 12. The earlier NVIDIA candidate repeatedly timed out at 60 seconds. Availability can change, so run the catalog and tool smoke checks again on November 13. Groq remains implemented but not live-verified because no Groq key was supplied.
 
 Before publishing learner instructions, verify:
 

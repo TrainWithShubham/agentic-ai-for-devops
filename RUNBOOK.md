@@ -86,7 +86,7 @@ cp .env.example .env
 
 In PowerShell use `Copy-Item .env.example .env`. If `.env` already exists, edit it instead of replacing it.
 
-Set `OPENROUTER_API_KEY` in that ignored file. Keep `RUNBOOKOPS_FREE_ONLY=true` and select a named free tool-capable model. The initial tested model is `nvidia/nemotron-3.5-lightning:free`; check current availability:
+Set `OPENROUTER_API_KEY` in that ignored file. Keep `RUNBOOKOPS_FREE_ONLY=true` and select a named free tool-capable model. The current tested model is `cohere/north-mini-code:free`; check current availability:
 
 ```bash
 uv run runbookops models

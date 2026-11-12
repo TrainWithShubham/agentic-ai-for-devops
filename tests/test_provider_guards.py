@@ -52,8 +52,11 @@ async def test_provider_timeout_is_visible_without_fallback(settings, monkeypatc
         )
     )
     model.verified.add("example/free:free")
-    with pytest.raises(ModelError, match="No fallback"):
+    with pytest.raises(ModelError, match="timed out while waiting for a response") as failure:
         await model.complete([{"role": "user", "content": "hello"}])
+    assert "example/free:free" in str(failure.value)
+    assert "No fallback was used" in str(failure.value)
+    assert "Run again" in str(failure.value)
 
 
 async def test_prompt_redaction_and_version_metadata(settings, monkeypatch):
@@ -80,3 +83,19 @@ def test_task_router_is_explicit(settings, monkeypatch):
     model = Model(dataclasses.replace(settings, mode="openrouter", model="example/main:free"))
     assert model.route("summarize") == "example/small:free"
     assert model.route("diagnose") == "example/main:free"
+
+
+async def test_provider_connection_error_does_not_expose_exception_details(settings, monkeypatch):
+    def endpoint(request):
+        raise httpx.ConnectError("proxy password=private-example-value", request=request)
+
+    original = httpx.AsyncClient
+    monkeypatch.setattr(
+        httpx, "AsyncClient", lambda **kwargs: original(transport=httpx.MockTransport(endpoint), **kwargs)
+    )
+    model = Model(dataclasses.replace(settings, mode="openrouter", model="example/free:free", api_key="test-only"))
+    model.verified.add("example/free:free")
+    with pytest.raises(ModelError, match="Check network") as failure:
+        await model.complete([{"role": "user", "content": "hello"}])
+    assert "private-example-value" not in str(failure.value)
+    assert "No fallback" in str(failure.value)

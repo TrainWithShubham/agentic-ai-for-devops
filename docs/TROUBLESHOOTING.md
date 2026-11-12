@@ -10,11 +10,23 @@ If a managed workplace laptop blocks installs, use the supplied devcontainer or 
 
 Keep `OPENROUTER_API_KEY` in `.env`, not in Python source. Claude Pro login does not fund application API calls. An API key belongs to one learner; creating more keys under one account does not multiply the quota.
 
-Use `uv run runbookops models` to check the current free tool-capable catalog. The initial tested candidate is `nvidia/nemotron-3.5-lightning:free`, checked on November 11. It may change or become unavailable. Recheck it before the event.
+Use `uv run runbookops models` to check the current free tool-capable catalog. The current tested candidate is `cohere/north-mini-code:free`, checked with the full capstone on November 12. The previous NVIDIA candidate repeatedly timed out at 60 seconds. It may change or become unavailable. Recheck it before the event.
 
 A 401 response usually means the key is invalid or unavailable to the selected process. A 429 means a rate or quota limit was hit. A 404 or provider error may indicate the model is no longer available. Stop retries, inspect the provider dashboard, then explicitly select the tested backup or use offline practice. The application never silently switches to a paid model.
 
-With a key configured, run `uv run python scripts/check_openrouter.py --env-file .env --model nvidia/nemotron-3.5-lightning:free`. This uses two model calls and is separate from the full capstone.
+With a key configured, run `uv run python scripts/check_openrouter.py --env-file .env --model cohere/north-mini-code:free`. This uses two model calls and is separate from the full capstone.
+
+## Provider timeout during a run
+
+A healthy local server does not prove that model inference is available. A read timeout means the application did not receive the provider response within the request timeout. No automatic model or offline fallback occurs. Run again for a new incident; if the failure repeats, choose a currently verified free tool-capable model explicitly.
+
+Set `OPENROUTER_MODEL=cohere/north-mini-code:free` in your ignored `.env` and restart the server. An environment variable overrides a model in `--env-file`; for example:
+
+```bash
+OPENROUTER_MODEL=cohere/north-mini-code:free uv run runbookops --env-file .env --mode openrouter --embedding semantic serve --demo-auth --port 8002
+```
+
+Refresh the browser and check Harness → Model & limits before starting a fresh task. An old failed incident keeps its recorded error. Changing the server model does not rerun it.
 
 ## TLS certificates
 

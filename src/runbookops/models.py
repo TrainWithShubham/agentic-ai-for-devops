@@ -58,8 +58,28 @@ class Model:
             ).hexdigest()[:12]
             metadata.setdefault("duration_ms", round((time.monotonic() - start) * 1000))
             return message, metadata
-        except httpx.HTTPError:
-            raise ModelError("Provider connection failed or timed out. No fallback was used.") from None
+        except httpx.TimeoutException as error:
+            phase = (
+                "while connecting"
+                if isinstance(error, httpx.ConnectTimeout)
+                else "while waiting for a response"
+            )
+            raise ModelError(
+                f"{self.settings.mode} timed out {phase} for {self.route(task)}. "
+                "Run again to start a fresh incident. If this repeats, explicitly select another "
+                "free tool-capable model and restart the server. No fallback was used."
+            ) from None
+        except httpx.HTTPStatusError as error:
+            raise ModelError(
+                f"Provider model catalog returned HTTP {error.response.status_code}. "
+                "Check provider availability and model access. No fallback was used."
+            ) from None
+        except httpx.RequestError:
+            # Never include the raw exception: URLs, proxy details, or headers may contain secrets.
+            raise ModelError(
+                f"Could not complete the {self.settings.mode} connection. Check network, DNS, "
+                "TLS certificates, and provider availability, then run again. No fallback was used."
+            ) from None
 
     async def _complete(self, messages, tools=None, task="diagnose"):
         mode = self.settings.mode

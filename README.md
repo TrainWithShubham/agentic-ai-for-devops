@@ -49,7 +49,7 @@ uv run runbookops models
 uv run runbookops --mode openrouter --embedding semantic demo
 ```
 
-The initial tested model is `nvidia/nemotron-3.5-lightning:free`. Check the current catalog before the workshop. Free capacity and quotas can change. The application rejects nonfree OpenRouter choices in free-only mode and never silently switches to paid inference.
+The current tested model is `cohere/north-mini-code:free` (November 12). The earlier NVIDIA candidate timed out during the live check. Check the current catalog before the workshop. Free capacity and quotas can change. The application rejects nonfree OpenRouter choices in free-only mode and never silently switches to paid inference.
 
 Claude Code or Codex can help with edits. A Claude Pro subscription does not provide this application's API access. Paid coding tools are optional; examples, an exercise solution, and recovery commands are included. See [model access](docs/MODEL_ACCESS.md).
 

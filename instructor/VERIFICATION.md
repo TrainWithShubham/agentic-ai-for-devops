@@ -104,3 +104,7 @@ A fresh live streamed OpenRouter capstone used five model calls, rejected Bagha'
 ### Shared-screen UI pass
 
 The follow-up changed frontend presentation and demo guidance. Seven existing UI/API tests passed; Ruff, both JavaScript syntax checks, and links in 33 Markdown files passed. Safari desktop checks confirmed ten demo cards, task selection without execution (Idle and zero events), RAG probe selection, and a real Fresh → Cache hit transition. Both theme directions were visually checked after the Safari palette fix. The live server on port 8002 remained healthy and served the new demo module. This pass did not rerun adversarial prompts against a live model, deploy AWS resources, or validate phone-sized layouts. The larger dark screenshot is saved locally at `artifacts/ui/shared-screen-dark.png`.
+
+### Provider recovery — November 12
+
+The earlier NVIDIA route timed out at 60 seconds on both the user run and a direct inference probe; catalog and key requests returned HTTP 200. Explicitly switched the current free default and the local port-8002 server to `cohere/north-mini-code:free`. The restarted server completed a real streamed investigation in 5.6 seconds with two model calls and a valid proposal. Viewer approval returned 403; authorized approval recovered the simulator to HTTP 200. Sanitized evidence: `instructor/evidence/provider-recovery.json`. Full suite: 38 passed, one optional test skipped; Ruff and 33-file documentation checks passed. No AWS resources were created.

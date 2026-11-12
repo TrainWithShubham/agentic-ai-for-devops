@@ -64,7 +64,7 @@ class Settings:
             or (
                 values.get("BEDROCK_MODEL_ID", "")
                 if mode == "bedrock"
-                else ("nvidia/nemotron-3.5-lightning:free" if mode == "openrouter" else "")
+                else ("cohere/north-mini-code:free" if mode == "openrouter" else "")
             ),
             api_key=values.get(prefix + "_API_KEY", "") or "",
             max_calls=int(values.get("RUNBOOKOPS_MAX_MODEL_CALLS", "6")),
