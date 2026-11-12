@@ -164,3 +164,7 @@ Press Ctrl+C in the server terminal. Local state stays under `.state`, so pendin
 Serving locally does not deploy to AWS. The earlier instructor AWS deployment was deleted. Recreating it is a separate, billable instructor activity described in [the deployment guide](deploy/agentcore/README.md).
 
 For missing dependencies, model limits, occupied ports, token errors, and embedding-download failures, see [troubleshooting](docs/TROUBLESHOOTING.md).
+
+## Shared-screen demos
+
+Open **Demo prompts** above the conversation for ten guided examples. Select a card, read its observation cue, and press Run or RAG Search. The dark theme uses larger text and controls for screen sharing. Follow [the teaching walkthrough](docs/HARNESS_DEMOS.md) for the suggested order and the separate OAuth, evaluation, and hosting exercises.

@@ -132,3 +132,5 @@ The [deployment guide](deploy/agentcore/README.md) covers recreation and cleanup
 The editions live on separate local branches. Switch editions with `git switch v1` or `git switch v2` after saving your work. V1 setup instructions are in its own README.
 
 The course editions are published on separate `v1` and `v2` branches; `main` remains unchanged. [DECISIONS.md](DECISIONS.md) records the implementation choices, failures, and fixes.
+
+For screen sharing, open **Demo prompts** in the console. [The teaching walkthrough](docs/HARNESS_DEMOS.md) maps ten examples to harness features and includes a 15-minute demo order.

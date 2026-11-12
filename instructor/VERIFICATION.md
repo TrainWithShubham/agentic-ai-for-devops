@@ -100,3 +100,7 @@ The UI addition passed 37 local tests, with the optional AWS saver test skipped 
 The final TWS palettes were measured for normal foreground text against their associated surfaces; tested pairs exceeded 4.5:1 in light and dark mode. Both themes and an offline approval/recovery were observed in Safari. Exact small-device viewport testing was not completed; responsive styles are supplied without claiming a full device audit.
 
 A fresh live streamed OpenRouter capstone used five model calls, rejected Bagha's approval, and recovered to HTTP 200 after Jethalal's approval. [Sanitized harness evidence](evidence/harness-live.json) includes public model responses/requested tools and actual tool/node events. Hidden reasoning and provider credentials are excluded. AWS resources remain deleted.
+
+### Shared-screen UI pass
+
+The follow-up changed frontend presentation and demo guidance. Seven existing UI/API tests passed; Ruff, both JavaScript syntax checks, and links in 33 Markdown files passed. Safari desktop checks confirmed ten demo cards, task selection without execution (Idle and zero events), RAG probe selection, and a real Fresh → Cache hit transition. Both theme directions were visually checked after the Safari palette fix. The live server on port 8002 remained healthy and served the new demo module. This pass did not rerun adversarial prompts against a live model, deploy AWS resources, or validate phone-sized layouts. The larger dark screenshot is saved locally at `artifacts/ui/shared-screen-dark.png`.

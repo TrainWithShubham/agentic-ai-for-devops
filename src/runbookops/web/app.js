@@ -1,3 +1,4 @@
+import { demos } from "./demos.js";
 // The console renders public events and configuration. It never runs tools or stores model keys.
 const $ = (q, root = document) => root.querySelector(q);
 const $$ = (q, root = document) => [...root.querySelectorAll(q)];
@@ -26,6 +27,7 @@ const presets = [
   ],
 ];
 const S = {
+  demo: null,
   config: null,
   harness: null,
   mcp: null,
@@ -314,6 +316,71 @@ function modelUsage() {
         : "Not reported",
   };
 }
+function demoLibrary() {
+  dialog(
+    "Choose a demo",
+    "WORKSHOP · SELECT, THEN RUN",
+    `<p class="dialog-lead">Each card tells you what to try and where to look. Selecting a task fills the composer; it never starts a run or approves a change.</p><div class="demo-grid">${demos.map((d, i) => `<button class="demo-card" data-action="demo-select" data-index="${i}"><span class="demo-number">${String(i + 1).padStart(2, "0")} ${icon(d.icon)}</span><strong>${esc(d.title)}</strong><span>${esc(d.topic)}</span><small>${esc(d.kind === "task" ? "Agent task" : d.kind === "rag" ? "Retrieval probe" : "Guided inspection")}</small></button>`).join("")}</div><p class="dialog-lead">Offline mode uses a fixed investigation fixture. Use a live model for prompt-following experiments. Every change targets the local checkout simulator.</p>`,
+  );
+}
+function drawDemo() {
+  const d = S.demo;
+  const panel = $("#demo-cue");
+  panel.hidden = !d;
+  if (!d) return;
+  panel.innerHTML = `<div><span class="demo-topic">${esc(d.topic)}</span><strong>${esc(d.title)}</strong><p>${esc(d.observe)}</p></div><button class="icon-button" data-action="demo-dismiss" aria-label="Hide demo guidance">${icon("close")}</button>`;
+}
+function operationView() {
+  const e = S.events.at(-1);
+  let title = "Ready to investigate",
+    detail = "Choose a demo or enter a task.",
+    symbol = "terminal";
+  if (e) {
+    title =
+      {
+        model_request: "Model requested",
+        model: "Model response received",
+        tool: "Tool result received",
+        mcp_connected: "MCP connected",
+        proposal_prepared: "Change proposal prepared",
+        approval_denied: "Approval denied",
+        approval_decision: "Human decision recorded",
+        change_applied: "Change applied",
+        verification: "Verification recorded",
+        node_started: "Workflow node started",
+        node_completed: "Workflow node completed",
+        investigation_finished: "Investigation finished",
+      }[e.kind] || e.kind.replaceAll("_", " ");
+    detail = describe(e);
+    symbol =
+      group(e) === "model"
+        ? "cpu"
+        : group(e) === "approval"
+          ? "shield"
+          : "terminal";
+  }
+  if (S.run?.waiting_for_approval && !S.busy) {
+    title = "Waiting for human approval";
+    detail = "Review the exact change before execution.";
+    symbol = "shield";
+  }
+  if (S.run?.health?.http_status === 200) {
+    title = "Checkout recovered · HTTP 200";
+    detail = "Approved change applied and verified.";
+    symbol = "check";
+  }
+  if (S.error || S.run?.error) {
+    title = "Operation stopped";
+    detail = S.error || S.run.error;
+    symbol = "stop";
+  }
+  if (S.deciding) {
+    title = "Submitting human decision";
+    detail = "Waiting for the saved execution result.";
+    symbol = "shield";
+  }
+  return `<div class="operation-banner ${S.busy || S.deciding ? "running" : ""}"><span class="operation-icon">${icon(symbol)}</span><div><small>${S.busy ? "RUNNING · LATEST EVENT" : "LATEST OPERATION"}</small><strong>${esc(title)}</strong><span>${esc(detail)}</span></div></div>`;
+}
 function graphView(harness) {
   const connected = S.events.some((e) => e.kind === "mcp_connected");
   const retrievedCount = retrieved()?.results?.length;
@@ -322,12 +389,12 @@ function graphView(harness) {
   function node(css, title, symbol, meta, action, section = "") {
     return `<button class="map-node ${css}" data-action="${action}" ${section ? `data-section="${section}"` : ""}><span class="map-icon">${icon(symbol)}</span><strong>${title}</strong><small>${esc(meta)}</small></button>`;
   }
-  return `<div class="harness-map" aria-label="Agent components and execution connections"><svg class="map-lines" viewBox="0 0 600 300" preserveAspectRatio="none" aria-hidden="true"><defs><marker id="flow-arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse"><path d="M0 0 6 3 0 6"/></marker></defs><path class="path-prompt" d="M174 73H225" marker-end="url(#flow-arrow)"/><path class="path-tools" d="M374 64H425" marker-end="url(#flow-arrow)"/><path class="path-result" d="M425 91H374" marker-end="url(#flow-arrow)"/><path class="path-rag" d="M500 122V176" marker-end="url(#flow-arrow)"/><path class="path-review" d="M300 122V176" marker-end="url(#flow-arrow)"/><path class="path-execute" d="M225 225H174" marker-end="url(#flow-arrow)"/></svg>${node("map-prompt", "Prompt", "file", "SYSTEM", "prompt")}${node("map-model " + (S.busy ? "active" : ""), "Model", "cpu", S.config.mode === "offline" ? "Fixture" : S.config.mode, "model")}${node("map-tools " + (connected ? "visited" : ""), "MCP tools", "network", connected ? "Connected" : harness.mcp.transport, "inspect-section", "mcp")}${node("map-rag " + (retrievedCount ? "visited" : ""), "RAG", "database", retrievedCount !== undefined ? retrievedCount + " chunks" : S.sources.length + " sources", "inspect-section", "rag")}${node("map-review " + (pending ? "waiting" : "") + (done ? " visited" : ""), "Approval", "shield", pending ? "Waiting" : S.run?.proposal?.status || "Human gate", "approval-focus")}${node("map-execute " + (done ? "visited" : ""), "Execute", "terminal", done ? "HTTP 200" : S.run?.result ? "Verified" : "Idle", "inspect-section", "state")}</div>`;
+  return `<div class="harness-map" aria-label="Agent components and execution connections"><svg class="map-lines" viewBox="0 0 600 300" preserveAspectRatio="none" aria-hidden="true"><defs><marker id="flow-arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse"><path d="M0 0 6 3 0 6"/></marker></defs><path class="path-prompt" d="M174 73H225" marker-end="url(#flow-arrow)"/><path class="path-tools" d="M374 64H425" marker-end="url(#flow-arrow)"/><path class="path-result" d="M425 91H374" marker-end="url(#flow-arrow)"/><path class="path-rag" d="M500 122V176" marker-end="url(#flow-arrow)"/><path class="path-review" d="M300 122V176" marker-end="url(#flow-arrow)"/><path class="path-execute" d="M225 225H174" marker-end="url(#flow-arrow)"/></svg>${node("map-prompt", "Prompt", "file", "SYSTEM", "prompt")}${node("map-model " + (S.busy && S.events.at(-1)?.kind === "model_request" ? "active" : ""), "Model", "cpu", S.config.mode === "offline" ? "Fixture" : S.config.mode, "model")}${node("map-tools " + (connected ? "visited" : ""), "MCP tools", "network", connected ? "Connected" : harness.mcp.transport, "inspect-section", "mcp")}${node("map-rag " + (retrievedCount ? "visited" : ""), "RAG", "database", retrievedCount !== undefined ? retrievedCount + " chunks" : S.sources.length + " sources", "inspect-section", "rag")}${node("map-review " + (pending ? "waiting" : "") + (done ? " visited" : ""), "Approval", "shield", pending ? "Waiting" : S.run?.proposal?.status || "Human gate", "approval-focus")}${node("map-execute " + (done ? "visited" : ""), "Execute", "terminal", done ? "HTTP 200" : S.run?.result ? "Verified" : "Idle", "inspect-section", "state")}</div>`;
 }
 function harnessView() {
   const h = S.harness;
   if (!h) return '<p class="small muted">Connect to inspect.</p>';
-  return `${graphView(h)}<div class="harness-metrics"><span>${icon("cpu")}<strong>${modelUsage().calls}/${h.limits.model_calls}</strong><small>${S.config.mode === "offline" ? "Model steps" : "Model calls"}</small></span><span>${icon("terminal")}<strong>${S.events.filter((e) => e.kind === "tool").length}/${h.limits.tool_calls}</strong><small>Tool calls</small></span><span>${icon("clock")}<strong>${h.limits.timeout_seconds}s</strong><small>Time limit</small></span></div><details class="inspect-details" data-key="system-prompt"><summary>${icon("file")} System prompt</summary><div><p class="prompt-text">${esc(h.system_prompt)}</p></div></details><details class="inspect-details" data-key="execution"><summary>${icon("cpu")} Model & limits</summary><div>${values(
+  return `${operationView()}${graphView(h)}<div class="harness-metrics"><span>${icon("cpu")}<strong>${modelUsage().calls}/${h.limits.model_calls}</strong><small>${S.config.mode === "offline" ? "Model steps" : "Model calls"}</small></span><span>${icon("terminal")}<strong>${S.events.filter((e) => e.kind === "tool").length}/${h.limits.tool_calls}</strong><small>Tool calls</small></span><span>${icon("clock")}<strong>${h.limits.timeout_seconds}s</strong><small>Time limit</small></span></div><details class="inspect-details" data-key="system-prompt"><summary>${icon("file")} System prompt</summary><div><p class="prompt-text">${esc(h.system_prompt)}</p></div></details><details class="inspect-details" data-key="execution"><summary>${icon("cpu")} Model & limits</summary><div>${values(
     [
       ["Model", h.routing.diagnose],
       ["Summary", h.routing.summarize],
@@ -503,6 +570,7 @@ function drawHeader() {
 }
 function render() {
   drawHeader();
+  drawDemo();
   drawSessions();
   drawConversation();
   drawInspector();
@@ -715,7 +783,14 @@ function setPane(pane) {
 $("#theme-toggle").addEventListener("click", () => {
   const value =
     document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+  // Finish colour changes together; Safari can retain old transition colours on controls.
+  document.documentElement.classList.add("theme-changing");
+  void document.documentElement.offsetWidth;
   document.documentElement.dataset.theme = value;
+  void document.documentElement.offsetWidth;
+  requestAnimationFrame(() =>
+    document.documentElement.classList.remove("theme-changing"),
+  );
   try {
     localStorage.setItem("runbookops-theme", value);
   } catch {}
@@ -800,6 +875,38 @@ document.addEventListener("click", async (event) => {
   if (!target || target.disabled) return;
   try {
     switch (target.dataset.action) {
+      case "demo-library":
+        demoLibrary();
+        break;
+      case "demo-dismiss":
+        S.demo = null;
+        drawDemo();
+        break;
+      case "demo-select": {
+        if (S.busy || S.deciding) {
+          notice("Finish or stop the active operation first.");
+          break;
+        }
+        const d = demos[Number(target.dataset.index)];
+        if (!d) break;
+        S.demo = d;
+        $("#detail-dialog").close();
+        drawDemo();
+        if (d.kind === "task") {
+          $("#task-input").value = d.prompt;
+          setPane("chat");
+          $("#task-input").focus();
+        } else if (d.kind === "rag") {
+          S.ragQuery = d.prompt;
+          S.ragProbe = null;
+          inspect("rag");
+          $("#rag-query").focus();
+        } else {
+          inspect(d.tab || "harness");
+          if (d.tab === "mcp" && !S.mcp) await discover();
+        }
+        break;
+      }
       case "prompt":
         dialog(
           "System prompt",
