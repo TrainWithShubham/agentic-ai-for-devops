@@ -206,6 +206,12 @@ def parser():
     token.add_argument("--expires", type=int, default=600)
     serve = sub.add_parser("serve")
     serve.add_argument("--port", type=int, default=8000)
+    serve.add_argument(
+        "--demo-auth",
+        action="store_true",
+        default=None,
+        help="Enable loopback-only development persona login for the browser UI",
+    )
     evaluation = sub.add_parser("evaluate")
     evaluation.add_argument("--output", default="artifacts/evaluation.json")
     return p
@@ -219,7 +225,9 @@ def main():
 
             from .api import create_app
 
-            settings = Settings.load(args.env_file, mode=args.mode, embedding=args.embedding)
+            settings = Settings.load(
+                args.env_file, mode=args.mode, embedding=args.embedding, ui_demo_auth=args.demo_auth
+            )
             uvicorn.run(create_app(settings), host="127.0.0.1", port=args.port)
         else:
             asyncio.run(execute(args))

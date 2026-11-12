@@ -92,3 +92,11 @@ The simulator proves an approved configuration transition and recovery within th
 The tested AWS deployment was subsequently deleted on November 12 (India time) at the instructor's request. Historical evidence remains in this repository. Recreate the deployment before another live cloud demonstration; the learner capstone still works locally.
 
 [Cleanup verification](evidence/aws-cleanup.json) confirms every recorded workshop resource is absent. The local capstone and historical live evidence remain available.
+
+## TWS visual harness follow-up
+
+The UI addition passed 37 local tests, with the optional AWS saver test skipped without the AWS extra. Checks cover explicit loopback persona issuance, host/origin restrictions, disabled cloud/external-issuer issuance, source permissions, actual MCP discovery/schema exposure, streamed events, disconnect cancellation, and the approval boundary. Ruff, JavaScript syntax, local links, and the wheel asset check passed.
+
+The final TWS palettes were measured for normal foreground text against their associated surfaces; tested pairs exceeded 4.5:1 in light and dark mode. Both themes and an offline approval/recovery were observed in Safari. Exact small-device viewport testing was not completed; responsive styles are supplied without claiming a full device audit.
+
+A fresh live streamed OpenRouter capstone used five model calls, rejected Bagha's approval, and recovered to HTTP 200 after Jethalal's approval. [Sanitized harness evidence](evidence/harness-live.json) includes public model responses/requested tools and actual tool/node events. Hidden reasoning and provider credentials are excluded. AWS resources remain deleted.

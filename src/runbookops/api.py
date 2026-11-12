@@ -139,6 +139,9 @@ def create_app(settings=None):
             return await engine.decide(body.proposal_id, actor, body.expected_hash, body.approve)
         raise HTTPException(422, "Operation is missing its required identifiers or hash")
 
+    from .ui import install_ui
+
+    install_ui(app, settings, engine, auth, caller)
     return app
 
 

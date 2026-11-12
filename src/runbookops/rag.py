@@ -13,6 +13,11 @@ from xml.etree import ElementTree
 
 from .security import redact, require
 
+CHUNK_SIZE = 900
+CHUNK_OVERLAP = 120
+CACHE_TTL = 120
+EMBEDDING_MODEL = "BAAI/bge-small-en-v1.5"
+
 
 def extract(path):
     suffix = path.suffix.lower()
@@ -53,7 +58,7 @@ def extract(path):
     raise ValueError(f"Unsupported document format: {suffix}")
 
 
-def chunks(parts, size=900, overlap=120):
+def chunks(parts, size=CHUNK_SIZE, overlap=CHUNK_OVERLAP):
     for location, text in parts:
         text = re.sub(r"[ \t]+", " ", text).strip()
         for start in range(0, len(text), size - overlap):
@@ -77,7 +82,9 @@ class Retriever:
         self.version = None
 
     def fingerprint(self):
-        h = hashlib.sha256((self.settings.embedding + ":chunk900-overlap120:v2").encode())
+        h = hashlib.sha256(
+            (f"{self.settings.embedding}:chunk{CHUNK_SIZE}-overlap{CHUNK_OVERLAP}:v2").encode()
+        )
         manifest = json.loads((self.folder / "manifest.json").read_text())
         h.update(json.dumps(manifest, sort_keys=True).encode())
         for item in manifest:
@@ -90,7 +97,7 @@ class Retriever:
                 from fastembed import TextEmbedding
 
                 self.model = TextEmbedding(
-                    "BAAI/bge-small-en-v1.5",
+                    EMBEDDING_MODEL,
                     cache_dir=os.getenv("RUNBOOKOPS_MODEL_CACHE", str(self.settings.data / "models")),
                 )
             return [vector.tolist() for vector in self.model.embed(texts)]
@@ -163,7 +170,7 @@ class Retriever:
             self.index()
             key = (actor.user, actor.role, tuple(sorted(actor.scopes)), query, self.version, min(limit, 8))
             cached = self.cache.get(key)
-            if cached and time.monotonic() - cached[0] < 120:
+            if cached and time.monotonic() - cached[0] < CACHE_TTL:
                 return {
                     "results": cached[1],
                     "cache_hit": True,

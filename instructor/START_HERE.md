@@ -50,3 +50,11 @@ uv run python scripts/trace_report.py --input instructor/evidence/openrouter-cap
 Recheck the named free model on November 13, rehearse the lesson timing, and send the [setup instructions](../lessons/00-setup/README.md). A small volunteer rehearsal is still useful for finding laptop and network issues. The technical checks do not substitute for that rehearsal.
 
 After the workshop, use the project [cleanup instructions](../deploy/agentcore/README.md#cleanup). The AWS resources remain available until you run cleanup.
+
+## Visual teaching harness
+
+```bash
+uv run runbookops --mode offline serve --demo-auth --port 8002
+```
+
+Open `http://127.0.0.1:8002/`. Use Bagha for investigation and Jethalal for approval. The TWS purple/gold boxes expose prompts, model calls, RAG chunks, MCP discovery, tools, and state without a separate frontend setup. See [the run guide](../RUNBOOK.md).

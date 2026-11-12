@@ -27,6 +27,7 @@ class Settings:
     oidc_audience: str = "runbookops"
     oidc_public_key: str = field(default="", repr=False)
     oidc_jwks: str = ""
+    ui_demo_auth: bool = False
 
     def __post_init__(self):
         self.root = self.root.resolve()
@@ -78,6 +79,7 @@ class Settings:
             oidc_audience=values.get("RUNBOOKOPS_OIDC_AUDIENCE", "runbookops") or "runbookops",
             oidc_public_key=values.get("RUNBOOKOPS_OIDC_PUBLIC_KEY", "") or "",
             oidc_jwks=values.get("RUNBOOKOPS_OIDC_JWKS", "") or "",
+            ui_demo_auth=values.get("RUNBOOKOPS_UI_DEMO_AUTH", "false").lower() == "true",
         )
         config.update({k: v for k, v in overrides.items() if v is not None})
         return cls(**config)

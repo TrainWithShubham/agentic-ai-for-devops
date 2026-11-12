@@ -43,3 +43,11 @@ AgentCore Runtime admits the instructor through AWS IAM. The invocation forwards
 The runtime role is dedicated to this project and scoped to its model/profile, tables, image repository, and log groups. Its trust policy includes source-account and region-scoped source-ARN restrictions. The image contains no private signing key or learner/provider API key. DynamoDB preserves the incident and graph state across Runtime sessions. A separate runtime session is used for approval in the demonstration.
 
 The hosted app uses the same in-process MCP implementation and simulator contracts. Remote MCP transport is available for a separate integration exercise; it is not required by the deployed capstone. CloudWatch receives sanitized JSON events. Full managed trace integration requires explicit instrumentation beyond those logs.
+
+## Local browser personas
+
+The browser's development persona picker requires `serve --demo-auth` (or the explicit `RUNBOOKOPS_UI_DEMO_AUTH=true` setting). The token endpoint also requires a direct loopback client and host, a custom request header, and a matching Origin when supplied. It is unavailable in cloud mode and with an external issuer. Forwarded hosts use a manually supplied application token instead.
+
+Development tokens remain in browser memory. Only theme preference, persona preference, and recent incident IDs/statuses are stored locally. Changing persona clears old content and rechecks incident/source access on the server. Model keys and private signing material are never sent to the UI. The root page sets a same-origin CSP; fonts and the supplied logo are served locally.
+
+This explicit local shortcut has the same trust boundary as the CLI persona flags: someone controlling the laptop can exercise all teaching identities. It is not production user authentication.

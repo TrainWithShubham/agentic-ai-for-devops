@@ -1,0 +1,470 @@
+{
+  "state": {
+    "incident_id": "gada-02a8324b2828",
+    "user": "bagha",
+    "question": "Investigate checkout HTTP 503. Check health, logs, deployments and the current runbook. Prepare the documented correction for approval.",
+    "mode": "openrouter",
+    "diagnosis": "Validated tool evidence and the current checkout-runbook support restoring PAYMENT_SERVICE_URL from http://payments:9009 to http://payments:9000. Proposal proposal-4f2a7d9e54ef awaits Jethalal. This application summary is based on the validated proposal; no change has been applied.",
+    "proposal_id": "proposal-4f2a7d9e54ef",
+    "model_calls": 5,
+    "error": null,
+    "result": {
+      "applied": true,
+      "health": {
+        "service": "checkout",
+        "status": "healthy",
+        "http_status": 200,
+        "revision": 2
+      }
+    },
+    "waiting_for_approval": false,
+    "pending_nodes": [],
+    "health": {
+      "service": "checkout",
+      "status": "healthy",
+      "http_status": 200,
+      "revision": 2
+    },
+    "proposal": {
+      "id": "proposal-4f2a7d9e54ef",
+      "incident": "gada-02a8324b2828",
+      "owner": "bagha",
+      "plan": {
+        "after": "http://payments:9000",
+        "before": "http://payments:9009",
+        "environment": "simulator",
+        "evidence": [
+          "checkout-runbook",
+          "architecture",
+          "get_recent_deployments",
+          "get_recent_logs"
+        ],
+        "key": "PAYMENT_SERVICE_URL",
+        "risk": "Checkout requests may fail during the configuration reload.",
+        "rollback": {
+          "key": "PAYMENT_SERVICE_URL",
+          "value": "http://payments:9009"
+        },
+        "service": "checkout",
+        "validation": "Check checkout returns HTTP 200 after the change."
+      },
+      "hash": "8568fb3981aaec2f06be769143eedc54e87c6acd2c8e11c8a492316b257ed40e",
+      "revision": 1,
+      "expires": 1794469699.911444,
+      "status": "applied",
+      "approver": "jethalal",
+      "approved_hash": "8568fb3981aaec2f06be769143eedc54e87c6acd2c8e11c8a492316b257ed40e"
+    }
+  },
+  "events": [
+    {
+      "at": 1794468787.152172,
+      "actor": "bagha",
+      "kind": "incident_created"
+    },
+    {
+      "at": 1794468787.158767,
+      "kind": "node_started",
+      "node": "investigate"
+    },
+    {
+      "at": 1794468787.1740868,
+      "kind": "mcp_connected",
+      "tools": [
+        "get_recent_deployments",
+        "get_recent_logs",
+        "get_service_health",
+        "prepare_change",
+        "search_runbooks"
+      ],
+      "transport": "inprocess"
+    },
+    {
+      "at": 1794468787.174162,
+      "kind": "model_request",
+      "message_count": 2,
+      "tool_count": 5,
+      "turn": 1
+    },
+    {
+      "at": 1794468788.962555,
+      "content": "",
+      "duration_ms": 1788,
+      "kind": "model",
+      "mode": "openrouter",
+      "model": "nvidia/nemotron-3.5-lightning:free",
+      "prompt_version": "18769adcf1aa",
+      "requested_tools": [
+        {
+          "arguments": "{\"service\":\"checkout\"}",
+          "name": "get_service_health"
+        }
+      ],
+      "task": "diagnose",
+      "turn": 1,
+      "usage": {
+        "completion_tokens": 86,
+        "cost": 0,
+        "prompt_tokens": 1041,
+        "total_tokens": 1127
+      }
+    },
+    {
+      "at": 1794468788.972278,
+      "arguments": {
+        "service": "checkout"
+      },
+      "duration_ms": 0,
+      "kind": "tool",
+      "result": {
+        "http_status": 503,
+        "revision": 1,
+        "service": "checkout",
+        "status": "unhealthy"
+      },
+      "tool": "get_service_health"
+    },
+    {
+      "at": 1794468788.9768782,
+      "kind": "model_request",
+      "message_count": 4,
+      "tool_count": 5,
+      "turn": 2
+    },
+    {
+      "at": 1794468790.412089,
+      "content": "",
+      "duration_ms": 1434,
+      "kind": "model",
+      "mode": "openrouter",
+      "model": "nvidia/nemotron-3.5-lightning:free",
+      "prompt_version": "18769adcf1aa",
+      "requested_tools": [
+        {
+          "arguments": "{\"service\":\"checkout\"}",
+          "name": "get_recent_logs"
+        }
+      ],
+      "task": "diagnose",
+      "turn": 2,
+      "usage": {
+        "completion_tokens": 44,
+        "cost": 0,
+        "prompt_tokens": 1172,
+        "total_tokens": 1216
+      }
+    },
+    {
+      "at": 1794468790.415765,
+      "arguments": {
+        "service": "checkout"
+      },
+      "duration_ms": 0,
+      "kind": "tool",
+      "result": {
+        "lines": [
+          "checkout HTTP 503: payment connection refused",
+          "upstream=http://payments:9009 connection refused; began after deployment deploy-108",
+          "synthetic API_KEY=[redacted] never forward secrets"
+        ]
+      },
+      "tool": "get_recent_logs"
+    },
+    {
+      "at": 1794468790.418684,
+      "kind": "model_request",
+      "message_count": 6,
+      "tool_count": 5,
+      "turn": 3
+    },
+    {
+      "at": 1794468791.2331672,
+      "content": "",
+      "duration_ms": 813,
+      "kind": "model",
+      "mode": "openrouter",
+      "model": "nvidia/nemotron-3.5-lightning:free",
+      "prompt_version": "18769adcf1aa",
+      "requested_tools": [
+        {
+          "arguments": "{\"service\":\"checkout\"}",
+          "name": "get_recent_deployments"
+        }
+      ],
+      "task": "diagnose",
+      "turn": 3,
+      "usage": {
+        "completion_tokens": 35,
+        "cost": 0,
+        "prompt_tokens": 1286,
+        "total_tokens": 1321
+      }
+    },
+    {
+      "at": 1794468791.246409,
+      "arguments": {
+        "service": "checkout"
+      },
+      "duration_ms": 0,
+      "kind": "tool",
+      "result": {
+        "change": {
+          "after": "http://payments:9009",
+          "before": "http://payments:9000",
+          "key": "PAYMENT_SERVICE_URL"
+        },
+        "deployment": "deploy-108",
+        "service": "checkout"
+      },
+      "tool": "get_recent_deployments"
+    },
+    {
+      "at": 1794468791.249721,
+      "kind": "model_request",
+      "message_count": 8,
+      "tool_count": 5,
+      "turn": 4
+    },
+    {
+      "at": 1794468792.462917,
+      "content": "",
+      "duration_ms": 1212,
+      "kind": "model",
+      "mode": "openrouter",
+      "model": "nvidia/nemotron-3.5-lightning:free",
+      "prompt_version": "18769adcf1aa",
+      "requested_tools": [
+        {
+          "arguments": "{\"query\":\"checkout runbook\"}",
+          "name": "search_runbooks"
+        }
+      ],
+      "task": "diagnose",
+      "turn": 4,
+      "usage": {
+        "completion_tokens": 49,
+        "cost": 0,
+        "prompt_tokens": 1396,
+        "total_tokens": 1445
+      }
+    },
+    {
+      "at": 1794468792.752689,
+      "arguments": {
+        "query": "checkout runbook"
+      },
+      "duration_ms": 287,
+      "kind": "tool",
+      "result": {
+        "cache_hit": false,
+        "corpus_version": "8af115180794acb3edf4",
+        "embedding": "semantic",
+        "results": [
+          {
+            "access": "public",
+            "current": true,
+            "file": "checkout-runbook.md",
+            "location": "Checkout recovery runbook",
+            "service": "checkout",
+            "similarity": 0.8768,
+            "source": "checkout-runbook",
+            "text": "# Checkout recovery runbook",
+            "title": "Checkout recovery runbook",
+            "updated": "2026-11-11",
+            "version": 2
+          },
+          {
+            "access": "public",
+            "current": true,
+            "file": "incident-042.docx",
+            "location": "paragraph 1",
+            "service": "checkout",
+            "similarity": 0.7446,
+            "source": "incident-042",
+            "text": "Checkout incident 042",
+            "title": "Checkout incident 042",
+            "updated": "2026-11-11",
+            "version": 2
+          },
+          {
+            "access": "public",
+            "current": true,
+            "file": "incident-042.docx",
+            "location": "paragraph 3",
+            "service": "checkout",
+            "similarity": 0.716,
+            "source": "incident-042",
+            "text": "Author: Nattu Kaka. Date: 7 November 2026. Environment: simulator. Customers could browse products but checkout returned HTTP 503.",
+            "title": "Checkout incident 042",
+            "updated": "2026-11-11",
+            "version": 2
+          },
+          {
+            "access": "public",
+            "current": true,
+            "file": "architecture.pptx",
+            "location": "slide 1",
+            "service": "checkout",
+            "similarity": 0.6724,
+            "source": "architecture",
+            "text": "Service dependencies\nCustomers browse the catalogue, then call checkout. Checkout calls the payment service. A working catalogue does not prove checkout is healthy.",
+            "title": "Gada Electronics checkout architecture",
+            "updated": "2026-11-11",
+            "version": 2
+          },
+          {
+            "access": "public",
+            "current": true,
+            "file": "checkout-runbook.md",
+            "location": "Diagnosis",
+            "service": "checkout",
+            "similarity": 0.6329,
+            "source": "checkout-runbook",
+            "text": "Diagnosis\n\nFor checkout HTTP 503, inspect service health, recent checkout logs, and recent deployments. If payment connection failures began after a URL change, compare PAYMENT_SERVICE_URL with the approved architecture value.",
+            "title": "Checkout recovery runbook",
+            "updated": "2026-11-11",
+            "version": 2
+          }
+        ]
+      },
+      "tool": "search_runbooks"
+    },
+    {
+      "at": 1794468792.7539551,
+      "kind": "model_request",
+      "message_count": 10,
+      "tool_count": 5,
+      "turn": 5
+    },
+    {
+      "at": 1794468799.9038641,
+      "content": "",
+      "duration_ms": 7149,
+      "kind": "model",
+      "mode": "openrouter",
+      "model": "nvidia/nemotron-3.5-lightning:free",
+      "prompt_version": "18769adcf1aa",
+      "requested_tools": [
+        {
+          "arguments": "{\"service\":\"checkout\",\"value\":\"http://payments:9000\",\"key\":\"PAYMENT_SERVICE_URL\",\"evidence\":[\"checkout-runbook\",\"architecture\",\"get_recent_deployments\",\"get_recent_logs\"]}",
+          "name": "prepare_change"
+        }
+      ],
+      "task": "diagnose",
+      "turn": 5,
+      "usage": {
+        "completion_tokens": 634,
+        "cost": 0,
+        "prompt_tokens": 2083,
+        "total_tokens": 2717
+      }
+    },
+    {
+      "at": 1794468799.911911,
+      "hash": "8568fb3981aaec2f06be769143eedc54e87c6acd2c8e11c8a492316b257ed40e",
+      "kind": "proposal_prepared",
+      "proposal_id": "proposal-4f2a7d9e54ef"
+    },
+    {
+      "at": 1794468799.912371,
+      "arguments": {
+        "evidence": [
+          "checkout-runbook",
+          "architecture",
+          "get_recent_deployments",
+          "get_recent_logs"
+        ],
+        "key": "PAYMENT_SERVICE_URL",
+        "service": "checkout",
+        "value": "http://payments:9000"
+      },
+      "duration_ms": 2,
+      "kind": "tool",
+      "result": {
+        "approved_hash": null,
+        "approver": null,
+        "expires": 1794469699.911444,
+        "hash": "8568fb3981aaec2f06be769143eedc54e87c6acd2c8e11c8a492316b257ed40e",
+        "id": "proposal-4f2a7d9e54ef",
+        "incident": "gada-02a8324b2828",
+        "owner": "bagha",
+        "plan": {
+          "after": "http://payments:9000",
+          "before": "http://payments:9009",
+          "environment": "simulator",
+          "evidence": [
+            "checkout-runbook",
+            "architecture",
+            "get_recent_deployments",
+            "get_recent_logs"
+          ],
+          "key": "PAYMENT_SERVICE_URL",
+          "risk": "Checkout requests may fail during the configuration reload.",
+          "rollback": {
+            "key": "PAYMENT_SERVICE_URL",
+            "value": "http://payments:9009"
+          },
+          "service": "checkout",
+          "validation": "Check checkout returns HTTP 200 after the change."
+        },
+        "revision": 1,
+        "status": "pending"
+      },
+      "tool": "prepare_change"
+    },
+    {
+      "at": 1794468799.9162009,
+      "error": null,
+      "kind": "investigation_finished",
+      "mode": "openrouter",
+      "model_calls": 5,
+      "proposal_id": "proposal-4f2a7d9e54ef"
+    },
+    {
+      "at": 1794468799.9164522,
+      "kind": "node_completed",
+      "node": "investigate"
+    },
+    {
+      "at": 1794468799.927871,
+      "actor": "bagha",
+      "kind": "approval_denied"
+    },
+    {
+      "at": 1794468799.9292521,
+      "actor": "jethalal",
+      "kind": "approval_decision",
+      "proposal_id": "proposal-4f2a7d9e54ef",
+      "status": "approved"
+    },
+    {
+      "at": 1794468799.937974,
+      "kind": "node_started",
+      "node": "execute"
+    },
+    {
+      "at": 1794468799.938261,
+      "approver": "jethalal",
+      "kind": "change_applied",
+      "proposal_id": "proposal-4f2a7d9e54ef"
+    },
+    {
+      "at": 1794468799.938399,
+      "kind": "verification",
+      "result": {
+        "applied": true,
+        "health": {
+          "http_status": 200,
+          "revision": 2,
+          "service": "checkout",
+          "status": "healthy"
+        }
+      }
+    },
+    {
+      "at": 1794468799.9384809,
+      "kind": "node_completed",
+      "node": "execute"
+    }
+  ]
+}

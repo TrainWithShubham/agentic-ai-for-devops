@@ -2,7 +2,7 @@
 
 Use the `v2` branch. You need Git and [uv](https://docs.astral.sh/uv/getting-started/installation/). No AWS account, Kubernetes cluster, Docker, or paid model credits are required for the learner application.
 
-The application has a CLI and an HTTP API with a browser API explorer. The explorer is at `/docs`; there is no separate chat frontend.
+The application has a small TWS-branded browser harness, a CLI, and an HTTP API. The harness is at `/`; the API explorer remains at `/docs`.
 
 ## 1. Open the project
 
@@ -40,18 +40,31 @@ Jethalal approval: accepted. Checkout after verification: HTTP 200.
 
 This is explicitly offline practice. It exercises retrieval, tools, saved approval, and the simulator without calling a generative model. Each demo creates a new isolated incident. The report is saved to `.state/demo-latest.json`.
 
-## 4. Start the HTTP application
+## 4. Open the visual harness
 
 In one terminal:
 
 ```bash
-uv run runbookops --mode offline --embedding hash serve --port 8002
+uv run runbookops --mode offline --embedding hash serve --demo-auth --port 8002
 ```
 
 Keep that terminal open. Visit:
 
+- Visual harness: <http://127.0.0.1:8002/>
 - API explorer: <http://127.0.0.1:8002/docs>
 - Health: <http://127.0.0.1:8002/health>
+
+In the harness:
+
+1. Choose **Bagha**, select a sample task, and click **Run**.
+2. Click the Prompt, Model, MCP tools, RAG, Approval, or Execute boxes to inspect the actual components.
+3. Expand a tool call to see its arguments and result. The lower Events strip shows recorded execution.
+4. When approval is pending, try **Test API denial**, then **Review as Jethalal**. Review the exact change and approve or reject it.
+5. Use the sun/moon button for light or dark mode. The clock button opens saved sessions.
+
+`--demo-auth` enables development personas only for direct loopback requests. It is disabled for cloud mode and external issuers. The model key stays on the server. Without that flag, use the connection control to paste a valid application JWT. For Codespaces, keep the forwarded port private and use the JWT connection flow; forwarded hosts cannot issue development persona tokens.
+
+This is one bounded task per incident, not a general multi-turn chatbot. Use **+** for a fresh task. The component diagram is a learning map; expand **LangGraph** for the actual compiled workflow.
 
 Port 8002 is used here because another local service may already occupy 8000. You can choose another free port; use the same port in the client commands.
 
@@ -86,7 +99,7 @@ Semantic indexing downloads a small local embedding model once. It needs no paid
 To run the API with live inference, stop the offline server with Ctrl+C, then start:
 
 ```bash
-uv run runbookops --mode openrouter --embedding semantic serve --port 8002
+uv run runbookops --mode openrouter --embedding semantic serve --demo-auth --port 8002
 ```
 
 Open `/health` and check that `mode` is `openrouter`. Run the HTTP demo from step 4 against it. Stop any server you started before launching a replacement on the same port.
@@ -94,7 +107,7 @@ Open `/health` and check that `mode` is `openrouter`. Run the HTTP demo from ste
 If your key is already in another ignored file, you can read its model settings without copying it:
 
 ```bash
-uv run runbookops --env-file /path/to/your/.env --mode openrouter --embedding semantic serve --port 8002
+uv run runbookops --env-file /path/to/your/.env --mode openrouter --embedding semantic serve --demo-auth --port 8002
 ```
 
 Never put the key itself in a command, screenshot, or Git commit. Claude Pro does not provide the application API key. See [model access](docs/MODEL_ACCESS.md) for limits and alternatives.

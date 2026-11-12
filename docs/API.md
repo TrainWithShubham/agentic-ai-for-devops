@@ -50,3 +50,20 @@ uv run python examples/remote_mcp.py
 ```
 
 The client obtains a local development JWT without displaying it, and the HTTP MCP server verifies it before serving the incident's health. Both processes use the same `.state` directory. For a separate machine, configure the external issuer/key and a reachable HTTPS endpoint; do not expose the local development setup directly to the internet.
+
+## Browser harness
+
+Run `uv run runbookops serve --demo-auth --port 8002`, then open `http://127.0.0.1:8002/`. The UI and API share an origin; there is no Node build step or external asset/CDN dependency.
+
+| Route | Purpose |
+|---|---|
+| `GET /harness` | Authenticated system prompt, compiled graph, actual model/tool budgets, schemas, RAG settings, and caller permissions |
+| `GET /harness/mcp` | Authenticated live MCP discovery, including its input schemas |
+| `GET /knowledge` | Authorized current source metadata |
+| `GET /knowledge/{source_id}` | Authorized extracted source sections |
+| `POST /knowledge/search` | Retrieval-only probe with scoped cache metadata |
+| `POST /investigations/stream` | Authenticated NDJSON incident/event/completion stream |
+| `GET /ui/config` | Nonsecret UI startup configuration |
+| `POST /ui/session` | Explicitly enabled, direct-loopback-only development JWT issuance |
+
+The stream records public model content, requested tool names/arguments, tool results, and node events. It excludes hidden reasoning and provider credentials. Disconnecting the stream cancels the in-progress read-only investigation; it cannot approve or apply a change.

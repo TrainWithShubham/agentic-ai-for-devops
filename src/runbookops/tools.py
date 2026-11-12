@@ -22,6 +22,8 @@ def schema(name, description, properties, required):
     }
 
 
+MAX_TOOL_STEPS = 16
+
 SERVICE = {"type": "string", "enum": ["checkout"]}
 SCHEMAS = [
     schema(
@@ -85,7 +87,7 @@ class Tools:
     def call(self, name, arguments):
         require(self.actor, "read")
         self.steps += 1
-        if self.steps > 16:
+        if self.steps > MAX_TOOL_STEPS:
             raise InvalidChange("Tool step budget exceeded")
         definition = next((s["function"] for s in SCHEMAS if s["function"]["name"] == name), None)
         if definition is None:

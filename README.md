@@ -29,6 +29,16 @@ uv run runbookops --embedding semantic search "checkout payment connection refus
 
 Hash mode is an offline lexical fallback. Semantic mode uses local embeddings and Chroma; it needs no paid embedding API.
 
+## Open the visual harness
+
+```bash
+uv run runbookops --mode offline serve --demo-auth --port 8002
+```
+
+Open [localhost:8002](http://127.0.0.1:8002/). The TWS-themed console has an agent pane, a visual harness inspector, and an event strip. Inspect the prompt, RAG context, actual MCP discovery, tool schemas, saved state, and human approval. Light and dark themes are included. The same UI works with live OpenRouter mode.
+
+The persona picker is an opt-in local learning shortcut. Model keys stay on the server, and the existing API authorization and approval checks still run. See [the run guide](RUNBOOK.md).
+
 ## Use a live free model
 
 Create your own OpenRouter account and API key. Copy `.env.example` to `.env` and add your key there. Keep `RUNBOOKOPS_FREE_ONLY=true`.

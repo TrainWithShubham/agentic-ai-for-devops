@@ -17,7 +17,9 @@ from .mcp_server import create_server
 from .models import SYSTEM, Model, ModelError
 from .security import Denied, InvalidChange, redact, require
 from .store import open_store
-from .tools import SCHEMAS
+from .tools import MAX_TOOL_STEPS, SCHEMAS
+
+INVESTIGATION_TIMEOUT = 150
 
 
 class IncidentState(TypedDict, total=False):
@@ -79,6 +81,7 @@ class Engine:
     @asynccontextmanager
     async def graph(self, actor):
         async def investigate(state):
+            self.store.event(state["incident_id"], "node_started", node="investigate")
             messages = [{"role": "system", "content": SYSTEM}, {"role": "user", "content": state["question"]}]
             proposal_id = None
             calls = 0
@@ -86,7 +89,7 @@ class Engine:
             diagnosis = ""
             failure = None
             try:
-                async with asyncio.timeout(150):
+                async with asyncio.timeout(INVESTIGATION_TIMEOUT):
                     async with tool_client(self.settings, actor, self.transport) as client:
                         discovered = {tool.name for tool in await client.list_tools()}
                         if not {t["function"]["name"] for t in SCHEMAS}.issubset(discovered):
@@ -98,9 +101,29 @@ class Engine:
                             tools=sorted(discovered),
                         )
                         for _ in range(self.settings.max_calls):
+                            self.store.event(
+                                state["incident_id"],
+                                "model_request",
+                                turn=calls + 1,
+                                message_count=len(messages),
+                                tool_count=len(SCHEMAS),
+                            )
                             message, metadata = await self.model.complete(messages, SCHEMAS)
                             calls += 1
-                            self.store.event(state["incident_id"], "model", **metadata)
+                            self.store.event(
+                                state["incident_id"],
+                                "model",
+                                **metadata,
+                                turn=calls,
+                                content=message.get("content") or "",
+                                requested_tools=[
+                                    {
+                                        "name": call.get("function", {}).get("name", ""),
+                                        "arguments": call.get("function", {}).get("arguments", ""),
+                                    }
+                                    for call in message.get("tool_calls") or []
+                                ],
+                            )
                             messages.append(message)
                             requests = message.get("tool_calls") or []
                             if not requests:
@@ -108,7 +131,7 @@ class Engine:
                                 break
                             for call in requests:
                                 tool_steps += 1
-                                if tool_steps > 16:
+                                if tool_steps > MAX_TOOL_STEPS:
                                     raise ModelError("Tool step limit reached")
                                 name = call.get("function", {}).get("name", "")
                                 if name not in {t["function"]["name"] for t in SCHEMAS}:
@@ -171,6 +194,7 @@ class Engine:
                 proposal_id=proposal_id,
                 error=failure,
             )
+            self.store.event(state["incident_id"], "node_completed", node="investigate")
             return {
                 "diagnosis": redact(diagnosis),
                 "proposal_id": proposal_id,
@@ -190,6 +214,7 @@ class Engine:
             return {"result": {"decision": proposal["status"]}}
 
         def execute(state):
+            self.store.event(state["incident_id"], "node_started", node="execute")
             if state["result"]["decision"] == "rejected":
                 result = {
                     "applied": False,
@@ -199,6 +224,7 @@ class Engine:
             else:
                 result = self.store.apply(state["proposal_id"], actor)
             self.store.event(state["incident_id"], "verification", result=result)
+            self.store.event(state["incident_id"], "node_completed", node="execute")
             return {"result": result}
 
         builder = StateGraph(IncidentState)
@@ -241,12 +267,14 @@ class Engine:
     def config(self, incident):
         return {"configurable": {"thread_id": incident}, "recursion_limit": 25}
 
-    async def start(self, actor, question):
+    async def start(self, actor, question, on_created=None):
         require(actor, "investigate")
         if not 1 <= len(question) <= 1200:
             raise ValueError("Question must contain 1 to 1200 characters")
         question = redact(question)
         incident = self.store.create_incident(actor)["id"]
+        if on_created:
+            on_created(incident)
         async with self.graph(actor) as graph:
             await graph.ainvoke(
                 {

@@ -126,3 +126,17 @@ Verified `/health` and `/docs` returned HTTP 200 on port 8002 with mode `openrou
 ## Keep the local server available
 
 The first interactive tool-hosted server was gone when the instructor opened it later. Restarted the existing OpenRouter configuration as a detached background process, with its PID and output under ignored `.state/server.pid` and `.state/server.log`. Verified health after separate tool calls and opened the actual Swagger page in Chrome. The app is an API/CLI project; the Swagger explorer is not a chat frontend. Foreground startup instructions remain valid when the instructor keeps that terminal open.
+
+## Visual learning harness and TWS theme
+
+The first UI direction was an operations dashboard. The instructor asked for a smaller harness console inspired by temporal-community/temporal-agent-harness, then supplied the TWS logo and requested less text, more graphics, and light/dark themes. Inspected the reference repository at commit 2a3dc3f; adopted the idea of conversation, component inspection, and observable events without copying its console or introducing Temporal into the LangGraph core.
+
+Use two main boxes and a small Events strip. Sessions are a drawer. The visual component map opens the actual prompt, model settings, MCP schemas, retrieved documents, approval, and saved state. Keep verbose explanations and JSON behind disclosures. Use the supplied TWS PNG unchanged and derive purple/gold theme tokens from the brand; local fonts include their OFL licenses.
+
+Serve static HTML/CSS/JavaScript from FastAPI so learners still use one Python command and need no Node setup. Add authenticated harness configuration and live MCP discovery, authorized knowledge inspection, and NDJSON investigation streaming. Export only public model text/tool requests and sanitized results; never hidden reasoning metadata. Centralize the existing execution/RAG constants so inspector settings reflect runtime values.
+
+Persona issuance is an opt-in, loopback-only development helper with host/origin/header checks. It is disabled for cloud and external issuer configurations. Tokens stay in memory; changing identities clears UI content before access is rechecked. Added tests for these boundaries, document filtering, streaming and disconnect cancellation, actual harness/MCP schemas, and approval integrity.
+
+Browser testing exposed excessive scrolling in the first design; replaced the dashboard with the component map. An initial faint-text colour failed contrast, so updated both theme palettes and measured the final foreground/background pairs above 4.5:1. Browser extension navigation was unreliable; verified the local UI through native Safari controls. A new live OpenRouter streamed run used five model calls, rejected viewer approval, and recovered to HTTP 200 after authorized approval. AWS resources were not recreated.
+
+Final UI verification: 37 tests passed with one optional AWS test skipped, packaged wheel includes static assets/fonts/logo, and the actual-key/private-PEM candidate scan passed. Keep exact mobile-device testing listed as unverified. Both theme text palettes passed measured contrast checks; browser evidence and the fresh live harness trace are separate from offline regression results.
