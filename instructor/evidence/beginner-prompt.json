@@ -1,0 +1,17 @@
+{
+  "question": "Checkout is not working. Suggest a fix, but ask a person before changing anything.",
+  "incident_id": "gada-83d76eb6e0f8",
+  "model": "us.amazon.nova-lite-v1:0",
+  "seconds": 3.34,
+  "calls": 2,
+  "tools": [
+    "get_service_health",
+    "get_recent_logs",
+    "get_recent_deployments",
+    "search_runbooks",
+    "prepare_change"
+  ],
+  "proposal_status": "pending",
+  "http_status": 503,
+  "no_change_applied": true
+}

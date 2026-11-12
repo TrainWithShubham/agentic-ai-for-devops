@@ -3350,3 +3350,105 @@ pre,
 .theme-changing *::after {
   transition: none !important;
 }
+
+/* Teach the action first; disclose the protocol and payload when requested. */
+.opening .opening-note {
+  display: block;
+  color: var(--muted);
+  font-size: 16px;
+  max-width: 350px;
+}
+.tool-label {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  flex: 1;
+}
+.tool-label small {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+.tool-call summary {
+  align-items: center;
+  padding-block: 12px;
+}
+.ai-choice {
+  font-size: 15px;
+  color: var(--text);
+  margin: 8px 0;
+}
+.response-details {
+  margin-top: 10px;
+}
+.response-details > summary,
+.approval-identity > summary {
+  font-size: 12px;
+  color: var(--muted);
+  padding: 8px 0;
+  min-height: 36px;
+}
+.response-details[open] > .message-body {
+  margin: 12px 0;
+}
+.approval-identity {
+  padding: 0 16px 10px;
+}
+.approval-identity .hash-label {
+  padding-inline: 0;
+  border: 0;
+}
+.fix-explanation {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+.concept-intro {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+  border-left: 2px solid var(--green);
+  padding-left: 12px;
+  margin-bottom: 18px;
+}
+.more-demos {
+  margin-top: 20px;
+}
+.more-demos > summary {
+  color: var(--green);
+  font-size: 14px;
+  padding: 12px 0;
+}
+.more-demos > .demo-grid {
+  margin-top: 10px;
+}
+.friendly-error {
+  text-align: left;
+  padding: 16px;
+  border: 1px solid var(--error);
+  border-radius: 7px;
+  background: var(--error-soft);
+  margin: 12px 0;
+}
+.friendly-error > strong {
+  font-size: 16px;
+  color: var(--error);
+}
+.friendly-error > p {
+  font-size: 14px;
+  margin-top: 6px;
+  color: var(--text);
+}
+.friendly-error summary {
+  font-size: 12px;
+  padding: 8px 0;
+  color: var(--muted);
+}
+.friendly-error pre {
+  font-size: 12px;
+}
+.map-node strong {
+  overflow-wrap: anywhere;
+}

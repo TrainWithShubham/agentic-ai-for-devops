@@ -266,8 +266,8 @@
         <div class="demo-toolbar">
           <button class="quiet-button" data-action="demo-library">
             <svg class="icon" aria-hidden="true"><use href="#i-book" /></svg>
-            Demo prompts <span>10</span></button
-          ><span>Choose · Run · Inspect</span>
+            Examples</button
+          ><span>Choose · Run · Learn</span>
         </div>
         <div id="demo-cue" class="demo-cue" hidden></div>
         <div id="conversation" class="conversation" tabindex="-1">
@@ -288,10 +288,10 @@
             rows="2"
             maxlength="1200"
             required
-            placeholder="Investigate checkout HTTP 503 and prepare a fix for approval."
+            placeholder="Customers cannot pay. Can you check what is wrong?"
           ></textarea>
           <div class="composer-bottom">
-            <span id="composer-hint">Human approval required for changes.</span
+            <span id="composer-hint">A person must approve any fix.</span
             ><button id="send-button" class="primary-button" type="submit">
               Run
               <svg class="icon" aria-hidden="true">
@@ -306,7 +306,8 @@
       </section>
       <aside class="inspector-pane" aria-label="Harness inspector">
         <div class="pane-heading">
-          <span>HARNESS</span><span class="inspector-marker">LangGraph</span>
+          <span>HOW IT WORKS</span
+          ><span class="inspector-marker">LangGraph</span>
         </div>
         <div
           class="inspector-tabs"
@@ -321,7 +322,7 @@
             aria-controls="inspector-body"
           >
             <svg class="icon" aria-hidden="true"><use href="#i-grid" /></svg
-            >Harness</button
+            >Flow</button
           ><button
             role="tab"
             aria-selected="false"
@@ -357,7 +358,7 @@
             aria-controls="inspector-body"
           >
             <svg class="icon" aria-hidden="true"><use href="#i-code" /></svg
-            >State
+            >Saved
           </button>
         </div>
         <div
@@ -371,7 +372,7 @@
       </aside>
       <section class="event-dock" aria-label="Recorded event stream">
         <div class="pane-heading">
-          <span>EVENTS <span id="event-count" class="count">0</span></span>
+          <span>ACTIVITY <span id="event-count" class="count">0</span></span>
           <div class="pane-heading-actions">
             <label class="sr-only" for="event-filter">Filter events</label
             ><select id="event-filter">

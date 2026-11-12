@@ -59,7 +59,7 @@ In the harness:
 1. Choose **Bagha**, select a sample task, and click **Run**.
 2. Click the Prompt, Model, MCP tools, RAG, Approval, or Execute boxes to inspect the actual components.
 3. Expand a tool call to see its arguments and result. The lower Events strip shows recorded execution.
-4. When approval is pending, try **Test API denial**, then **Review as Jethalal**. Review the exact change and approve or reject it.
+4. When approval is pending, try **Try approving as Bagha**, then **Review as Jethalal**. Review the exact change and approve or reject it.
 5. Use the sun/moon button for light or dark mode. The clock button opens saved sessions.
 
 `--demo-auth` enables development personas only for direct loopback requests. It is disabled for cloud mode and external issuers. The model key stays on the server. Without that flag, use the connection control to paste a valid application JWT. For Codespaces, keep the forwarded port private and use the JWT connection flow; forwarded hosts cannot issue development persona tokens.
@@ -167,7 +167,7 @@ For missing dependencies, model limits, occupied ports, token errors, and embedd
 
 ## Shared-screen demos
 
-Open **Demo prompts** above the conversation for ten guided examples. Select a card, read its observation cue, and press Run or RAG Search. The dark theme uses larger text and controls for screen sharing. Follow [the teaching walkthrough](docs/HARNESS_DEMOS.md) for the suggested order and the separate OAuth, evaluation, and hosting exercises.
+Open **Examples** above the conversation for ten guided examples. Select a card, read its observation cue, and press Run or RAG Search. The dark theme uses larger text and controls for screen sharing. Follow [the teaching walkthrough](docs/HARNESS_DEMOS.md) for the suggested order and the separate OAuth, evaluation, and hosting exercises.
 
 ## Instructor: Bedrock inference
 

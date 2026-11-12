@@ -133,4 +133,6 @@ The editions live on separate local branches. Switch editions with `git switch v
 
 The course editions are published on separate `v1` and `v2` branches; `main` remains unchanged. [DECISIONS.md](DECISIONS.md) records the implementation choices, failures, and fixes.
 
-For screen sharing, open **Demo prompts** in the console. [The teaching walkthrough](docs/HARNESS_DEMOS.md) maps ten examples to harness features and includes a 15-minute demo order.
+For screen sharing, open **Examples** in the console. [The teaching walkthrough](docs/HARNESS_DEMOS.md) maps ten examples to harness features and includes a 15-minute demo order.
+
+New to agents? Start with [the beginner walkthrough](docs/BEGINNER_DEMO.md): one short question, visible checks, and a person approving the fix.

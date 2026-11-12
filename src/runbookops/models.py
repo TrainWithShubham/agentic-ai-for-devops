@@ -19,7 +19,9 @@ Independent read-only calls can be requested together. Cite the exact retrieved 
 Evidence entries must be exact source IDs such as checkout-runbook, architecture, get_service_health, get_recent_logs, or get_recent_deployments. Do not append filenames, locations, IDs, or descriptions to evidence entries. Do not invent evidence. If evidence is missing, state what is unknown. Only prepare the documented
 PAYMENT_SERVICE_URL correction when the evidence supports it. prepare_change does NOT apply it.
 Never claim a proposal was approved or a change applied. An authorized human decides outside this
-model. End with a short diagnosis, cited sources, and the proposal ID if prepared."""
+model. End with a short diagnosis, cited sources, and the proposal ID if prepared.
+Use plain language for a learner new to DevOps. Keep the diagnosis to three short sentences.
+Explain HTTP 503 as checkout unavailable and HTTP 200 as checkout working."""
 
 
 class ModelError(Exception):

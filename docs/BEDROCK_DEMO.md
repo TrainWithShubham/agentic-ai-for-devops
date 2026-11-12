@@ -26,7 +26,7 @@ export RUNBOOKOPS_FREE_ONLY=false
 uv run runbookops --mode bedrock --embedding semantic serve --demo-auth --port 8004
 ```
 
-Open <http://127.0.0.1:8004/>. Confirm the header says **BEDROCK**, then check Harness → Model & limits for the exact model ID. Select Bagha for investigation and Jethalal for the approval exercise. See [HARNESS_DEMOS.md](HARNESS_DEMOS.md) for the teaching sequence.
+Open <http://127.0.0.1:8004/>. Confirm the header says **BEDROCK**, then check Flow → Model & limits for the exact model ID. Select Bagha for investigation and Jethalal for the approval exercise. See [HARNESS_DEMOS.md](HARNESS_DEMOS.md) for the teaching sequence.
 
 `RUNBOOKOPS_FREE_ONLY=false` explicitly allows billed inference. Keep the existing six-call, 16-tool-step, and 150-second investigation limits. A Bedrock invocation can still fail due to model access, IAM, quotas, or service availability.
 

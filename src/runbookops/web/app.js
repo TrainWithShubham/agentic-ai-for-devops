@@ -1,4 +1,5 @@
 import { demos } from "./demos.js";
+import { toolNames, eventNames, explainError } from "./learning.js";
 // The console renders public events and configuration. It never runs tools or stores model keys.
 const $ = (q, root = document) => root.querySelector(q);
 const $$ = (q, root = document) => [...root.querySelectorAll(q)];
@@ -18,12 +19,12 @@ const badge = (text, tone = "") =>
 const names = { bagha: "Bagha", nattu: "Nattu Kaka", jethalal: "Jethalal" };
 const presets = [
   [
-    "Investigate checkout 503",
-    "Checkout is returning HTTP 503. Inspect health, logs, deployments, and the current runbook. Prepare the documented fix for human approval.",
+    "Find the problem",
+    "Customers cannot pay at Gada Electronics. Can you check what is wrong?",
   ],
   [
-    "Prepare a recovery proposal",
-    "Diagnose the checkout payment connection failure. Cite current company sources and prepare an exact configuration correction with risk, verification, and rollback. Wait for approval.",
+    "Suggest a fix",
+    "Checkout is not working. Suggest a fix, but ask a person before changing anything.",
   ],
 ];
 const S = {
@@ -67,7 +68,7 @@ function write(key, value) {
 }
 function notice(message, error = false) {
   const node = $("#toast");
-  node.textContent = message;
+  node.textContent = error ? explainError(message).join(" ") : message;
   node.classList.toggle("error", error);
   node.hidden = false;
   clearTimeout(toastTimer);
@@ -229,24 +230,36 @@ function drawSessions() {
 function messageHeader(name, avatar, detail = "") {
   return `<div class="message-header"><span class="message-avatar">${esc(avatar)}</span>${esc(name)}<small>${esc(detail)}</small></div>`;
 }
+function errorCard(raw) {
+  const [title, next] = explainError(raw);
+  return `<section class="friendly-error" role="alert"><strong>${esc(title)}</strong><p>${esc(next)}</p><details><summary>Technical details</summary><pre>${esc(raw)}</pre></details></section>`;
+}
 function turnContent(event, index) {
-  return `<article class="message model">${messageHeader("Agent", "A", event.mode === "offline" ? "offline fixture" : "turn " + (event.turn || "—"))}${event.content ? `<div class="message-body">${esc(event.content)}</div>` : ""}<div class="turn-meta">${badge(event.model || event.mode, "model")}<span>${event.duration_ms !== undefined ? (event.duration_ms / 1000).toFixed(1) + "s" : ""}</span>${event.usage ? `<span>${esc(event.usage.total_tokens ?? (event.usage.prompt_tokens || 0) + (event.usage.completion_tokens || 0))} tokens</span>` : ""}<span>${event.requested_tools?.length ?? "—"} tool requests</span><button class="link-button" data-action="event" data-index="${index}">Inspect response</button></div></article>`;
+  const calls = event.requested_tools || [];
+  const action = calls.length
+    ? "Next: " + calls.map((c) => toolNames[c.name] || c.name).join(" · ")
+    : "AI reply received";
+  return `<article class="message model">${messageHeader(event.mode === "offline" ? "Practice agent" : "AI", "A", "step " + (event.turn || "—"))}<p class="ai-choice">${esc(action)}</p><details class="response-details" data-key="response-${index}"><summary>Read reply & technical details</summary>${event.content ? `<div class="message-body">${esc(event.content)}</div>` : '<p class="small muted">This reply requested tools without a written answer.</p>'}<div class="turn-meta">${badge(event.model || event.mode, "model")}<span>${event.duration_ms !== undefined ? (event.duration_ms / 1000).toFixed(1) + "s" : ""}</span>${event.usage ? `<span>${esc(event.usage.total_tokens ?? (event.usage.prompt_tokens || 0) + (event.usage.completion_tokens || 0))} tokens</span>` : ""}<button class="link-button" data-action="event" data-index="${index}">Full response</button></div></details></article>`;
 }
 function toolContent(event, index) {
   const r = event.result || {};
   const summary =
     event.tool === "get_service_health"
-      ? `HTTP ${r.http_status} · revision ${r.revision}`
+      ? r.http_status === 200
+        ? "Checkout is working (HTTP 200)."
+        : `Checkout is not working (HTTP ${r.http_status ?? "unknown"}).`
       : event.tool === "search_runbooks"
-        ? `${r.results?.length || 0} excerpts · ${r.cache_hit ? "cache hit" : "fresh retrieval"}`
+        ? `${r.results?.length || 0} matching notes · ${r.cache_hit ? "reused saved results" : "new search"}`
         : event.tool === "prepare_change"
-          ? "Proposal stored; no change applied."
+          ? r.id
+            ? "Fix suggested. Nothing changed yet."
+            : "No fix was saved."
           : event.tool === "get_recent_deployments"
-            ? `Deployment ${r.deployment || "—"}`
+            ? "Read the latest deployment record."
             : event.tool === "get_recent_logs"
-              ? "Sanitized log evidence returned."
-              : "Recorded tool result.";
-  return `<details class="tool-call" data-key="tool-${index}"><summary>${icon(event.tool === "search_runbooks" ? "book" : "terminal")}<strong>${esc(event.tool)}</strong><span class="tool-time">${event.duration_ms ?? "—"} ms ${icon("chevron")}</span></summary><div class="tool-content"><div class="section-kicker">ARGUMENTS</div><pre>${esc(json(event.arguments))}</pre><div class="section-kicker">RESULT</div><pre>${esc(json(r))}</pre><button class="quiet-button" data-action="inspect-tool" data-index="${index}">Open in ${event.tool === "search_runbooks" ? "RAG" : "Tools"} ${icon("up-right")}</button></div><div class="tool-outcome">${esc(r.error || summary)}</div></details>`;
+              ? "Read the service's recent error messages."
+              : "Result received.";
+  return `<details class="tool-call" data-key="tool-${index}"><summary>${icon(event.tool === "search_runbooks" ? "book" : "terminal")}<span class="tool-label"><strong>${esc(toolNames[event.tool] || event.tool)}</strong><small>${esc(r.error ? explainError(r.error)[0] : summary)}</small></span><span class="tool-time">${event.duration_ms ?? "—"} ms ${icon("chevron")}</span></summary><div class="tool-content"><div class="section-kicker">TECHNICAL DETAILS · ${esc(event.tool)}</div><p class="small muted">What the tool received</p><pre>${esc(json(event.arguments))}</pre><p class="small muted">What the tool returned</p><pre>${esc(json(r))}</pre><button class="quiet-button" data-action="inspect-tool" data-index="${index}">Open ${event.tool === "search_runbooks" ? "company notes" : "tool details"} ${icon("up-right")}</button></div></details>`;
 }
 function approval() {
   const p = S.run?.proposal;
@@ -255,7 +268,7 @@ function approval() {
   const expired = Date.now() / 1000 >= p.expires;
   const pending = p.status === "pending" && !expired;
   const approver = S.actor?.scopes.includes("approve");
-  return `<section class="approval-card" aria-label="Human approval checkpoint"><div class="approval-top"><span>${icon("shield")} Human approval checkpoint</span>${badge(expired && p.status === "pending" ? "Expired" : p.status, p.status === "applied" ? "success" : "warn")}</div><div class="approval-body"><span class="eyebrow">${esc(plan.key)} / ${esc(plan.environment)}</span><div class="diff"><div class="removed">− ${esc(plan.before)}</div><div class="added">+ ${esc(plan.after)}</div></div><div class="plan-details"><p><strong>Risk:</strong> ${esc(plan.risk)}</p><p><strong>Verify:</strong> ${esc(plan.validation)}</p><p><strong>Rollback:</strong> <code>${esc(plan.rollback?.value)}</code></p><p><strong>Evidence:</strong> ${esc(plan.evidence.join(", "))}</p><p><strong>Expires:</strong> ${esc(new Date(p.expires * 1000).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }))}</p></div>${pending && approver ? `<label class="review-check"><input id="review-check" type="checkbox">I reviewed this exact change, risk, and rollback.</label><div class="button-row"><button data-action="approve" class="primary-button" disabled>Approve & run ${icon("check")}</button><button data-action="reject" class="quiet-button danger">Reject</button></div>` : pending ? `<p class="inline-notice warn">${esc(names[S.actor?.user] || "This persona")} can prepare a proposal, but cannot approve it.</p><div class="button-row"><button class="quiet-button" data-action="review-persona">Review as Jethalal ${icon("arrow")}</button><button class="link-button" data-action="denial">Test API denial</button></div>` : p.status === "approved" && approver ? `<p class="small muted">The decision is stored. Resume the saved execution to finish verification.</p><button class="primary-button" data-action="resume">Resume execution</button>` : `<p class="small muted">${p.status === "applied" ? "Applied with authorized approval. A repeat executor call is idempotent." : p.status === "rejected" ? "Rejected. The simulator configuration remains unchanged." : "This proposal cannot execute. Start a fresh incident."}</p>`}</div><div class="hash-label">SHA-256 ${esc(p.hash)}</div></section>`;
+  return `<section class="approval-card" aria-label="Review the suggested fix"><div class="approval-top"><span>${icon("shield")} Review the suggested fix</span>${badge(expired && p.status === "pending" ? "Expired" : p.status, p.status === "applied" ? "success" : "warn")}</div><div class="approval-body"><span class="eyebrow">Payment service address · ${esc(plan.environment)}</span><p class="fix-explanation">The suggested change replaces the payment address below. This only affects the practice checkout.</p><div class="diff"><div class="removed">− ${esc(plan.before)}</div><div class="added">+ ${esc(plan.after)}</div></div><div class="plan-details"><p><strong>Risk:</strong> ${esc(plan.risk)}</p><p><strong>Check it worked:</strong> ${esc(plan.validation)}</p><p><strong>Undo if needed:</strong> <code>${esc(plan.rollback?.value)}</code></p><p><strong>Evidence:</strong> ${esc(plan.evidence.join(", "))}</p><p><strong>Expires:</strong> ${esc(new Date(p.expires * 1000).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }))}</p></div>${pending && approver ? `<label class="review-check"><input id="review-check" type="checkbox">I have checked the change, risk, and how to undo it.</label><div class="button-row"><button data-action="approve" class="primary-button" disabled>Approve & run ${icon("check")}</button><button data-action="reject" class="quiet-button danger">Reject</button></div>` : pending ? `<p class="inline-notice warn">${esc(names[S.actor?.user] || "This persona")} can prepare a proposal, but cannot approve it.</p><div class="button-row"><button class="quiet-button" data-action="review-persona">Review as Jethalal ${icon("arrow")}</button><button class="link-button" data-action="denial">Try approving as Bagha</button></div>` : p.status === "approved" && approver ? `<p class="small muted">The decision is stored. Resume the saved execution to finish verification.</p><button class="primary-button" data-action="resume">Resume execution</button>` : `<p class="small muted">${p.status === "applied" ? "Applied after approval. Checkout was checked again." : p.status === "rejected" ? "Rejected. The simulator configuration remains unchanged." : "This proposal cannot execute. Start a fresh incident."}</p>`}</div><details class="approval-identity" data-key="approval-hash"><summary>Technical details · approval ID</summary><div class="hash-label">SHA-256 ${esc(p.hash)}</div></details></section>`;
 }
 function drawConversation() {
   const node = $("#conversation");
@@ -265,7 +278,7 @@ function drawConversation() {
     $$("details[open]", node).map((item) => item.dataset.key),
   );
   if (!S.run) {
-    node.innerHTML = `<div class="opening"><div class="empty-graphic" aria-hidden="true"><span>${icon("terminal")}</span><i></i><span>${icon("cpu")}</span><i></i><span>${icon("network")}</span></div><h1>Run a task.</h1><div class="task-presets">${presets.map((p, i) => `<button class="task-preset" data-action="preset" data-index="${i}">${icon(i ? "shield" : "activity")}${esc(p[0])}</button>`).join("")}</div><span class="empty-mode">${badge(S.config?.mode === "offline" ? "Offline practice" : "Live model", "model")}${badge("Local simulator")}</span>${S.error ? `<div class="inline-notice error" role="alert">${esc(S.error)}</div>` : ""}</div>`;
+    node.innerHTML = `<div class="opening"><div class="empty-graphic" aria-hidden="true"><span>${icon("terminal")}</span><i></i><span>${icon("cpu")}</span><i></i><span>${icon("network")}</span></div><h1>Let’s check checkout.</h1><p class="opening-note">The payment step at Gada Electronics is not working.</p><div class="task-presets">${presets.map((p, i) => `<button class="task-preset" data-action="preset" data-index="${i}">${icon(i ? "shield" : "activity")}${esc(p[0])}</button>`).join("")}</div><span class="empty-mode">${badge(S.config?.mode === "offline" ? "Offline practice" : "Live model", "model")}${badge("Local simulator")}</span>${S.error ? errorCard(S.error) : ""}</div>`;
   } else {
     let content = `<article class="message user">${messageHeader(names[S.run.user || S.actor?.user] || "You", "U", "task")}<div class="message-body">${esc(S.run.question || "Investigate checkout.")}</div></article>`;
     for (let index = 0; index < S.events.length; index++) {
@@ -274,14 +287,13 @@ function drawConversation() {
       if (event.kind === "tool") content += toolContent(event, index);
     }
     if (S.busy)
-      content += `<div class="pending-indicator"><span class="spinner"></span>Agent running. Waiting for recorded output…</div>`;
+      content += `<div class="pending-indicator"><span class="spinner"></span>Checking the problem…</div>`;
     if (!S.busy && S.run.diagnosis)
-      content += `<article class="message app">${messageHeader("Harness", "H", "investigation summary · before approval")}<div class="message-body">${esc(S.run.diagnosis)}</div></article>`;
-    if (S.error || S.run.error)
-      content += `<div class="inline-notice error" role="alert">${esc(S.error || S.run.error)}</div>`;
+      content += `<article class="message app">${messageHeader("What we found", "H", "before approval")}<div class="message-body">${S.run.proposal ? "The tool results support changing the payment address. A fix is ready for a person to review." : "No fix was prepared. Open the findings to see what the AI checked."}</div><details class="response-details" data-key="diagnosis"><summary>Read the findings</summary><div class="message-body">${esc(S.run.diagnosis)}</div></details></article>`;
+    if (S.error || S.run.error) content += errorCard(S.error || S.run.error);
     if (!S.busy) content += approval();
     if (S.run.result)
-      content += `<article class="message app">${messageHeader("Executor", "E", "application result")}<div class="message-body">${S.run.health?.http_status === 200 ? "Approved change applied. Checkout returned HTTP 200." : S.run.proposal?.status === "rejected" ? "Proposal rejected. No change was applied." : "Execution returned a result. Inspect saved state for details."}</div><div class="turn-meta"><button class="link-button" data-action="state">Inspect state & verification</button></div></article>`;
+      content += `<article class="message app">${messageHeader("Executor", "E", "application result")}<div class="message-body">${S.run.health?.http_status === 200 ? "Checkout is working again (HTTP 200). The approved fix was applied." : S.run.proposal?.status === "rejected" ? "Proposal rejected. No change was applied." : "Execution returned a result. Inspect saved state for details."}</div><div class="turn-meta"><button class="link-button" data-action="state">Inspect state & verification</button></div></article>`;
     node.innerHTML = content;
   }
   $$("details[data-key]", node).forEach((item) => {
@@ -317,10 +329,21 @@ function modelUsage() {
   };
 }
 function demoLibrary() {
+  const starters = [0, 1, 6, 4];
+  const card = (i, n) => {
+    const d = demos[i];
+    return `<button class="demo-card" data-action="demo-select" data-index="${i}"><span class="demo-number">${String(n).padStart(2, "0")} ${icon(d.icon)}</span><strong>${esc(d.title)}</strong><span>${esc(d.topic)}</span><small>${d.kind === "task" ? "Fill in a task" : d.kind === "rag" ? "Open a search" : "Take a look"}</small></button>`;
+  };
   dialog(
-    "Choose a demo",
-    "WORKSHOP · SELECT, THEN RUN",
-    `<p class="dialog-lead">Each card tells you what to try and where to look. Selecting a task fills the composer; it never starts a run or approves a change.</p><div class="demo-grid">${demos.map((d, i) => `<button class="demo-card" data-action="demo-select" data-index="${i}"><span class="demo-number">${String(i + 1).padStart(2, "0")} ${icon(d.icon)}</span><strong>${esc(d.title)}</strong><span>${esc(d.topic)}</span><small>${esc(d.kind === "task" ? "Agent task" : d.kind === "rag" ? "Retrieval probe" : "Guided inspection")}</small></button>`).join("")}</div><p class="dialog-lead">Offline mode uses a fixed investigation fixture. Use a live model for prompt-following experiments. Every change targets the local checkout simulator.</p>`,
+    "Try an example",
+    "START HERE",
+    `<p class="dialog-lead">Choose one, then press Run or Search. Start with the first example.</p><div class="demo-grid">${starters.map((i, n) => card(i, n + 1)).join("")}</div><details class="more-demos"><summary>More topics · caching, permissions, MCP, and saved work</summary><div class="demo-grid">${demos
+      .map((_, i) => i)
+      .filter((i) => !starters.includes(i))
+      .map((i, n) => card(i, n + 5))
+      .join(
+        "",
+      )}</div></details><p class="small muted">Offline practice follows a fixed example. Use a live model to try different instructions. All fixes affect the practice checkout only.</p>`,
   );
 }
 function drawDemo() {
@@ -332,17 +355,17 @@ function drawDemo() {
 }
 function operationView() {
   const e = S.events.at(-1);
-  let title = "Ready to investigate",
-    detail = "Choose a demo or enter a task.",
+  let title = "Ready to help",
+    detail = "Choose an example, then press Run.",
     symbol = "terminal";
   if (e) {
     title =
       {
-        model_request: "Model requested",
-        model: "Model response received",
-        tool: "Tool result received",
-        mcp_connected: "MCP connected",
-        proposal_prepared: "Change proposal prepared",
+        model_request: "The AI is choosing the next check",
+        model: "The AI replied",
+        tool: toolNames[e.tool] || "A check finished",
+        mcp_connected: "The tools are connected",
+        proposal_prepared: "A fix is ready to review",
         approval_denied: "Approval denied",
         approval_decision: "Human decision recorded",
         change_applied: "Change applied",
@@ -359,19 +382,23 @@ function operationView() {
           ? "shield"
           : "terminal";
   }
+  if (S.run && !S.busy && !S.run.proposal) {
+    title = "Checks finished";
+    detail = "Read the findings, or ask for a suggested fix.";
+  }
   if (S.run?.waiting_for_approval && !S.busy) {
     title = "Waiting for human approval";
     detail = "Review the exact change before execution.";
     symbol = "shield";
   }
   if (S.run?.health?.http_status === 200) {
-    title = "Checkout recovered · HTTP 200";
+    title = "Checkout is working again";
     detail = "Approved change applied and verified.";
     symbol = "check";
   }
   if (S.error || S.run?.error) {
     title = "Operation stopped";
-    detail = S.error || S.run.error;
+    [title, detail] = explainError(S.error || S.run.error);
     symbol = "stop";
   }
   if (S.deciding) {
@@ -389,7 +416,7 @@ function graphView(harness) {
   function node(css, title, symbol, meta, action, section = "") {
     return `<button class="map-node ${css}" data-action="${action}" ${section ? `data-section="${section}"` : ""}><span class="map-icon">${icon(symbol)}</span><strong>${title}</strong><small>${esc(meta)}</small></button>`;
   }
-  return `<div class="harness-map" aria-label="Agent components and execution connections"><svg class="map-lines" viewBox="0 0 600 300" preserveAspectRatio="none" aria-hidden="true"><defs><marker id="flow-arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse"><path d="M0 0 6 3 0 6"/></marker></defs><path class="path-prompt" d="M174 73H225" marker-end="url(#flow-arrow)"/><path class="path-tools" d="M374 64H425" marker-end="url(#flow-arrow)"/><path class="path-result" d="M425 91H374" marker-end="url(#flow-arrow)"/><path class="path-rag" d="M500 122V176" marker-end="url(#flow-arrow)"/><path class="path-review" d="M300 122V176" marker-end="url(#flow-arrow)"/><path class="path-execute" d="M225 225H174" marker-end="url(#flow-arrow)"/></svg>${node("map-prompt", "Prompt", "file", "SYSTEM", "prompt")}${node("map-model " + (S.busy && S.events.at(-1)?.kind === "model_request" ? "active" : ""), "Model", "cpu", S.config.mode === "offline" ? "Fixture" : S.config.mode, "model")}${node("map-tools " + (connected ? "visited" : ""), "MCP tools", "network", connected ? "Connected" : harness.mcp.transport, "inspect-section", "mcp")}${node("map-rag " + (retrievedCount ? "visited" : ""), "RAG", "database", retrievedCount !== undefined ? retrievedCount + " chunks" : S.sources.length + " sources", "inspect-section", "rag")}${node("map-review " + (pending ? "waiting" : "") + (done ? " visited" : ""), "Approval", "shield", pending ? "Waiting" : S.run?.proposal?.status || "Human gate", "approval-focus")}${node("map-execute " + (done ? "visited" : ""), "Execute", "terminal", done ? "HTTP 200" : S.run?.result ? "Verified" : "Idle", "inspect-section", "state")}</div>`;
+  return `<div class="harness-map" aria-label="Agent components and execution connections"><svg class="map-lines" viewBox="0 0 600 300" preserveAspectRatio="none" aria-hidden="true"><defs><marker id="flow-arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse"><path d="M0 0 6 3 0 6"/></marker></defs><path class="path-prompt" d="M174 73H225" marker-end="url(#flow-arrow)"/><path class="path-tools" d="M374 64H425" marker-end="url(#flow-arrow)"/><path class="path-result" d="M425 91H374" marker-end="url(#flow-arrow)"/><path class="path-rag" d="M500 122V176" marker-end="url(#flow-arrow)"/><path class="path-review" d="M300 122V176" marker-end="url(#flow-arrow)"/><path class="path-execute" d="M225 225H174" marker-end="url(#flow-arrow)"/></svg>${node("map-prompt", "Rules", "file", "System prompt", "prompt")}${node("map-model " + (S.busy && S.events.at(-1)?.kind === "model_request" ? "active" : ""), "AI", "cpu", S.config.mode === "offline" ? "Fixture" : S.config.mode, "model")}${node("map-tools " + (connected ? "visited" : ""), "Tools", "network", connected ? "MCP · connected" : "MCP connection", "inspect-section", "mcp")}${node("map-rag " + (retrievedCount ? "visited" : ""), "Company notes", "database", retrievedCount !== undefined ? retrievedCount + " notes · RAG" : S.sources.length + " files · RAG", "inspect-section", "rag")}${node("map-review " + (pending ? "waiting" : "") + (done ? " visited" : ""), "Approval", "shield", pending ? "Waiting" : S.run?.proposal?.status || "A person decides", "approval-focus")}${node("map-execute " + (done ? "visited" : ""), "Apply fix", "terminal", done ? "HTTP 200" : S.run?.result ? "Verified" : "Idle", "inspect-section", "state")}</div>`;
 }
 function harnessView() {
   const h = S.harness;
@@ -422,7 +449,7 @@ function ragView() {
   const rag = S.harness?.rag;
   if (!rag) return '<p class="small muted">Connect to inspect.</p>';
   const result = S.ragProbe || retrieved();
-  return `<div class="component-strip">${icon("database")}<strong>Chroma</strong>${badge(rag.embedding)}<span>${S.sources.length} sources</span></div><form id="rag-form" class="search-form"><label class="sr-only" for="rag-query">Retrieval probe query</label><input id="rag-query" required maxlength="1200" placeholder="Search company knowledge…" value="${esc(S.ragQuery)}"><button class="quiet-button" type="submit" aria-label="Retrieve chunks">${icon("search")}</button></form><div class="inspector-subtabs"><button data-action="rag-results" class="${S.ragTab === "results" ? "active" : ""}">Chunks ${result?.results?.length ?? 0}</button><button data-action="rag-corpus" class="${S.ragTab === "corpus" ? "active" : ""}">Files ${S.sources.length}</button></div>${S.ragTab === "results" ? (result ? `<div class="result-tags">${badge(S.ragProbe ? "Probe" : "Agent context")}${badge(result.cache_hit ? "Cache hit" : "Fresh")}</div>${result.results.length ? result.results.map((item) => `<article class="rag-excerpt"><button class="text-button" data-action="source" data-id="${esc(item.source)}">${icon("file")}${esc(item.source)} ${icon("up-right")}</button><p>${esc(item.text)}</p><small>${esc(item.location)} · ${esc(item.similarity)} similarity</small></article>`).join("") : '<p class="small muted">No matches.</p>'}` : '<div class="visual-empty">' + icon("search") + "<span>Run the agent or search.</span></div>") : S.sources.map((item) => `<button class="source-row" data-action="source" data-id="${esc(item.id)}"><span class="file-format">${esc(item.file.split(".").at(-1).toUpperCase())}</span><div><strong>${esc(item.title)}</strong><small>v${esc(item.version)}${item.access === "approver" ? " · Approver" : ""}</small></div>${icon("chevron")}</button>`).join("")}<details class="inspect-details" data-key="rag-config"><summary>${icon("code")} Retrieval config</summary><div>${values(
+  return `<div class="component-strip">${icon("database")}<strong>Company notes</strong>${badge(rag.embedding)}<span>${S.sources.length} sources</span></div><form id="rag-form" class="search-form"><label class="sr-only" for="rag-query">Retrieval probe query</label><input id="rag-query" required maxlength="1200" placeholder="Ask about the company notes…" value="${esc(S.ragQuery)}"><button class="quiet-button" type="submit" aria-label="Retrieve chunks">${icon("search")}</button></form><div class="inspector-subtabs"><button data-action="rag-results" class="${S.ragTab === "results" ? "active" : ""}">Chunks ${result?.results?.length ?? 0}</button><button data-action="rag-corpus" class="${S.ragTab === "corpus" ? "active" : ""}">Files ${S.sources.length}</button></div>${S.ragTab === "results" ? (result ? `<div class="result-tags">${badge(S.ragProbe ? "Probe" : "Agent context")}${badge(result.cache_hit ? "Saved result · cache hit" : "New search · fresh")}</div>${result.results.length ? result.results.map((item) => `<article class="rag-excerpt"><button class="text-button" data-action="source" data-id="${esc(item.source)}">${icon("file")}${esc(item.source)} ${icon("up-right")}</button><p>${esc(item.text)}</p><small>${esc(item.location)} · ${esc(item.similarity)} similarity</small></article>`).join("") : '<p class="small muted">No matches.</p>'}` : '<div class="visual-empty">' + icon("search") + "<span>Ask a question above, then press Search.</span></div>") : S.sources.map((item) => `<button class="source-row" data-action="source" data-id="${esc(item.id)}"><span class="file-format">${esc(item.file.split(".").at(-1).toUpperCase())}</span><div><strong>${esc(item.title)}</strong><small>v${esc(item.version)}${item.access === "approver" ? " · Approver" : ""}</small></div>${icon("chevron")}</button>`).join("")}<details class="inspect-details" data-key="rag-config"><summary>${icon("code")} Retrieval config</summary><div>${values(
     [
       ["Embedding", rag.embedding_model],
       [
@@ -436,7 +463,7 @@ function ragView() {
 }
 function mcpView() {
   const discovery = S.mcp;
-  return `<div class="component-strip">${icon("network")}<strong>MCP</strong>${badge(S.harness?.mcp.transport || "—")}<button class="icon-button" data-action="discover" aria-label="Discover MCP tools" title="Discover tools">${icon("refresh")}</button></div>${discovery?.loading ? '<div class="visual-empty"><span class="spinner"></span><span>Discovering…</span></div>' : discovery?.error ? `<div class="inline-notice error">${esc(discovery.error)}</div>` : discovery?.tools ? `<div class="result-tags">${badge(discovery.tools.length + " discovered", "success")}</div><div class="mcp-tool-grid">${discovery.tools.map((tool, i) => `<button class="mcp-tool-node" data-action="mcp-schema" data-index="${i}">${icon(tool.name === "search_runbooks" ? "database" : tool.name === "prepare_change" ? "shield" : "terminal")}<strong>${esc(tool.name)}</strong>${icon("up-right")}</button>`).join("")}</div>` : '<div class="visual-empty">' + icon("network") + '<button class="quiet-button" data-action="discover">Discover tools</button></div>'}`;
+  return `<div class="component-strip">${icon("network")}<strong>Tool connections · MCP</strong>${badge(S.harness?.mcp.transport || "—")}<button class="icon-button" data-action="discover" aria-label="Discover MCP tools" title="Discover tools">${icon("refresh")}</button></div>${discovery?.loading ? '<div class="visual-empty"><span class="spinner"></span><span>Discovering…</span></div>' : discovery?.error ? errorCard(discovery.error) : discovery?.tools ? `<div class="result-tags">${badge(discovery.tools.length + " discovered", "success")}</div><div class="mcp-tool-grid">${discovery.tools.map((tool, i) => `<button class="mcp-tool-node" data-action="mcp-schema" data-index="${i}">${icon(tool.name === "search_runbooks" ? "database" : tool.name === "prepare_change" ? "shield" : "terminal")}<strong>${esc(toolNames[tool.name] || tool.name)}</strong>${icon("up-right")}</button>`).join("")}</div>` : '<div class="visual-empty">' + icon("network") + '<button class="quiet-button" data-action="discover">Find available tools</button></div>'}`;
 }
 function toolsView() {
   const event = S.selectedTool;
@@ -444,7 +471,7 @@ function toolsView() {
 }
 function stateView() {
   const run = S.run;
-  return `<div class="component-strip">${icon("grid")}<strong>State</strong>${badge(S.harness?.checkpoint || "SQLite")}<button class="icon-button" data-action="refresh" aria-label="Refresh saved state">${icon("refresh")}</button></div>${
+  return `<div class="component-strip">${icon("grid")}<strong>Saved work</strong>${badge(S.harness?.checkpoint || "SQLite")}<button class="icon-button" data-action="refresh" aria-label="Refresh saved state">${icon("refresh")}</button></div>${
     run
       ? `<div class="state-tiles"><span>${icon("activity")}<strong>${esc(run.health?.http_status || "—")}</strong><small>Checkout HTTP</small></span><span>${icon("shield")}<strong>${run.waiting_for_approval ? "Paused" : S.busy ? "Running" : "Settled"}</strong><small>Checkpoint</small></span></div><div class="inspect-section">${values(
           [
@@ -455,7 +482,7 @@ function stateView() {
                 (S.busy ? "investigate" : "none"),
             ],
           ],
-        )}</div><details class="inspect-details" data-key="state-json" open><summary>${icon("code")} State JSON</summary><pre>${esc(json(run))}</pre></details>`
+        )}</div><details class="inspect-details" data-key="state-json"><summary>${icon("code")} Technical details · saved state</summary><pre>${esc(json(run))}</pre></details>`
       : '<div class="visual-empty">' +
         icon("grid") +
         "<span>No active session.</span></div>"
@@ -474,7 +501,19 @@ function drawInspector() {
     tools: toolsView,
     state: stateView,
   };
-  node.innerHTML = functions[S.tab]();
+  const introductions = {
+    harness:
+      "An agent checks tools and company notes to help with a task. A person approves any change.",
+    rag: "RAG: find useful passages in company documents for the AI to read.",
+    mcp: "MCP: a standard way for the app to discover and connect tools.",
+    tools:
+      "A tool is a function the AI can ask the app to run. Click one to see its inputs.",
+    state:
+      "Saved work keeps the task and approval record so you can open them again.",
+  };
+  node.innerHTML =
+    `<p class="concept-intro">${esc(introductions[S.tab])}</p>` +
+    functions[S.tab]();
   node.setAttribute("aria-labelledby", "tab-" + S.tab);
   $$("details[data-key]", node).forEach((item) => {
     if (open.has(item.dataset.key)) item.open = true;
@@ -504,11 +543,11 @@ function group(event) {
 }
 function describe(event) {
   if (event.kind === "model_request")
-    return `turn ${event.turn} · ${event.message_count} messages · ${event.tool_count} tools`;
+    return `Step ${event.turn} · choosing from ${event.tool_count} tools`;
   if (event.kind === "model")
     return `${event.model || event.mode} · ${event.requested_tools?.length ?? "—"} requested tools`;
   if (event.kind === "tool")
-    return `${event.tool} · ${event.duration_ms ?? "—"} ms`;
+    return `${toolNames[event.tool] || event.tool} · ${event.duration_ms ?? "—"} ms`;
   if (event.kind === "mcp_connected")
     return `${event.transport} · ${event.tools?.length ?? 0} tools discovered`;
   if (event.kind === "approval_denied")
@@ -537,7 +576,7 @@ function drawEvents() {
     ? filtered
         .map(
           ({ event, index }) =>
-            `<button class="event-row ${group(event)}" data-action="event" data-index="${index}"><time>${event.at ? esc(new Date(event.at * 1000).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })) : "—"}</time><span class="event-kind">${esc(event.kind)}</span><span class="event-description">${esc(describe(event))}</span></button>`,
+            `<button class="event-row ${group(event)}" data-action="event" data-index="${index}"><time>${event.at ? esc(new Date(event.at * 1000).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })) : "—"}</time><span class="event-kind">${esc(eventNames[event.kind] || event.kind)}</span><span class="event-description">${esc(describe(event))}</span></button>`,
         )
         .join("")
     : '<p class="event-empty">' +
@@ -566,7 +605,7 @@ function drawHeader() {
     : "Model keys stay on the server.";
   $("#composer-hint").textContent = S.busy
     ? "Running…"
-    : "Human approval required for changes.";
+    : "A person must approve any fix.";
 }
 function render() {
   drawHeader();
@@ -666,7 +705,7 @@ async function begin(question) {
     S.controller = null;
     remember();
     render();
-    if (S.run?.proposal) notice("The agent paused for a human decision.");
+    if (S.run?.proposal) notice("A fix is ready. A person needs to review it.");
   }
 }
 async function loadRun(id) {
@@ -712,7 +751,7 @@ async function decide(approve, denial = false) {
           "/incidents/" + encodeURIComponent(S.run.incident_id) + "/trace",
         )
       ).events;
-      notice("API denied Bagha’s approval (403). The simulator is unchanged.");
+      notice("Bagha cannot approve this fix (403). Nothing was changed.");
     } else {
       S.error = error.message;
       notice(error.message, true);
