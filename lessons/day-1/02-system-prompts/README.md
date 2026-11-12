@@ -1,8 +1,10 @@
 # Give the assistant a clear job
 
+Application commands and paths below refer to the standalone [`runbookops`](https://github.com/TrainWithShubham/runbookops) checkout. Course exercises are the exception where noted.
+
 Time: 20 minutes.
 
-Start with `exercises/system_prompt.txt`. It contains a deliberately vague instruction. Compare it with `SYSTEM` in `src/runbookops/models.py`.
+Start with `exercises/system_prompt.txt` in the course checkout. Copy its contents into `.state/system_prompt.txt` in the RunbookOps checkout after completing preflight. It contains a deliberately vague instruction. Compare it with `SYSTEM` in `src/runbookops/models.py`.
 
 Ask Claude Code or Codex:
 
@@ -11,8 +13,8 @@ Ask Claude Code or Codex:
 Run the first-call example before and after editing its exercise prompt:
 
 ```bash
-uv run python examples/first_call.py --prompt-file exercises/system_prompt.txt
-uv run python examples/first_call.py --mode openrouter --prompt-file exercises/system_prompt.txt
+uv run python examples/first_call.py --prompt-file .state/system_prompt.txt
+uv run python examples/first_call.py --mode openrouter --prompt-file .state/system_prompt.txt
 ```
 
 A useful answer says what is known and what must still be checked. It should not claim to have read logs or changed a configuration when it has done neither.

@@ -1,6 +1,8 @@
 # Open this before teaching
 
-The implementation is on `v2` in this `repository` directory. The previous course is preserved separately on `v1`. The course editions are published on separate branches; `main` remains unchanged and no PR was created.
+Run application commands from the standalone [`runbookops`](https://github.com/TrainWithShubham/runbookops) checkout; this repository contains the teaching material.
+
+The teaching material is on `v2`; the application is on `main` in the separate RunbookOps repository. The previous course is preserved separately on `v1`. The course editions are published on separate branches; `main` remains unchanged and no PR was created.
 
 ## First five minutes
 
@@ -49,7 +51,7 @@ uv run python scripts/trace_report.py --input instructor/evidence/openrouter-cap
 
 Recheck the named free model on November 13, rehearse the lesson timing, and send the [setup instructions](../lessons/00-setup/README.md). A small volunteer rehearsal is still useful for finding laptop and network issues. The technical checks do not substitute for that rehearsal.
 
-After the workshop, use the project [cleanup instructions](../deploy/agentcore/README.md#cleanup). The AWS resources remain available until you run cleanup.
+After the workshop, use the project [cleanup instructions](https://github.com/TrainWithShubham/runbookops/blob/main/deploy/agentcore/README.md#cleanup). The AWS resources remain available until you run cleanup.
 
 ## Visual teaching harness
 
@@ -57,4 +59,4 @@ After the workshop, use the project [cleanup instructions](../deploy/agentcore/R
 uv run runbookops --mode offline serve --demo-auth --port 8002
 ```
 
-Open `http://127.0.0.1:8002/`. Use Bagha for investigation and Jethalal for approval. The TWS purple/gold boxes expose prompts, model calls, RAG chunks, MCP discovery, tools, and state without a separate frontend setup. See [the run guide](../RUNBOOK.md).
+Open `http://127.0.0.1:8002/`. Use Bagha for investigation and Jethalal for approval. The TWS purple/gold boxes expose prompts, model calls, RAG chunks, MCP discovery, tools, and state without a separate frontend setup. See [the run guide](https://github.com/TrainWithShubham/runbookops/blob/main/RUNBOOK.md).

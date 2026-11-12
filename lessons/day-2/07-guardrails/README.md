@@ -1,5 +1,7 @@
 # Try the requests the agent should refuse
 
+Application commands and paths below refer to the standalone [`runbookops`](https://github.com/TrainWithShubham/runbookops) checkout. Course exercises are the exception where noted.
+
 Time: 15 minutes.
 
 Read `suspicious-note.txt`. It contains an injected instruction telling the assistant to skip approval. The text is retrieval data; it cannot change the server's role mapping or authorize execution.

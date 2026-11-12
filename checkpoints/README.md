@@ -1,5 +1,7 @@
 # Recover during a lab
 
+Application commands and paths below refer to the standalone [`runbookops`](https://github.com/TrainWithShubham/runbookops) checkout. Course exercises are the exception where noted.
+
 The repository contains a completed application and short isolated examples. You can return to a working flow without discarding your changes.
 
 | Point in the course | Recovery command |
@@ -12,7 +14,7 @@ The repository contains a completed application and short isolated examples. You
 | Approval and full recovery | `uv run runbookops demo` |
 | Identity checks | `uv run python scripts/demo_identity.py` |
 | Outcome evaluation | `uv run runbookops evaluate` |
-| Completed health exercise | `uv run python scripts/check_exercise.py health --solution` |
+| Completed health exercise | `python3 scripts/check_exercise.py health --solution` (course checkout) |
 
 Offline commands need no API key. For a live example, add its documented mode flag. Keep live requests limited; restarting a demo creates a new isolated simulator incident rather than deleting your previous evidence.
 

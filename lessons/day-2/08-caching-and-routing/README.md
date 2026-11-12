@@ -1,5 +1,7 @@
 # Avoid repeating work
 
+Application commands and paths below refer to the standalone [`runbookops`](https://github.com/TrainWithShubham/runbookops) checkout. Course exercises are the exception where noted.
+
 Time: 15 minutes.
 
 Run the cache example:

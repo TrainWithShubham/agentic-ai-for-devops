@@ -1,5 +1,7 @@
 # Read Nattu Kaka's records
 
+Application commands and paths below refer to the standalone [`runbookops`](https://github.com/TrainWithShubham/runbookops) checkout. Course exercises are the exception where noted.
+
 Time: 40 minutes.
 
 Open `resources/company-knowledge`. The change policy is PDF, the incident report is DOCX, the architecture is PPTX, the runbook is Markdown, and support notes are plain text. The files and incident are synthetic.

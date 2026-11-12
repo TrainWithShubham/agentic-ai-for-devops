@@ -1,5 +1,7 @@
 # November delivery plan
 
+Run application commands from the standalone [`runbookops`](https://github.com/TrainWithShubham/runbookops) checkout; this repository contains the teaching material.
+
 Course dates: 14 and 15 November 2026. Expected attendance: 50 to 100. Each day is 180 minutes including breaks and questions. Exact start times are not yet specified.
 
 ## Before the first session

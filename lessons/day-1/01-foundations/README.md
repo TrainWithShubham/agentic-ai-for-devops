@@ -1,5 +1,7 @@
 # What makes it an agent?
 
+Application commands and paths below refer to the standalone [`runbookops`](https://github.com/TrainWithShubham/runbookops) checkout. Course exercises are the exception where noted.
+
 Time: 25 minutes, after the opening incident demo.
 
 Bagha reports that checkout fails while the catalogue still works. Ask the class what they would check. Then compare pasting the error into a chatbot, running a fixed script, and letting an agent choose among operational tools.

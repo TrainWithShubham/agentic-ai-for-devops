@@ -1,5 +1,7 @@
 # Teaching notes
 
+Run application commands from the standalone [`runbookops`](https://github.com/TrainWithShubham/runbookops) checkout; this repository contains the teaching material.
+
 Use the [timed curriculum](../CURRICULUM.md) and [lesson index](../lessons/README.md). Keep the Gada Electronics story in the incident messages and permission examples. Keep the code, runbooks, and results professional. Every technical explanation should work for someone who has not watched the show.
 
 ## Rehearse before the event

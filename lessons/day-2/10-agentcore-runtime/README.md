@@ -1,10 +1,12 @@
 # Run the same graph on AgentCore Runtime
 
+Application commands and paths below refer to the standalone [`runbookops`](https://github.com/TrainWithShubham/runbookops) checkout. Course exercises are the exception where noted.
+
 Time: 30-minute instructor demonstration.
 
 Learners inspect the adapter and cloud evidence. They do not need AWS credentials or a cloud deployment to finish the local capstone.
 
-Read [the instructor deployment guide](../../../deploy/agentcore/README.md). AgentCore Runtime hosts our LangGraph application. AgentCore Harness provides a separate managed loop; it is not the host for this custom graph.
+Read [the instructor deployment guide](https://github.com/TrainWithShubham/runbookops/blob/main/deploy/agentcore/README.md). AgentCore Runtime hosts our LangGraph application. AgentCore Harness provides a separate managed loop; it is not the host for this custom graph.
 
 The instructor shows the ARM64 image, `/ping` and `/invocations`, Runtime IAM admission, and the forwarded signed application identity. The local development issuer is kept separate from production identity-provider guidance.
 

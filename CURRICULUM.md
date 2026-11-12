@@ -1,5 +1,7 @@
 # Agentic AI for DevOps: from ChatGPT to an operational agent
 
+Repository layout: lessons and exercises live here. [Module 6](module-6/README.md) links to the standalone [RunbookOps application](https://github.com/TrainWithShubham/runbookops). Unless explicitly marked as a course exercise, all runnable commands and application paths below refer to that application checkout.
+
 **Dates:** 14 and 15 November 2026, live online, 180 minutes each including breaks and Q&A.  
 **Class size:** 50 to 100 attendees.
 
@@ -409,7 +411,7 @@ The deployed capstone uses the same in-process MCP server as the laptop. This ke
 5. Explain IAM admission separately from the signed application identity forwarded in an allowlisted header. This is a workshop JWT demonstration. A production OAuth issuer and user consent flow are extensions.
 6. Inspect sanitized JSON events in CloudWatch. Full managed trace instrumentation is not assumed or claimed.
 7. Use the supplied seeded checkout alert and invocation client. Building monitoring/alert delivery infrastructure remains an extension.
-8. Keep the saved cloud evidence and local demo available if live services fail. Deployment, update, and cleanup instructions are included under [deploy/agentcore](deploy/agentcore/README.md).
+8. Keep the saved cloud evidence and local demo available if live services fail. Deployment, update, and cleanup instructions are included under [deploy/agentcore](https://github.com/TrainWithShubham/runbookops/blob/main/deploy/agentcore/README.md).
 
 Bedrock Knowledge Bases, Gateway, Identity token-vault integrations, and managed Harness creation are optional extensions. Do not provision all AgentCore capabilities to demonstrate this one hosted agent. If service access fails, use the labeled saved evidence and preserve the local acceptance run.
 

@@ -1,5 +1,7 @@
 # Who can approve the correction?
 
+Application commands and paths below refer to the standalone [`runbookops`](https://github.com/TrainWithShubham/runbookops) checkout. Course exercises are the exception where noted.
+
 Time: 20 minutes for identity and 25 minutes for approval.
 
 Bagha can investigate and prepare a change. Nattu Kaka can access the support records assigned to the viewer role. Jethalal can approve or reject a proposal. Local `--as` is a development shortcut; the HTTP API validates a signed token and maps its subject to the server's permission table.

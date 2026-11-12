@@ -1,6 +1,8 @@
 # Lesson index
 
-Start with [setup](00-setup/README.md). The full timing is in [the curriculum](../CURRICULUM.md).
+Application commands and paths below refer to the standalone [`runbookops`](https://github.com/TrainWithShubham/runbookops) checkout. Course exercises are the exception where noted.
+
+The completed project is linked from [module 6](../module-6/README.md). Start with [setup](00-setup/README.md). The full timing is in [the curriculum](../CURRICULUM.md).
 
 ## Day 1
 

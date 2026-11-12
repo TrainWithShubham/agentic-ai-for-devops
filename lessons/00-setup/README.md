@@ -2,9 +2,11 @@
 
 Complete this before November 14. No AWS account or paid model credits are required for the learner path.
 
-Install Python through uv, open the repository folder, and run:
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/), clone the standalone application, and run:
 
 ```bash
+git clone https://github.com/TrainWithShubham/runbookops.git
+cd runbookops
 uv sync --frozen
 cp .env.example .env
 uv run runbookops preflight
@@ -31,4 +33,6 @@ uv run runbookops --embedding semantic search "checkout payment connection refus
 
 Use a laptop with roughly 8 GB RAM or the supplied Codespaces devcontainer. The semantic model downloads once; local generative-model inference is not required. Windows learners can use PowerShell for the `uv` commands; use `Copy-Item .env.example .env` for the copy step.
 
-If model access fails, keep working with `--mode offline`. Hash embeddings are a lexical fallback, explicitly separate from the downloaded semantic model. See [troubleshooting](../../docs/TROUBLESHOOTING.md).
+If model access fails, keep working with `--mode offline`. Hash embeddings are a lexical fallback, explicitly separate from the downloaded semantic model. See [troubleshooting](https://github.com/TrainWithShubham/runbookops/blob/main/docs/TROUBLESHOOTING.md).
+
+Run application commands in the `runbookops` checkout. Keep the course checkout open for lessons and exercises. The Codespaces devcontainer is in the application repository.

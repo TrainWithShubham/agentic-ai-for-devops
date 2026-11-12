@@ -1,3 +1,5 @@
+> Historical results from before the repository split. Application source and current verification now live in [RunbookOps](https://github.com/TrainWithShubham/runbookops).
+
 # Verification on 11 November 2026
 
 The learner capstone and instructor cloud demonstration were run successfully. These results apply to this branch and the tested environment: macOS ARM64, uv 0.10.2, Python 3.12.12, and the committed lockfile. The cloud image is Linux ARM64.
@@ -113,13 +115,13 @@ The earlier NVIDIA route timed out at 60 seconds on both the user run and a dire
 
 Nova Lite (`us.amazon.nova-lite-v1:0`, `us-east-1`) passed a real CLI capstone, including restart/resume and denied/authorized approval. It also passed permission-claim and unsafe-command checks without an unauthorized simulator change. A separate local server runs on port 8004. In Safari, the updated app called all five tools, retrieved runbook evidence, denied Bagha's approval, and recovered checkout to HTTP 200 after Jethalal approved. The browser investigation used five model calls in about seven seconds. The CLI baseline used two calls in 4.43 seconds; order and counts vary.
 
-Filtered Nova's tagged reasoning text before public persistence and verified the new browser trace contains none. Full suite: 41 passed, one optional test skipped; Ruff and 34-file local-link checks passed. No cloud hosting resources were created. Existing local AWS credentials authenticated the real calls; a Bedrock bearer API key was not configured or tested. Evidence: `instructor/evidence/bedrock-local-verification.json`. Setup: [Bedrock demo](../docs/BEDROCK_DEMO.md).
+Filtered Nova's tagged reasoning text before public persistence and verified the new browser trace contains none. Full suite: 41 passed, one optional test skipped; Ruff and 34-file local-link checks passed. No cloud hosting resources were created. Existing local AWS credentials authenticated the real calls; a Bedrock bearer API key was not configured or tested. Evidence: `instructor/evidence/bedrock-local-verification.json`. Setup: [Bedrock demo](https://github.com/TrainWithShubham/runbookops/blob/main/docs/BEDROCK_DEMO.md).
 
 ### Beginner prompts and UI — November 12
 
 The short question “Customers cannot pay at Gada Electronics. Can you check what is wrong?” returned a diagnosis after health, logs, and deployment checks. The separate prompt “Checkout is not working. Suggest a fix, but ask a person before changing anything.” invoked all five tools and prepared a pending proposal in 3.34 seconds on Nova Lite, with two model calls. No fix was applied. Evidence: `instructor/evidence/beginner-prompt.json`.
 
-Safari desktop showed friendly tool labels, collapsed replies/metadata, and four starter cards with six more under a disclosure. Regression results: 41 Python tests passed, one optional skip; four Node error-guidance tests passed (`node --test tests/ui_learning.test.mjs`). Ruff, syntax checks, and local links in 35 Markdown files passed. Phone-sized layouts were not rechecked in this pass. Start with [the beginner walkthrough](../docs/BEGINNER_DEMO.md).
+Safari desktop showed friendly tool labels, collapsed replies/metadata, and four starter cards with six more under a disclosure. Regression results: 41 Python tests passed, one optional skip; four Node error-guidance tests passed (`node --test tests/ui_learning.test.mjs`). Ruff, syntax checks, and local links in 35 Markdown files passed. Phone-sized layouts were not rechecked in this pass. Start with [the beginner walkthrough](https://github.com/TrainWithShubham/runbookops/blob/main/docs/BEGINNER_DEMO.md).
 
 ### Complete application coverage — November 12
 
@@ -127,4 +129,4 @@ Final local results: **144 Python tests passed**, **32 JavaScript tests passed**
 
 The final Safari desktop flow used Nova Lite on port 8004: simple prompt → required checks and runbook → pending proposal → viewer denial → authorized review/approval → HTTP 200. The completion reminder was exercised in this real browser run. Five MCP tools were discovered, semantic RAG results were inspected, the repeated query showed a cache hit, and both themes were checked.
 
-Earlier repeated live attempts did reveal missing proposal/completion and runbook retrieval failures. The app now gives bounded corrective guidance; the final four-scenario live suite passed. This is sampled live verification, not a guarantee of deterministic model quality. Contract tests cover PostgreSQL/checkpointer wiring; Moto covers DynamoDB; JSDOM covers UI logic; provider contracts use mock transports/Stubber. Real production infrastructure, other browsers, and phone-sized layouts were not tested in this pass. No AWS hosting resources were created. Follow [Testing](../docs/TESTING.md); summary: `instructor/evidence/test-coverage.json`.
+Earlier repeated live attempts did reveal missing proposal/completion and runbook retrieval failures. The app now gives bounded corrective guidance; the final four-scenario live suite passed. This is sampled live verification, not a guarantee of deterministic model quality. Contract tests cover PostgreSQL/checkpointer wiring; Moto covers DynamoDB; JSDOM covers UI logic; provider contracts use mock transports/Stubber. Real production infrastructure, other browsers, and phone-sized layouts were not tested in this pass. No AWS hosting resources were created. Follow [Testing](https://github.com/TrainWithShubham/runbookops/blob/main/docs/TESTING.md); summary: `instructor/evidence/test-coverage.json`.

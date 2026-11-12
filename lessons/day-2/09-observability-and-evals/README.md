@@ -1,5 +1,7 @@
 # Show what happened and check the result
 
+Application commands and paths below refer to the standalone [`runbookops`](https://github.com/TrainWithShubham/runbookops) checkout. Course exercises are the exception where noted.
+
 Time: 20 minutes.
 
 ```bash

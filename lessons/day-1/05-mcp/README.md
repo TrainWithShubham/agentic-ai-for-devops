@@ -1,5 +1,7 @@
 # Connect the operational tools
 
+Application commands and paths below refer to the standalone [`runbookops`](https://github.com/TrainWithShubham/runbookops) checkout. Course exercises are the exception where noted.
+
 Time: 30 minutes, followed by the 20-minute integration and Q&A block.
 
 MCP defines how clients discover and call capabilities. The model's tool request is a separate part of the loop. Our client adapts discovered MCP tools to model-visible schemas and validates requests before forwarding them.
