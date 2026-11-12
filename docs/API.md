@@ -14,7 +14,9 @@ Run the complete HTTP exercise without displaying tokens:
 uv run python scripts/demo_api.py
 ```
 
-It verifies anonymous access is denied, starts an investigation as Bagha, attempts approval as Bagha, then approves as Jethalal and checks HTTP 200.
+It verifies anonymous access is denied, starts an investigation as Bagha, attempts approval as Bagha, then approves as Jethalal and checks HTTP 200. If you use another port, pass it explicitly: `uv run python scripts/demo_api.py --base-url http://127.0.0.1:8002`.
+
+See [the run guide](../RUNBOOK.md) for the complete setup and manual browser exercise.
 
 | Method and route | Purpose |
 |---|---|

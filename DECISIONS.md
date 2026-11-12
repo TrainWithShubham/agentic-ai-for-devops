@@ -116,3 +116,9 @@ Verified V1 and original main have identical Git trees. V2 has no tracked legacy
 ## Publish course branches
 
 The instructor explicitly authorized pushing the repository. Publish local `v1` and `v2` to the existing TrainWithShubham repository without force, changing `main`, opening a PR, or deploying AWS resources. The worktree was clean and neither version branch existed remotely before this push.
+
+## Local run and operator guide
+
+The instructor asked to start the project and document the steps. Port 8000 was occupied by an unrelated Docker service, so use localhost port 8002 and leave that service alone. Start the live OpenRouter adapter with the previously authorized external key file and semantic retrieval; do not recreate AWS resources or copy the key into the repository. Add a configurable base URL to the HTTP demo so it can exercise a nondefault port. Provide RUNBOOK.md for setup, offline and live operation, API tokens/approval, evidence, and shutdown.
+
+Verified `/health` and `/docs` returned HTTP 200 on port 8002 with mode `openrouter`. The real HTTP demo passed anonymous denial, viewer approval denial, and authorized recovery to HTTP 200. Lint, Markdown links, and schedule validation passed. Leave the local server running for the instructor; no AWS resources were recreated.

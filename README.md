@@ -8,6 +8,8 @@ The store's online system and incident are fictional. The code operates on a sim
 
 ## Run it
 
+For installation, CLI use, the browser API explorer, live models, and shutdown, follow the [step-by-step run guide](RUNBOOK.md).
+
 Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then run these commands from this repository:
 
 ```bash
