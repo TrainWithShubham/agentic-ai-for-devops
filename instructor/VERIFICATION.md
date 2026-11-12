@@ -108,3 +108,9 @@ The follow-up changed frontend presentation and demo guidance. Seven existing UI
 ### Provider recovery — November 12
 
 The earlier NVIDIA route timed out at 60 seconds on both the user run and a direct inference probe; catalog and key requests returned HTTP 200. Explicitly switched the current free default and the local port-8002 server to `cohere/north-mini-code:free`. The restarted server completed a real streamed investigation in 5.6 seconds with two model calls and a valid proposal. Viewer approval returned 403; authorized approval recovered the simulator to HTTP 200. Sanitized evidence: `instructor/evidence/provider-recovery.json`. Full suite: 38 passed, one optional test skipped; Ruff and 33-file documentation checks passed. No AWS resources were created.
+
+### Local Bedrock app — November 12
+
+Nova Lite (`us.amazon.nova-lite-v1:0`, `us-east-1`) passed a real CLI capstone, including restart/resume and denied/authorized approval. It also passed permission-claim and unsafe-command checks without an unauthorized simulator change. A separate local server runs on port 8004. In Safari, the updated app called all five tools, retrieved runbook evidence, denied Bagha's approval, and recovered checkout to HTTP 200 after Jethalal approved. The browser investigation used five model calls in about seven seconds. The CLI baseline used two calls in 4.43 seconds; order and counts vary.
+
+Filtered Nova's tagged reasoning text before public persistence and verified the new browser trace contains none. Full suite: 41 passed, one optional test skipped; Ruff and 34-file local-link checks passed. No cloud hosting resources were created. Existing local AWS credentials authenticated the real calls; a Bedrock bearer API key was not configured or tested. Evidence: `instructor/evidence/bedrock-local-verification.json`. Setup: [Bedrock demo](../docs/BEDROCK_DEMO.md).

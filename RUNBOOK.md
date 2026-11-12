@@ -168,3 +168,7 @@ For missing dependencies, model limits, occupied ports, token errors, and embedd
 ## Shared-screen demos
 
 Open **Demo prompts** above the conversation for ten guided examples. Select a card, read its observation cue, and press Run or RAG Search. The dark theme uses larger text and controls for screen sharing. Follow [the teaching walkthrough](docs/HARNESS_DEMOS.md) for the suggested order and the separate OAuth, evaluation, and hosting exercises.
+
+## Instructor: Bedrock inference
+
+[Run the local app with Bedrock](docs/BEDROCK_DEMO.md) for the verified Nova Lite configuration, AWS credentials/API-key setup, and the billed capstone check. The instructor Bedrock console is on port 8004. Learners can keep their individual free OpenRouter setup.

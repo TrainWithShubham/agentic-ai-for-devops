@@ -4,6 +4,7 @@ import asyncio
 import hashlib
 import json
 import os
+import re
 import time
 
 import httpx
@@ -53,6 +54,15 @@ class Model:
             ]
             start = time.monotonic()
             message, metadata = await self._complete(messages, tools, task)
+            if message.get("content"):
+                # Some providers put reasoning tags in text instead of a separate metadata block.
+                # Keep them out of replies, diagnoses, and persisted public events, even if unclosed.
+                message["content"] = re.sub(
+                    r"<(thinking|think|analysis)\b[^>]*>.*?(?:</\1\s*>|$)",
+                    "",
+                    message["content"],
+                    flags=re.IGNORECASE | re.DOTALL,
+                ).strip()
             metadata["prompt_version"] = hashlib.sha256(
                 "\n".join(m.get("content") or "" for m in messages if m["role"] == "system").encode()
             ).hexdigest()[:12]

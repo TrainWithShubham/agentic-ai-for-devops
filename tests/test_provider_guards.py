@@ -93,9 +93,30 @@ async def test_provider_connection_error_does_not_expose_exception_details(setti
     monkeypatch.setattr(
         httpx, "AsyncClient", lambda **kwargs: original(transport=httpx.MockTransport(endpoint), **kwargs)
     )
-    model = Model(dataclasses.replace(settings, mode="openrouter", model="example/free:free", api_key="test-only"))
+    model = Model(
+        dataclasses.replace(settings, mode="openrouter", model="example/free:free", api_key="test-only")
+    )
     model.verified.add("example/free:free")
     with pytest.raises(ModelError, match="Check network") as failure:
         await model.complete([{"role": "user", "content": "hello"}])
     assert "private-example-value" not in str(failure.value)
     assert "No fallback" in str(failure.value)
+
+
+@pytest.mark.parametrize(
+    "content",
+    [
+        "<thinking>Internal reasoning</thinking>Public answer.",
+        "Public answer.<think>Internal reasoning",
+        "<ANALYSIS>Internal reasoning</ANALYSIS>Public answer.",
+    ],
+)
+async def test_tagged_reasoning_is_not_exported_as_public_content(settings, monkeypatch, content):
+    model = Model(settings)
+
+    async def response(messages, tools, task):
+        return {"role": "assistant", "content": content}, {"mode": "test"}
+
+    monkeypatch.setattr(model, "_complete", response)
+    message, _ = await model.complete([{"role": "user", "content": "hello"}])
+    assert message["content"] == "Public answer."
