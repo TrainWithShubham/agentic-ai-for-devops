@@ -4,80 +4,87 @@
 04 / Control and approval
 
 
-## What exactly did the reviewer approve?
+## In everyday words
 
-Human-in-the-loop (HITL) review should authorize a specific proposal. The application must bind that decision to the target, parameters and relevant evidence, then recheck before execution.
-
-
-
-**Proposal.** Immutable action details, target and expected preconditions.
+Human approval should allow one exact action. Save what was reviewed and check it again before execution.
 
 
-**Decision.** Authenticated reviewer accepts or rejects that proposal.
+## Picture it
+
+Signing a delivery label approves that parcel and address. It should not approve a different parcel later.
+
+A proposal hash detects changes when compared with trusted data; it does not identify the reviewer.
 
 
-**Execution.** Apply only the approved action under current policy.
+
+**Proposal.** The action, target and parameters.
+
+
+**Decision.** An authorized person accepts or rejects it.
+
+
+**Execution.** Apply only what was approved.
 
 
 ## A proposal has a lifecycle
 
-Use explicit states. A pending proposal is not a queued side effect that should execute automatically after any message containing "yes".
+Record each state. Only an approved, still-valid proposal may reach execution.
 
 
 ### Diagram reading order
 
 
-1. **Prepared:** Action, target, evidence and expiry are recorded.
+1. **Prepared:** Save target, action, evidence and expiry.
 
-2. **Pending review:** Reviewer sees the exact diff and impact.
+2. **Pending review:** Show the exact change.
 
-3. **Decision recorded:** Approval or rejection is tied to this proposal identity.
+3. **Decision recorded:** Bind approval or rejection to this proposal.
 
-4. **Applied + verified:** Execution and post-change evidence are stored separately.
-
-
-
-A hash helps detect a changed proposal when compared with trusted stored data. It does not authenticate the reviewer.
-
-
-## A CI patch changes after review
-
-The reviewer approved adding a test dependency group. The pending patch is later edited to disable tests.
+4. **Applied + verified:** Record the action and observed result.
 
 
 
-1. **Prepare:** Store the exact patch and a server-side proposal digest.
-
-2. **Review:** Show the installation change, validation and expected impact.
-
-3. **Detect change:** The digest or version differs: invalidate approval.
-
-4. **Re-review:** Require a fresh decision on the changed action.
+Rejected means stop. Changed or expired means review again. Use one-time approval and recheck the target before applying.
 
 
+## The patch changed after approval
 
-Use expiry and one-time consumption. Recheck target state to reduce the gap between review and execution.
+The original patch adds a test dependency. The new one disables tests.
+
+
+
+1. **Save:** Store the exact patch and trusted digest.
+
+2. **Review:** Show the proposed change and impact.
+
+3. **Compare:** A changed digest invalidates approval.
+
+4. **Re-review:** Require a decision on the new patch.
+
+
+
+Use expiry and one-time approval. Recheck target state before applying.
 
 
 ## Failure and correction
 
-One approval can be replayed, or a mutable proposal is silently replaced before the executor reads it.
+Reusing an approval or changing the patch after review.
 
 
 
-Persist the reviewed proposal, validate current preconditions and consume approval atomically with the execution claim where possible.
+Bind review to the saved action and prevent replay.
 
 
 ## Engineering review
 
 
-- Bind decision to exact parameters.
+- Exact parameters.
 
-- Reject changed or expired proposals.
+- Trusted reviewer.
 
-- Prevent approval replay.
+- No approval replay.
 
-- Verify the resulting state.
+- Verified result.
 
 
 ## Further reading

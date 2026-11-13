@@ -4,80 +4,87 @@
 03 / Company knowledge
 
 
-## Which passage should the model receive?
+## In everyday words
 
-Search quality depends on what was extracted and how it was split. Embeddings represent content numerically for similarity search; a related vector is not proof of a correct operational answer.
-
-
-
-**Extract.** Inspect the text before choosing a search database.
+Chunks are small pieces of source text. Embeddings turn content into numbers so search can compare related meanings.
 
 
-**Chunk.** Keep a condition and its required action together.
+## Picture it
+
+Use tabs to find a useful passage. Keep the whole instruction on the tabbed section.
+
+Similarity is a search signal, not proof that a passage is true or sufficient.
 
 
-**Rank.** Compare search strategies on reviewed questions.
+
+**Extract.** Read usable text from a file.
+
+
+**Chunk.** Split text without losing its meaning.
+
+
+**Rank.** Order candidate passages by usefulness.
 
 
 ## Preserve meaning across boundaries
 
-A rollback instruction can become misleading if its condition and action land in separate excerpts. Overlap may preserve context, at the cost of repetition.
+Keep a condition and its required action together.
 
 
 ### Diagram reading order
 
 
-1. **Source:** If validation fails, stop promotion and escalate to the service owner.
+1. **Source:** If validation fails, stop promotion and contact the service owner.
 
-2. **Bad split:** A fragment says only: "If validation fails..."
+2. **Bad split:** Only: "If validation fails..."
 
-3. **Useful chunk:** Includes the condition, required action and location.
+3. **Useful chunk:** The condition, action and source location.
 
-4. **Metadata:** Source ID, version, location, permissions and current status.
-
-
-
-Scanned PDFs need OCR. Slide diagrams and complex tables may require additional parsing and human inspection.
-
-
-## A search strategy comparison
-
-The examples are qualitative; they are not retrieval benchmark results.
+4. **Metadata:** Version, location, access and current status.
 
 
 
-1. **Keyword:** Exact names and error codes can be strong lexical signals.
-
-2. **Semantic:** Compatible document/query embeddings help find related meanings.
-
-3. **Hybrid:** Combine lexical and semantic candidates when useful.
-
-4. **Rerank:** Optionally score candidates again before context assembly.
+No chunk size fits every source. Scanned PDFs need OCR. Tables and slide diagrams may need more processing and review.
 
 
+## Different ways to search
 
-Use a labeled question set to compare evidence quality, latency and context size. There is no universal chunk size or top-k value.
+Compare results on questions you can review.
+
+
+
+1. **Keyword:** Useful for exact names and error codes.
+
+2. **Semantic:** Uses compatible document and query embeddings.
+
+3. **Hybrid:** Combines word-based and semantic candidates.
+
+4. **Rerank:** Optionally scores the candidates again.
+
+
+
+No single chunk size or number of results is right for every source.
 
 
 ## Failure and correction
 
-A semantically related incident report displaces the current approval policy, and the answer borrows an outdated procedure.
+A related old incident replaces the current policy in the answer.
 
 
 
-Check eligibility, source freshness and ranked passages before changing the generation prompt. Add the failure to the question set.
+Inspect source eligibility and the ranked text first.
 
 
 ## Engineering review
 
 
-- Inspect extracted text.
+- Read extracted text.
 
-- Keep access metadata attached.
+- Keep access metadata.
 
-- Measure search separately.
+- Test retrieval.
 
-- Review incomplete excerpts.
+- Check source support.
 
 
 ## Further reading

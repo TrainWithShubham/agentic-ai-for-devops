@@ -4,80 +4,87 @@
 Bonus / AgentCore
 
 
-## Which layer do you want managed?
+## In everyday words
 
-AgentCore includes services for running and connecting agents. The key choice is whether you bring an existing agent loop to Runtime or use the managed Harness loop configured for you.
-
-
-
-**Runtime.** Host your code, including a LangGraph application.
+AgentCore Runtime hosts agent code you bring. Managed Harness supplies an agent loop you configure. Choose which layer you want managed.
 
 
-**Managed Harness.** Configure an agent whose orchestration loop is supplied.
+## Picture it
+
+Bring your own furniture to an empty office, or choose a furnished office. Both still need access rules.
+
+The office picture compares responsibility; it is not a promise about pricing or service features.
 
 
-**Supporting services.** Use Gateway, Identity, Memory and observability as appropriate.
+
+**Runtime.** Host your LangGraph or custom agent.
+
+
+**Managed Harness.** Use a supplied, Strands-powered loop.
+
+
+**Other services.** Tools, identity, memory and observability.
 
 
 ## Hosting and orchestration are different
 
-For the course LangGraph design, Runtime hosts the custom loop. Managed Harness is a separate approach powered by Strands; it is not a wrapper that hosts a LangGraph graph unchanged.
+A custom LangGraph loop belongs on Runtime. Managed Harness is a separate approach.
 
 
 ### Diagram reading order
 
 
-1. **Your loop:** LangGraph or custom code deployed to AgentCore Runtime.
+1. **Your loop:** Deploy custom code to Runtime.
 
-2. **Managed loop:** Harness configuration selects model, tools and limits.
+2. **Managed loop:** Configure model, tools and limits.
 
-3. **Tool connection:** Gateway can expose APIs and services as MCP-compatible tools.
+3. **Tool connection:** Gateway can expose MCP-compatible tools.
 
-4. **App boundary:** Your UI/API, user authorization and approval rules remain explicit.
-
-
-
-This is an architecture guide, not a deployment transcript. Verify current service support, quotas, regional availability and pricing before using AWS.
-
-
-## An instructor-only hosted investigation
-
-The browser talks to an authenticated application boundary. AWS credentials stay on the trusted backend.
+4. **App boundary:** Your UI/API still needs approval and access rules.
 
 
 
-1. **Choose:** Keep the LangGraph loop and use Runtime, or adopt managed Harness deliberately.
-
-2. **Configure:** Scope execution roles, tool access, model permissions and request limits.
-
-3. **Observe:** Inspect actual invocation events and durable application state.
-
-4. **Clean up:** Review dedicated resources, logs and storage after the demonstration.
+Architecture only. Managed sessions do not replace approval records. Check tool defaults, invocation overrides, region, quotas and pricing before deployment.
 
 
+## A private instructor demo
 
-Managed sessions and memory do not replace a transactional approval record. Runtime isolation does not define who may approve an application action.
+Keep AWS credentials on the trusted backend.
+
+
+
+1. **Choose:** Custom Runtime code or managed Harness.
+
+2. **Configure:** Scope roles, tools, models and limits.
+
+3. **Observe:** Inspect real invocation events and saved state.
+
+4. **Clean up:** Review dedicated runtime, logs and storage.
+
+
+
+Managed sessions do not replace a durable approval record. Check allowed tool defaults and invocation overrides.
 
 
 ## Failure and correction
 
-A public client forwards arbitrary Harness overrides or exposes broad tools under a shared privileged role.
+Forwarding arbitrary public inputs into a privileged Harness invocation.
 
 
 
-Validate and allowlist invocation inputs, restrict tools and credentials, and keep sensitive overrides behind the application boundary.
+Validate inputs, limit tools and protect credentials.
 
 
 ## Engineering review
 
 
-- Distinguish Runtime and Harness.
+- Runtime or Harness?
 
-- Review allowed tool defaults.
+- Which tools?
 
-- Separate inbound and tool identity.
+- Which identity?
 
-- Check cost and resource lifecycle.
+- Which costs and resources?
 
 
 ## Further reading

@@ -4,24 +4,31 @@
 03 / Company knowledge
 
 
-## How do private documents reach an answer?
+## In everyday words
 
-Retrieval-augmented generation (RAG) supplies external evidence when a model answers. For a deployment question, useful evidence may be a current policy, a rollback checklist or an incident report.
-
-
-
-**Prepare.** Extract useful content and preserve its provenance.
+RAG finds useful source material before the model answers. It can bring current company knowledge into a response.
 
 
-**Retrieve.** Find permitted passages relevant to the question.
+## Picture it
+
+A librarian finds the right page. You read that page to answer the question.
+
+Finding a page does not guarantee the answer uses it correctly.
 
 
-**Generate.** Ask for an answer supported by those passages.
+
+**Retrieve.** Find relevant source passages.
+
+
+**Context.** Give those passages to the model.
+
+
+**Generate.** Write an answer from that evidence.
 
 
 ## Separate preparation from answering
 
-Document changes drive ingestion. Questions drive retrieval. An index needs a refresh strategy; a model prompt cannot repair an ingestion failure.
+Prepare knowledge when documents change. Search it when someone asks a question.
 
 
 ### Diagram reading order
@@ -29,55 +36,55 @@ Document changes drive ingestion. Questions drive retrieval. An index needs a re
 
 1. **Sources:** PDF, DOCX, PPTX, Markdown and text.
 
-2. **Prepare index:** Extract, chunk, attach metadata and optionally embed.
+2. **Prepare index:** Extract, chunk and attach metadata.
 
-3. **Search:** Filter and rank evidence for the current question.
+3. **Search:** Find allowed, current passages.
 
-4. **Answer:** Supply selected text and source locations to the model.
+4. **Answer:** Use their text and cite the location.
 
 
 
-RAG does not require a model-directed agent loop. A fixed retrieve-then-answer workflow is a useful design in its own right.
+A runbook describes policy; live tools show current state. Some search designs need no embeddings. Fixed RAG does not require an agent loop.
 
 
 ## Who approves rollback?
 
-A fictional release policy says production rollback needs incident-commander approval.
+The fictional current policy names the incident commander.
 
 
 
-1. **Question:** Who must approve a production rollback?
+1. **Ask:** Who approves production rollback?
 
-2. **Evidence:** Current policy, section 4, contains the approval rule.
+2. **Find:** Read the current approval policy.
 
-3. **Answer:** The incident commander must approve. Cite that section.
+3. **Answer:** Name the approver and cite the section.
 
-4. **Boundary:** Explaining the approval rule does not grant approval.
+4. **Limit:** Explaining the rule does not grant approval.
 
 
 
-Keep policy knowledge distinct from live deployment state. A document alone cannot establish which release is running.
+A runbook describes policy. Live tools tell you what is running now.
 
 
 ## Failure and correction
 
-The ingestion job fails after the policy changes, but the assistant continues presenting the old rule as current.
+Answering with a retired policy after a failed document refresh.
 
 
 
-Expose the last successful index refresh and source revision. Decide when stale evidence requires a warning or refusal.
+Track source versions and show when knowledge is stale.
 
 
 ## Engineering review
 
 
-- Preserve source locations.
+- Source location.
 
-- Track document lifecycle.
+- Current version.
 
-- Review the selected evidence.
+- Allowed access.
 
-- Disclose missing or stale information.
+- Missing evidence.
 
 
 ## Further reading

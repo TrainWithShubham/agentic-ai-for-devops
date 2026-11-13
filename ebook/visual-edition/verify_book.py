@@ -8,7 +8,8 @@ from pathlib import Path
 from zipfile import ZipFile
 
 import pdfplumber
-from beginner_content import CHAPTERS, PROJECT_CHAPTER, VIDEO_URL
+from beginner_content import PROJECT_CHAPTER, VIDEO_URL
+from plain_content import CHAPTERS
 from pypdf import PdfReader
 from sources import SOURCES
 
@@ -22,7 +23,7 @@ def main():
     reader = PdfReader(PDF)
     layout = json.loads((ROOT / "artifacts/book-layout.json").read_text())
     front_pages = layout["front_pages"]
-    assert len(reader.pages) == 107
+    assert len(reader.pages) == 84
     assert [c["number"] for c in CHAPTERS] == list(range(1, 24))
     for ch in CHAPTERS:
         assert all(key in SOURCES for key in ch["sources"])
@@ -38,18 +39,18 @@ def main():
     destinations = {entry.title: entry for entry in reader.outline}
     for ch in CHAPTERS:
         dest = destinations[ch["title"]]
-        assert reader.get_destination_page_number(dest) == front_pages + (ch["number"] - 1) * 4
+        assert reader.get_destination_page_number(dest) == front_pages + (ch["number"] - 1) * 3
     contents_links = [annotation.get_object() for page in reader.pages[1:4] for annotation in page["/Annots"]]
     assert len(contents_links) == 23
     for i, link in enumerate(contents_links):
-        assert link["/Dest"][0].idnum == reader.pages[front_pages + i * 4].indirect_reference.idnum
+        assert link["/Dest"][0].idnum == reader.pages[front_pages + i * 3].indirect_reference.idnum
     video_links = [
         a.get_object()
         for p in reader.pages
         for a in p.get("/Annots", [])
         if a.get_object().get("/A", {}).get("/URI") == VIDEO_URL
     ]
-    assert len(video_links) >= 3
+    assert len(video_links) >= 2
     video_evidence = json.loads((HERE / "VIDEO.json").read_text())["qr_verification"]
     assert video_evidence["decoded_url"] == VIDEO_URL
     assert video_evidence["pdf_sha256"] == hashlib.sha256(PDF.read_bytes()).hexdigest()
@@ -65,10 +66,10 @@ def main():
         assert len(names) == 23 and all(n.endswith(".pdf") for n in names)
         for i, name in enumerate(names):
             chapter = PdfReader(BytesIO(z.read(name)))
-            assert len(chapter.pages) == 4
+            assert len(chapter.pages) == 3
             assert set(chapter.attachments) == notices
             for j, page in enumerate(chapter.pages):
-                original = reader.pages[front_pages + i * 4 + j]
+                original = reader.pages[front_pages + i * 3 + j]
                 assert page.extract_text() == original.extract_text()
                 assert page.get_contents().get_data() == original.get_contents().get_data()
     overlaps = []
@@ -85,7 +86,7 @@ def main():
         "edition_date": "2026-11-13",
         "book_pages": len(reader.pages),
         "chapters": len(CHAPTERS),
-        "standalone_chapter_pages": 4,
+        "standalone_chapter_pages": 3,
         "primary_references": len(SOURCES),
         "reader_word_count_including_navigation": len(text.split()),
         "page_safe_area_overflow_characters": len(overflow),
@@ -93,7 +94,7 @@ def main():
         "chapter_destinations_verified": len(CHAPTERS),
         "pdf_link_annotations": sum(len(p.get("/Annots", [])) for p in reader.pages),
         "asset_license_attachments": sorted(notices),
-        "standalone_pages_match_book_content_streams": len(CHAPTERS) * 4,
+        "standalone_pages_match_book_content_streams": len(CHAPTERS) * 3,
         "video_url": VIDEO_URL,
         "video_identity_verified": "YouTube oEmbed: title and TrainWithShubham channel",
         "video_qr_verified_against_pdf_hash": True,
@@ -104,7 +105,7 @@ def main():
         "model_calls": 0,
         "pdf_sha256": hashlib.sha256(PDF.read_bytes()).hexdigest(),
         "chapters_zip_sha256": hashlib.sha256(ARCHIVE.read_bytes()).hexdigest(),
-        "visual_review": "All 107 pages rendered and visually reviewed, including new beginner content and the video panel.",
+        "visual_review": "All 84 illustrated pages rendered and visually reviewed; final changed pages reviewed again.",
         "limits": [
             "Conceptual content, not production-system verification",
             "Fictional operational examples",

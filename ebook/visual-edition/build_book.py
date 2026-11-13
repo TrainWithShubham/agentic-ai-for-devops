@@ -9,8 +9,9 @@ from pathlib import Path
 from urllib.parse import urlparse
 from zipfile import ZIP_DEFLATED, ZipFile
 
-from beginner_content import CHAPTERS, CLAUDE_CHAPTER, PROJECT_CHAPTER, PROMPT_CHAPTER, VIDEO_URL
+from beginner_content import CLAUDE_CHAPTER, PROJECT_CHAPTER, PROMPT_CHAPTER, VIDEO_URL
 from illustrations import draw
+from plain_content import CHAPTERS
 from pypdf import PdfReader, PdfWriter
 from reportlab.graphics import renderPDF
 from reportlab.graphics.barcode.qr import QrCodeWidget
@@ -21,6 +22,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 from reportlab.platypus import Paragraph
+from scenes import draw_scene
 from sources import GLOSSARY, SOURCES
 from svglib.svglib import svg2rlg
 
@@ -126,11 +128,11 @@ class Book:
         self.icon(name, x + 14, y + h - 38, 25)
         if compact:
             self.prose(title, x + 50, y + h - 13, w - 64, 12, self.ink, font="Bold", max_height=36)
-            self.prose(body, x + 50, y + h - 35, w - 65, 10.6, max_height=h - 42)
+            self.prose(body, x + 50, y + h - 35, w - 65, 11.4, max_height=h - 42)
             return
         title_height = self.prose(title, x + 50, y + h - 16, w - 64, 12, self.ink, font="Bold", max_height=36)
         body_top = y + h - max(54, title_height + 25)
-        self.prose(body, x + 15, body_top, w - 30, 10.6, max_height=body_top - y - 10)
+        self.prose(body, x + 15, body_top, w - 30, 11.4, max_height=body_top - y - 10)
 
     def record_diagram(self, nodes):
         self.current_text.extend(f"{title}: {body}" for title, body in nodes)
@@ -138,12 +140,16 @@ class Book:
     def page(self, title, section="", dark=False, bookmark=None):
         self.page_number += 1
         self.current_text = []
-        self.c.setFillColor(colors.HexColor(self.dark if dark else self.paper))
+        background = "#000000" if self.page_number == 1 else self.dark if dark else self.paper
+        self.c.setFillColor(colors.HexColor(background))
         self.c.rect(0, 0, 600, 780, fill=1, stroke=0)
         self.text("AGENTIC AI FOR DEVOPS", 48, 744, 8, "Bold", self.gold if dark else self.purple)
         self.text(section.upper()[:27], 391, 744, 7.5, "Mono", "#D3C6E0" if dark else self.muted)
         self.line(48, 49, 552, 49, "#3C3149" if dark else "#DED6E6")
-        self.text("TRAIN WITH SHUBHAM", 48, 29, 8, "Bold", "#D3C6E0" if dark else self.muted)
+        self.text("T", 48, 27, 15, "Bold", "#A37AE0" if dark else self.purple)
+        self.text("W", 58, 27, 15, "Bold", self.gold if dark else "#8A581A")
+        self.text("S", 73, 27, 15, "Bold", "#A37AE0" if dark else self.purple)
+        self.text("TRAIN WITH SHUBHAM", 99, 29, 7.3, "Bold", "#D3C6E0" if dark else self.muted)
         self.text(f"{self.page_number:02}", 532, 29, 9, "Mono", self.gold if dark else self.purple)
         if bookmark:
             self.c.bookmarkPage(bookmark)
@@ -166,32 +172,44 @@ class Book:
         self.c.showPage()
 
     def opener(self, ch):
-        self.page(ch["title"], ch["module"], True, f"chapter-{ch['number']}")
-        self.text(f"{ch['number']:02}", 45, 603, 94, "Mono", "#80609B")
-        for radius in (40, 62, 86):
-            self.c.setStrokeColor(colors.HexColor("#3E304C"))
-            self.c.circle(462, 628, radius, stroke=1, fill=0)
-        self.circle(462, 628, 40, "#2A2035")
-        self.icon(ch["icon"], 439, 605, 46, self.gold)
-        self.circle(410, 559, 5, self.gold)
-        self.circle(530, 679, 4, self.purple)
-        h = self.prose(ch["title"], 48, 533, 504, 32, "#FFFFFF", font="Bold", max_height=96)
-        top = 533 - h - 25
-        self.prose(ch["question"], 48, top, 490, 21, self.gold, font="Serif", max_height=66)
-        self.prose(ch["intro"], 48, top - 83, 496, 12, "#D8CEE3", max_height=105)
+        self.page(ch["title"], ch["module"], False, f"chapter-{ch['number']}")
+        self.rect(48, 657, 38, 43, self.purple, 8)
+        self.center(f"{ch['number']:02}", 67, 672, 13, "#FFFFFF", font="Mono")
+        self.prose(ch["title"], 101, 702, 451, 25, self.ink, font="Bold", max_height=73)
+        self.prose(ch["intro"], 48, 614, 504, 13.4, self.ink, max_height=78)
+        self.text("PICTURE IT", 48, 532, 8.6, "Mono", self.purple)
+        draw_scene(self, ch["scene"])
+        self.current_text.append("Illustration: " + ch["analogy"])
+        self.prose(ch["analogy"], 48, 232, 504, 13, self.ink, font="Serif", max_height=42)
+        self.prose(ch["analogy_limit"], 48, 186, 504, 10.4, max_height=33)
         for i, (title, body) in enumerate(ch["principles"]):
-            x = 48 + i * 176
-            self.rect(x, 91, 152, 150, "#2A2035")
-            self.text(f"{i + 1:02}", x + 14, 218, 9, "Mono", self.gold)
-            self.prose(title, x + 14, 201, 124, 12, "#FFFFFF", font="Bold", max_height=36)
-            self.prose(body, x + 14, 164, 124, 10.4, "#D8CEE3", max_height=60)
+            x = 48 + i * 172
+            self.rect(x, 73, 160, 68, self.pale, 8)
+            self.text(title, x + 12, 121, 10.4, "Bold", self.purple)
+            self.prose(body, x + 12, 111, 136, 10.2, self.ink, max_height=32)
         self.finish()
 
     def diagram(self, ch):
         self.page(ch["diagram_title"], f"{ch['number']:02} / Visual model")
         self.heading(ch["diagram_title"], ch["diagram_intro"], "Understand the system")
         draw(self, ch)
+        if ch["number"] == CLAUDE_CHAPTER:
+            self.prose(
+                "Avoid broad permission bypass. Read the diff and actual check results.",
+                48,
+                205,
+                504,
+                11.5,
+                self.ink,
+                max_height=34,
+            )
         self.note(ch["diagram_note"])
+        if ch["number"] in (CLAUDE_CHAPTER, PROMPT_CHAPTER):
+            for i, key in enumerate(ch["sources"][:2]):
+                label, url = SOURCES[key]
+                x = 48 + i * 264
+                self.text(label, x, 59, 7.3, fill=self.muted)
+                self.c.linkURL(url, (x, 57, x + 240, 69), relative=0)
         self.finish()
 
     def example(self, ch):
@@ -203,7 +221,49 @@ class Book:
                 self.rect(48, y, 504, 84, self.pale)
                 self.text(title, 64, y + 63, 12, "Bold", self.purple)
                 self.prose(body, 64, y + 51, 471, 10.5, self.ink, max_height=47)
-            self.note(ch["case_note"])
+            self.note(ch["case_note"] + " " + ch["correction"])
+            self.finish()
+            return
+        if ch["number"] != CLAUDE_CHAPTER:
+            positions = [(48, 418), (328, 418), (328, 252), (48, 252)]
+            if ch["number"] in {12, 17}:
+                positions = [(48, 418), (328, 418), (48, 252), (328, 252)]
+            for i, ((x, y), (title, body)) in enumerate(zip(positions, ch["steps"], strict=True)):
+                self.rect(x, y, 224, 132, self.pale)
+                self.circle(x + 28, y + 104, 17, self.purple)
+                self.center(str(i + 1), x + 28, y + 99, 12, "#FFFFFF", font="Mono")
+                self.prose(title, x + 54, y + 117, 156, 13, self.ink, font="Bold", max_height=38)
+                self.prose(body, x + 15, y + 75, 194, 12, self.ink, max_height=58)
+            if ch["number"] not in {12, 17}:
+                self.arrow(279, 484, 320, 484)
+                self.arrow(440, 410, 440, 390)
+                if ch["number"] == 7:
+                    self.arrow(328, 410, 180, 390)
+                    self.text("denied / missing", 215, 399, 8, fill=self.muted)
+                else:
+                    self.arrow(320, 318, 279, 318)
+                    if ch["number"] == 21:
+                        self.center("approved", 300, 330, 7, self.muted)
+            for x, label, body, name, fill, tint in [
+                (48, "Avoid", ch["failure"], "circle-x", "#F7E9EB", self.red),
+                (312, "Better", ch["correction"], "circle-check", "#E8F1EB", self.green),
+            ]:
+                self.rect(x, 127, 240, 105, fill, 9)
+                self.icon(name, x + 13, 199, 18, tint)
+                self.text(label, x + 39, 203, 11, "Bold", tint)
+                self.prose(body, x + 14, 190, 212, 10.5, self.ink, max_height=51)
+            for i, check in enumerate(ch["checks"]):
+                x = 48 + i * 128
+                self.icon("circle-check", x, 96, 12, self.purple)
+                self.prose(check, x + 18, 114, 103, 8.8, self.muted, max_height=27)
+            for i, key in enumerate(ch["sources"]):
+                label, url = SOURCES[key]
+                x = 48 + (i % 2) * 264
+                y = 76 - (i // 2) * 12
+                while pdfmetrics.stringWidth(label, "Sans", 7.3) > 240:
+                    label = label[:-1]
+                self.text(label, x, y, 7.3, fill=self.muted)
+                self.c.linkURL(url, (x, y - 1, x + 240, y + 9), relative=0)
             self.finish()
             return
         for i, (title, body) in enumerate(ch["steps"]):
@@ -232,38 +292,6 @@ class Book:
         self.prose(caption, 197, 163, 332, 10.3, "#624A28", max_height=60)
         self.text("Open the YouTube lesson", 197, 93, 10, "Bold", self.purple)
         self.c.linkURL(VIDEO_URL, (61, 86, 538, 225), relative=0)
-
-    def review(self, ch):
-        self.page("When it goes wrong", f"{ch['number']:02} / Engineering review")
-        self.heading(
-            "When it goes wrong",
-            "Inspect the boundary that failed. Keep the observed result separate from the explanation.",
-            "Failure and correction",
-        )
-        for x, title, body, name, fill, tint in [
-            (48, "Failure", ch["failure"], "circle-x", "#F7E9EB", self.red),
-            (312, "Correction", ch["correction"], "circle-check", "#E8F1EB", self.green),
-        ]:
-            self.rect(x, 369, 240, 211, fill)
-            self.icon(name, x + 17, 532, 30, tint)
-            self.text(title, x + 17, 512, 15, "Bold", tint)
-            self.prose(body, x + 17, 496, 206, 11.4, max_height=113)
-        for i, check in enumerate(ch["checks"]):
-            y = 329 - i * 45
-            self.icon("circle-check", 48, y - 6, 20)
-            self.prose(check, 81, y + 10, 461, 12, self.ink, max_height=35)
-        self.text("FURTHER READING", 48, 125, 8, "Mono", self.purple)
-        for i, key in enumerate(ch["sources"]):
-            label, _ = SOURCES[key]
-            x = 48 + (i % 2) * 264
-            y = 104 - (i // 2) * 16
-            # Short handles point to the complete source entry at the back.
-            label = label.replace("Anthropic: ", "").replace("AgentCore: ", "AWS: ")
-            if pdfmetrics.stringWidth(label, "Sans", 8.1) > 240:
-                label = label[:40]
-            self.text(label, x, y, 8.1, fill=self.muted)
-            self.c.linkURL(SOURCES[key][1], (x, y - 2, x + 240, y + 10), relative=0)
-        self.finish()
 
 
 def front(b):
@@ -298,13 +326,13 @@ def front(b):
         (8, 16, "Connect knowledge, control actions and operate the system"),
         (16, 23, "Measure, release, integrate and explore the bonuses"),
     ]:
-        b.page("Contents", "Find your chapter", bookmark="contents" if start == 0 else "contents-2")
+        b.page("Contents", "Find your chapter", bookmark=f"contents-{start}")
         b.heading("Contents", subtitle, "Read in sequence or choose a chapter")
         for i, ch in enumerate(CHAPTERS[start:end]):
             y = 553 - i * 46
             b.text(f"{ch['number']:02}", 48, y, 11, "Mono", b.purple)
             b.text(ch["title"], 89, y, 12, "Bold")
-            pg = FRONT_PAGES + 1 + (ch["number"] - 1) * 4
+            pg = FRONT_PAGES + 1 + (ch["number"] - 1) * 3
             b.text(f"{pg:02}", 529, y, 10, "Mono", b.muted)
             b.line(89, y - 16, 552, y - 16, "#E4DEEA")
             b.c.linkRect("", f"chapter-{ch['number']}", (45, y - 13, 553, y + 17), relative=0, thickness=0)
@@ -348,7 +376,7 @@ def learning_path(b):
     b.page("Your first month", "A suggested learning path", bookmark="first-month")
     b.heading(
         "Your first month",
-        "Move at your own pace. Use public or sanitized examples; these milestones do not require the course application.",
+        "Move at your own pace. Use public or sanitized examples and keep each change small.",
         "Learn through small, explainable changes",
     )
     milestones = [
@@ -465,7 +493,16 @@ def manuscripts():
     for ch in CHAPTERS:
         slug = re.sub(r"[^a-z0-9]+", "-", ch["title"].lower()).strip("-")
         path = directory / f"{ch['number']:02}-{slug}.md"
-        lines = [f"# {ch['title']}", f"\n{ch['module']}\n", f"## {ch['question']}", ch["intro"], ""]
+        lines = [
+            f"# {ch['title']}",
+            f"\n{ch['module']}\n",
+            "## In everyday words",
+            ch["intro"],
+            "\n## Picture it",
+            ch["analogy"],
+            ch["analogy_limit"],
+            "",
+        ]
         lines.extend(f"**{title}.** {body}\n" for title, body in ch["principles"])
         lines.extend([f"## {ch['diagram_title']}", ch["diagram_intro"], "\n### Diagram reading order\n"])
         lines.extend(f"{i + 1}. **{title}:** {body}" for i, (title, body) in enumerate(ch["nodes"]))
@@ -509,7 +546,6 @@ def main():
         b.opener(ch)
         b.diagram(ch)
         b.example(ch)
-        b.review(ch)
         b.chapter_ranges.append((ch, start, b.page_number))
     learning_path(b)
     back(b)

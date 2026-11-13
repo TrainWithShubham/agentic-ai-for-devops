@@ -4,80 +4,87 @@
 01 / Foundations
 
 
-## How do you learn while it writes code?
+## In everyday words
 
-Claude Code can inspect a codebase, edit files and run tools under its configured permissions. You remain responsible for understanding the change. Start with a small task you can inspect and verify.
-
-
-
-**Explore.** Ask where the behavior lives before requesting a patch.
+Claude Code can read files, propose edits and run tools. Give it a small task, then inspect what changed and what checks ran.
 
 
-**Plan.** Use Plan mode to understand a nontrivial change first.
+## Picture it
+
+Like working with a carpenter: agree on the change, inspect the work and measure the result.
+
+A coding agent can make mistakes. Its completion message is not proof that the checks passed.
 
 
-**Verify.** Read the diff and actual check output before accepting the work.
+
+**Explore.** Find the relevant code first.
+
+
+**Plan.** Understand a larger change before editing.
+
+
+**Verify.** Read the diff and actual check output.
 
 
 ## Give instructions, then enforce boundaries
 
-Keep CLAUDE.md short: project facts, conventions and real check commands. It is context for the model. Permissions, sandboxing and appropriate hooks serve different enforcement purposes.
+Keep project instructions short. Use permissions to control access and real checks to judge the result.
 
 
 ### Diagram reading order
 
 
-1. **CLAUDE.md:** Record the relevant project structure and verification commands.
+1. **CLAUDE.md:** Project facts, conventions and check commands.
 
-2. **Plan + scope:** Choose one change and identify the files it should affect.
+2. **Plan + scope:** One change and its affected files.
 
-3. **Permissions:** Grant only the tools, paths and environment access needed.
+3. **Permissions:** Only the tools and access needed.
 
-4. **Review + check:** Inspect the patch, run the relevant checks and explain the result.
-
-
-
-Skills package reusable instructions. Hooks run at lifecycle events and can automate checks. Review their code and sources; both can add behavior you did not expect.
-
-
-## One small, reviewable change
-
-A fictional Python CI job installs only runtime dependencies, then tries to run pytest. Work in an isolated branch or checkout without production credentials.
+4. **Review + check:** Read the patch and run relevant checks.
 
 
 
-1. **Explore:** Find the install step and declared test dependency. Explain the mismatch; do not edit yet.
-
-2. **Plan:** Propose the smallest change that installs the declared test group. Keep the test step intact.
-
-3. **Implement:** Make only the agreed change. Summarize the diff and any assumption.
-
-4. **Verify:** Run the available relevant checks. Report exact results and anything you could not run.
+Skills hold reusable instructions. Hooks run configured actions at lifecycle events. Review both before using them.
 
 
+## One change you can explain
 
-Watch the Hindi lesson, then explain one change without reading the generated answer. Menu names and permission behavior may change after this edition.
+A Python build skipped test dependencies, then tried to run pytest.
+
+
+
+1. **Explore:** Find the install step. Explain the mismatch before editing.
+
+2. **Plan:** Install the declared test group. Keep the tests.
+
+3. **Change:** Make only the agreed patch. Show the diff.
+
+4. **Verify:** Report actual check results and anything not run.
+
+
+
+Watch in Hindi, then explain one change yourself. Features may change after this edition.
 
 
 ## Failure and correction
 
-A learner enables broad permission bypass, asks for a whole platform and accepts a large patch because Claude reports that tests passed.
+Allowing everything and accepting a huge patch because the agent says "done".
 
 
 
-Use a small scope and normal permission checks. Read the actual diff and test result; reject test removal or fabricated verification. Keep secrets outside the accessible learning environment.
+Keep scope small. Review permissions, the diff and real results.
 
 
 ## Engineering review
 
 
-- Keep project instructions concise.
+- Short project instructions.
 
-- Explore and plan before broad edits.
+- Small changes.
 
-- Review commands, permissions and the diff.
+- Reviewed commands.
 
-- Ask for exact checks and unresolved limits.
+- Actual check results.
 
 
 ## Further reading

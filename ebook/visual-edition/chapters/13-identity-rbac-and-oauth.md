@@ -4,80 +4,87 @@
 04 / Control and approval
 
 
-## Who is allowed to do what?
+## In everyday words
 
-Authentication establishes who the caller is. Authorization decides what that caller may do on a resource. Credentials help authenticate a request; a user prompt saying "I am the admin" establishes neither identity nor permission.
-
-
-
-**OIDC.** An identity layer on OAuth 2.0 for authenticating users.
+Authentication checks who is asking. Authorization checks what that person or service may do.
 
 
-**OAuth.** A framework for delegated authorization using tokens.
+## Picture it
+
+An office badge identifies you. It does not open every room in the building.
+
+A role written in a chat message is not a trusted identity.
 
 
-**RBAC.** Roles map to application permissions; resource checks still apply.
+
+**OIDC.** An identity layer built on OAuth 2.0.
+
+
+**OAuth.** A framework for delegated access.
+
+
+**RBAC.** Permissions assigned through roles.
 
 
 ## Separate the identities in the path
 
-The browser login, API access token and downstream tool credential serve different purposes. Avoid treating a token accepted by one service as valid everywhere.
+Keep user identity, application rules and tool credentials separate.
 
 
 ### Diagram reading order
 
 
-1. **User + identity provider:** A login flow establishes the user identity.
+1. **User + identity provider:** Login establishes the user identity.
 
-2. **Application API:** Validates the access token and enforces resource policy.
+2. **Application API:** Checks the access token and resource policy.
 
-3. **Agent execution:** Uses the established caller context; the model cannot invent it.
+3. **Agent execution:** Uses trusted caller context.
 
-4. **Downstream tool:** Uses a scoped credential intended for that service.
-
-
-
-For a browser-based authorization flow, follow current authorization-code and PKCE guidance. An ID token is not a general API access credential.
-
-
-## Engineer versus approver
-
-In this fictional policy, engineers may inspect a CI failure and propose a patch; release managers may approve it.
+4. **Downstream tool:** Uses a credential meant for that service.
 
 
 
-1. **Read:** Check that the engineer may access this project and run.
-
-2. **Propose:** Allow a bounded proposal without granting write access.
-
-3. **Approve:** Check the reviewer role and the specific target resource.
-
-4. **Execute:** Use the service credential only after policy permits the action.
+Validate token issuer, audience, expiry and integrity. An ID token is not a general API credential. Browser flows need current authorization-code/PKCE guidance.
 
 
+## Read, propose or approve?
 
-Validate issuer, audience, expiry and token integrity as appropriate to the token and provider. Keep secrets out of prompts and traces.
+In this fictional policy, an engineer can propose; a release manager can approve.
+
+
+
+1. **Read:** Check access to this project and run.
+
+2. **Propose:** Prepare the patch without write permission.
+
+3. **Approve:** Check the reviewer and target resource.
+
+4. **Execute:** Use a scoped credential only when permitted.
+
+
+
+Browser authorization flows should follow current authorization-code and PKCE guidance.
 
 
 ## Failure and correction
 
-The client sends role=release-manager, and the API trusts it because the field looks well formed.
+Trusting role=admin because the client sent it.
 
 
 
-Derive roles and permissions from validated identity and trusted server policy. Deny access by default.
+Use validated identity and server-side policy.
 
 
 ## Engineering review
 
 
-- Separate authentication and authorization.
+- Deny by default.
 
-- Check each protected request.
+- Check every protected request.
 
-- Scope audience and permissions.
+- Scope tokens.
 
-- Avoid token passthrough to another service.
+- Do not pass tokens to unrelated services.
 
 
 ## Further reading

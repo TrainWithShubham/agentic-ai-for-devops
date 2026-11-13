@@ -4,80 +4,87 @@
 01 / Foundations
 
 
-## What are you actually using?
+## In everyday words
 
-A model is a trained system. Running it on an input is inference. Claude is a model family; Claude Code is a coding application that uses models and tools. An API lets your own code request a service.
-
-
-
-**Training.** Learning model parameters from data; separate from asking a question.
+A large language model (LLM) works with language. The model is the trained engine; an API carries requests. Claude Code is an application using models and tools.
 
 
-**Inference.** Using an existing model to produce an output for a request.
+## Picture it
+
+A chef has learned to cook. One order is one use of that skill. The waiter carries your request.
+
+A model learns patterns in data; the chef picture does not mean it understands like a person.
 
 
-**Access.** A chat login, coding-tool login and application API setup can differ.
+
+**Training.** Learning patterns from data.
+
+
+**Inference.** Using a trained model on an input.
+
+
+**API.** A way for software to request a service.
 
 
 ## Choose for the job
 
-Model names change. Compare the capability you need, acceptable delay, data handling and budget. Test on examples you understand before committing to a model.
+Choose a model for the task, the time you can wait and the budget you have.
 
 
 ### Diagram reading order
 
 
-1. **Text and code:** Generate explanations, structured fields or proposed patches.
+1. **Text and code:** Write explanations or propose a patch.
 
-2. **Reasoning budget:** Some models can spend more computation on a difficult task.
+2. **Reasoning budget:** More computation for some hard tasks.
 
-3. **Embeddings:** Represent content numerically for search; not a chat answer.
+3. **Embeddings:** Numbers that help find related text.
 
-4. **Local or hosted:** Local inference uses your hardware; hosted inference calls a service.
+4. **Local or hosted:** Your hardware, or a provider service.
 
 
 
-Claude, GPT, Gemini, Qwen and Llama are examples of model families, not interchangeable products. Check current model IDs, licenses and capabilities at their official sources.
+Coding login and API access can differ. Some plans offer conditional API credits. Free endpoints have limits; check current access, licenses and data policy.
 
 
 ## Choose for one CI question
 
-Your first task is to explain a sanitized missing-dependency error. You do not need to train a model or deploy an agent platform to compare answers.
+Use the same small, sanitized error with each candidate.
 
 
 
-1. **Task:** Provide the failed step, install command and dependency declaration.
+1. **Task:** Explain the missing test dependency.
 
-2. **Capability:** Check the output format and tool-call support if your application needs tools.
+2. **Needs:** Check tool calls and output format if needed.
 
-3. **Compare:** Use the same evidence; judge correctness, delay and actual usage.
+3. **Access:** Check credits, quotas and data policy.
 
-4. **Access:** Verify authentication, available credits, rate limits and data policy.
+4. **Compare:** Judge the answer, delay and usage.
 
 
 
-Check API access and billing separately from your coding login. Some plans offer API credits with conditions; never assume an unlimited allowance. Free endpoints can have changing quotas.
+Coding login and API access can differ. Some plans include conditional API credits; free endpoints can have limits.
 
 
 ## Failure and correction
 
-A learner chooses a model by a leaderboard alone, assumes their subscription covers every API call and adds tools without testing support.
+Picking a model only because it leads a ranking.
 
 
 
-Choose using your task and account. Start with a small budget and a reviewed example; check current access rather than relying on a screenshot or an old tutorial.
+Compare it on a task you understand and can check.
 
 
 ## Engineering review
 
 
-- Distinguish model, provider and application.
+- Which task?
 
-- Compare one task across candidates.
+- Which features?
 
-- Check tool and structured-output support.
+- What data leaves?
 
-- Verify credits, quotas and data handling.
+- What can it cost?
 
 
 ## Further reading

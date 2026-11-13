@@ -4,78 +4,85 @@
 01 / Foundations
 
 
-## What should the model decide?
+## In everyday words
 
-A fluent incident summary can be useful before any automation exists. An agent adds a model-directed choice of next steps. DevOps engineering supplies the evidence, permissions and reliable execution around that choice.
-
-
-
-**AI.** A broad field of systems that perform tasks associated with intelligence.
+AI is the broad field. Generative AI creates content. An agent uses a model to choose steps; your software controls its actions.
 
 
-**Generative AI.** Models produce content such as text, code or images.
+## Picture it
+
+Think of a helper choosing what to check next when something breaks.
+
+The helper picture explains the role. A model can still misunderstand or invent an answer.
 
 
-**Agent.** A system lets a model select steps or tools toward a goal.
+
+**AI.** Software for tasks such as recognizing patterns.
+
+
+**Model.** A trained system that works with input.
+
+
+**Agent.** A model choosing steps, with tools and rules.
 
 
 ## Choose the simplest useful system
 
-Predictable work often belongs in a script. Use a fixed workflow when the sequence is known. Add model-directed choices when the next step depends on what is discovered.
+Use a script for a known rule. Use a workflow for a known sequence. Use an agent when the next step needs a choice.
 
 
 ### Diagram reading order
 
 
-1. **Known rule:** Rotate a log file on a schedule.
+1. **Known rule:** Rotate a log file every day.
 
-2. **Known sequence:** Fetch a report, summarize it, request review.
+2. **Known sequence:** Read a report, summarize it, request review.
 
-3. **Changing investigation:** Choose which evidence to inspect after each result.
-
-
-
-An agent can contain deterministic steps. A workflow can contain model calls. The difference is who selects the path.
-
-
-## A failed CI job
-
-The job says "pytest: command not found". Several explanations are possible until the install step is inspected.
+3. **Needs a choice:** Choose the next check from the evidence.
 
 
 
-1. **Observe:** The test runner was unavailable when the test step started.
-
-2. **Investigate:** Read the workflow and dependency declaration.
-
-3. **Recommend:** Propose installing the declared test dependency group.
-
-4. **Verify:** A new CI result, not the recommendation, proves the change worked.
+A workflow can use AI. An agent can include ordinary code.
 
 
+## The tests did not start
 
-The example is a fictional investigation. No workflow was changed and no CI job was executed.
+A build says: "pytest: command not found."
+
+
+
+1. **See:** The test command was unavailable.
+
+2. **Look:** Read the install step and dependency file.
+
+3. **Suggest:** Propose installing the missing test dependency.
+
+4. **Check:** A new build result shows whether it worked.
+
+
+
+A suggestion is not a completed fix.
 
 
 ## Failure and correction
 
-Calling every chatbot an agent hides which decisions and actions the system can actually perform.
+Calling every chatbot an agent.
 
 
 
-Describe the available tools, who chooses them and how the system stops. Use a plain answer when that is enough.
+Name the choices and tools it actually has.
 
 
 ## Engineering review
 
 
-- Identify the decision the model owns.
+- What can it see?
 
-- Name the evidence available to it.
+- What can it choose?
 
-- Keep execution authority in software.
+- What may it change?
 
-- Compare complexity with a fixed workflow.
+- When must it stop?
 
 
 ## Further reading

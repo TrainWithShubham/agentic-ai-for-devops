@@ -4,80 +4,87 @@
 Bonus / Temporal
 
 
-## What should survive a worker crash?
+## In everyday words
 
-Temporal provides durable execution for processes that must continue across failures and long waits. It complements agent decisions with recorded progress; it does not make a model answer correct.
-
-
-
-**Workflow.** Deterministic orchestration of the process.
+Temporal helps a process keep going across worker failures and long waits. It saves progress so the process can recover.
 
 
-**Activity.** External or nondeterministic work, such as an API or model call.
+## Picture it
+
+A saved order ticket survives a shift change. A new worker can continue from the recorded progress.
+
+Durability preserves process progress. It does not make model answers correct.
 
 
-**History.** Recorded events used to reconstruct workflow progress.
+
+**Workflow.** Deterministic process coordination.
+
+
+**Activity.** External work, such as an API call.
+
+
+**History.** Recorded events used during recovery.
 
 
 ## Durability around the investigation
 
-Keep model and external tool calls in Activities. Workflow logic coordinates results, timers and messages. Worker processes execute the code; the Temporal service records progress.
+Keep model and external tool calls in Activities. Workflow code coordinates them.
 
 
 ### Diagram reading order
 
 
-1. **Investigate Activity:** Call the model and read permitted evidence.
+1. **Investigate Activity:** Call the model and read evidence.
 
-2. **Durable wait:** Persist the process while a human reviews.
+2. **Durable wait:** Wait for the reviewer decision.
 
-3. **Apply Activity:** Execute the approved action with idempotency.
+3. **Apply Activity:** Apply the approved action safely.
 
-4. **Verify Activity:** Read target state and record the outcome.
-
-
-
-Replay uses recorded Activity results for completed work. An Activity can still run more than once after ambiguous failures; external writes need idempotency.
-
-
-## Approval arrives after a restart
-
-A fictional release review waits for two hours while the worker is restarted.
+4. **Verify Activity:** Read target state and save the result.
 
 
 
-1. **Persist:** Record the proposed action identity before waiting.
-
-2. **Recover:** Replay restores orchestration from recorded history.
-
-3. **Receive:** A validated application sends the reviewer decision through a suitable message handler.
-
-4. **Recheck:** Check expiry, permissions and current target state before applying.
+Replay reuses recorded results of completed Activities. Activity attempts can repeat; writes need idempotency. Signals and Updates do not prove reviewer authorization.
 
 
+## Approval after a restart
 
-A Signal or Update is a message mechanism, not proof of reviewer identity. The application must validate who is allowed to send the decision.
+The process waits for two hours while a worker restarts.
+
+
+
+1. **Save:** Record the proposal identity.
+
+2. **Recover:** Restore progress from recorded history.
+
+3. **Receive:** Accept a validated reviewer message.
+
+4. **Recheck:** Check expiry, permissions and current state.
+
+
+
+Signals and Updates carry messages. They do not prove the reviewer is authorized.
 
 
 ## Failure and correction
 
-The Workflow calls the model directly during replay, or retrying an Activity applies the same release action twice.
+Calling the model directly in replayed Workflow code.
 
 
 
-Move external work into Activities, set bounded timeouts/retries and make writes idempotent. Test replay compatibility before changing running workflow code.
+Use Activities for external work and test replay compatibility.
 
 
 ## Engineering review
 
 
-- Separate orchestration and I/O.
+- Separate coordination and I/O.
 
-- Set explicit retry and time policy.
+- Bound retries and time.
 
-- Authenticate review messages.
+- Authenticate decisions.
 
-- Plan for duplicate Activity attempts.
+- Avoid duplicate effects.
 
 
 ## Further reading

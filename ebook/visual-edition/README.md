@@ -2,21 +2,23 @@
 
 Beginner learning edition for 2027; technical review dated 13 November 2026. By Shubham Londhe, Train With Shubham.
 
-The book has 107 pages and 23 standalone chapters. It follows the six v2 course modules, then adds separate Temporal and Amazon Bedrock AgentCore bonuses. It assumes no AI background; basic Linux and Python familiarity helps. Models, inference, APIs and learning mistakes come before tools and frameworks. Examples are fictional, require no setup and do not depend on exercise files. Application-specific material first appears in chapter 21.
+The book has 84 pages and 23 standalone, three-page chapters. Each chapter opens with a large everyday illustration, then explains the technical diagram and a small DevOps example. It follows the six v2 course modules, then adds separate Temporal and Amazon Bedrock AgentCore bonuses. It assumes no AI background; basic Linux and Python familiarity helps. Models, inference, APIs and learning mistakes come before tools and frameworks. Examples are fictional, require no setup and do not depend on exercise files. Application-specific material first appears in chapter 21.
 
 Reader deliverables in the repository root:
 
 - [Complete PDF](../../output/pdf/agentic-ai-for-devops-visual-ebook.pdf)
 - [Individual chapter PDFs](../../output/pdf/agentic-ai-for-devops-chapters.zip)
 
-The individual chapters preserve printed book page numbers for easy cross-reference. Each has its own introduction, explanation, worked scenario, failure review and external source links. No other chapter is required to understand its example.
+The individual chapters preserve printed book page numbers for easy cross-reference. Each has a short definition, an everyday comparison with its limits, a technical diagram, a practical example and external source links. No other chapter is required to understand its example.
 
 ## Editable source
 
 - `content.py`: original core chapter copy and diagram data.
-- `beginner_content.py`: beginner chapters, final reading order and explanatory updates.
+- `beginner_content.py`: beginner additions and chapter ordering.
+- `plain_content.py`: canonical plain-language chapter copy and analogy data, applied over the original sources.
+- `scenes.py`: 23 original vector scenes for everyday comparisons.
 - `VIDEO.json`: YouTube metadata confirming the linked Hindi-channel tutorial.
-- `illustrations.py`: original vector diagrams.
+- `illustrations.py`: 23 technical vector diagrams.
 - `build_book.py`: ReportLab renderer and standalone exports.
 - `sources.py`: primary-source links and glossary.
 - [MANUSCRIPT.md](MANUSCRIPT.md): reading transcript, regenerated from the canonical source.
@@ -24,7 +26,7 @@ The individual chapters preserve printed book page numbers for easy cross-refere
 - [FACT_CHECK.md](FACT_CHECK.md): source and claim review scope.
 - `VERIFICATION.json`: publication checks and artifact hashes.
 
-Edit the Python content data before rebuilding; edits made only to a generated Markdown transcript will be overwritten. Shared font, icon and branding assets live in `../sample-chapter/assets`. They are included in this repository, not downloaded at build time. Asset license notices are embedded in the PDFs. The earlier approved sample remains available independently.
+Edit the Python content data before rebuilding; edits made only to a generated Markdown transcript will be overwritten. Shared font, icon and branding assets live in `../sample-chapter/assets`. They are included in this repository, not downloaded at build time. Asset license notices are embedded in the PDFs. The earlier approved sample remains available independently. The original TWS logo is unchanged; the black cover background blends with its existing background. Purple and gold, licensed icons and a small TWS footer carry the branding through the book.
 
 Rebuild from the repository root:
 

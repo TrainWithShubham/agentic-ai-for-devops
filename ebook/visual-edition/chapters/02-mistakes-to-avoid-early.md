@@ -4,80 +4,87 @@
 01 / Foundations
 
 
-## Which habits get in the way?
+## In everyday words
 
-DevOps experience gives you useful instincts about evidence, permissions and recovery. Bring those instincts into AI. Build confidence by explaining one result before adding another tool.
-
-
-
-**Trust.** A confident explanation can contain an invented fact or command.
+Learn AI by checking small results. A confident answer can be wrong, and a large tool collection can hide simple mistakes.
 
 
-**Complexity.** More agents, tools or frameworks create more behavior to inspect.
+## Picture it
+
+A new toolbox does not make someone a mechanic. Start by learning one tool well.
+
+This is learning advice, not a survey of all engineers.
 
 
-**Learning.** Ask why a change works before accepting generated code.
+
+**Trust.** Check the claim against evidence.
+
+
+**Scope.** Start with one small task.
+
+
+**Understanding.** Explain a change before accepting it.
 
 
 ## Turn familiar habits into better checks
 
-A model response can vary even when your script would be predictable. Keep the question small enough that you can compare the answer with real evidence.
+Keep your DevOps habits: read the error, check the source and inspect the result.
 
 
 ### Diagram reading order
 
 
-1. **Tool collecting:** Start with one useful capability before connecting many servers.
+1. **Too many tools:** Start with one useful tool.
 
-2. **Prompt guessing:** Add missing evidence and a success condition before adding adjectives.
+2. **Vague prompts:** Give evidence and a clear goal.
 
-3. **Blind copy-paste:** Inspect flags, paths and effects before running a suggested command.
+3. **Blind copy-paste:** Read commands before running them.
 
-4. **Demo equals proof:** Repeat with denied access, missing evidence and a failed provider call.
-
-
-
-Pasting secrets, accepting unreviewed changes and granting broad credentials are avoidable engineering errors. Use sanitized examples while learning.
-
-
-## The first answer looks convincing
-
-A fictional assistant explains a CI failure by claiming that the network was unavailable. The only supplied log says the test runner was missing.
+4. **One lucky demo:** Try a failure and a denied request too.
 
 
 
-1. **Pause:** Underline the claim and find the evidence offered for it.
-
-2. **Separate:** The missing executable is observed; a network failure is a hypothesis.
-
-3. **Ask:** Request the install step and dependency declaration before a fix.
-
-4. **Learn:** Write down what confirmed the cause and what remains unknown.
+Use sanitized examples. Keep passwords and production credentials out of learning work.
 
 
+## A confident guess
 
-Resist changing the prompt, model and framework at the same time. One controlled change makes the result easier to explain.
+The log says the test command is missing. The answer blames the network.
+
+
+
+1. **Notice:** Find the exact claim: "network failure".
+
+2. **Compare:** The supplied log does not show that.
+
+3. **Ask:** Request the install step before proposing a fix.
+
+4. **Learn:** Write down which evidence confirmed the cause.
+
+
+
+Change one thing at a time so you can explain the result.
 
 
 ## Failure and correction
 
-A beginner copies an entire generated pipeline, cannot explain it and treats a green-looking summary as a passed build.
+Copying a whole generated pipeline without understanding it.
 
 
 
-Review one change, inspect the actual CI outcome and explain the evidence in your own words before adding another feature.
+Review one change and read the actual build result.
 
 
 ## Engineering review
 
 
-- Treat fluent text as a claim to check.
+- Check claims.
 
-- Start with a small, observable task.
+- Start small.
 
-- Keep credentials out of learning examples.
+- Protect secrets.
 
-- Save one failure and explain its cause.
+- Keep failed examples.
 
 
 ## Further reading

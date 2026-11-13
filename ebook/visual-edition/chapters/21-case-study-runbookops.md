@@ -4,80 +4,87 @@
 06 / Integrated application
 
 
-## How do the parts work together?
+## In everyday words
 
-RunbookOps is the course application case study. Gada Electronics has a fictional checkout failure: Bagha investigates, Jethalal reviews a proposed correction and the application checks the simulator afterward.
-
-
-
-**Investigate.** Read operational evidence and current runbook knowledge.
+RunbookOps combines knowledge, tools and human review in a fictional incident at Gada Electronics.
 
 
-**Prepare.** Produce a specific proposal with supporting observations.
+## Picture it
+
+Bagha investigates the checkout problem. Jethalal reviews the exact proposed correction.
+
+The operations are simulated. The story is not evidence of a production recovery.
 
 
-**Review.** An authorized human decides before a simulator write.
+
+**Investigate.** Read sources and operational evidence.
+
+
+**Prepare.** Save one reviewable correction.
+
+
+**Review.** An authorized person decides.
 
 
 ## Trace one incident through the system
 
-This conceptual map explains responsibilities. It is not a claim that a fresh cloud deployment or model run was verified while producing the book.
+Follow the responsibilities through one simulated incident.
 
 
 ### Diagram reading order
 
 
-1. **Browser + API:** Show the request, evidence and review decision.
+1. **Browser + API:** Show questions, evidence and decisions.
 
-2. **LangGraph agent:** Manage investigation state and tool choices.
+2. **LangGraph agent:** Track progress and choose tool steps.
 
-3. **Knowledge + tools:** Retrieve sources and inspect permitted simulator state.
+3. **Knowledge + tools:** Read sources and permitted simulator state.
 
-4. **Approval + executor:** Bind review to the exact fix and verify the result.
-
-
-
-The case is fictional and independent of any real company infrastructure. Observing a demo is different from implementing or deploying it.
-
-
-## The approval is part of the story
-
-Bagha may diagnose and propose. Jethalal must inspect the exact correction; a role claim in chat is insufficient.
+4. **Approval + executor:** Apply the exact approved simulator action.
 
 
 
-1. **Observe:** Read the simulated checkout failure and current runbook.
-
-2. **Prepare:** Save the bounded correction and the relevant evidence.
-
-3. **Review:** Deny an unauthorized reviewer; validate the authorized decision.
-
-4. **Verify:** Apply only the approved simulator action, then inspect health.
+Simulator example: label offline, live-model and cloud activity separately. This picture is not fresh deployment or production-recovery evidence.
 
 
+## A fix waits for review
 
-A local deterministic demonstration must be labeled as such. A live model run, cloud hosting and real remediation are separate claims.
+A role claim in chat cannot approve the action.
+
+
+
+1. **Observe:** Read the failure and current runbook.
+
+2. **Prepare:** Save the correction and evidence.
+
+3. **Review:** Check reviewer authority; approve or reject.
+
+4. **Verify:** Apply the approved action and inspect health.
+
+
+
+Label deterministic demos, live model calls, cloud hosting and real operations separately.
 
 
 ## Failure and correction
 
-A simulator recovery is described as an autonomous production incident fix, without explaining the approval or environment.
+Calling a simulator fix an autonomous production recovery.
 
 
 
-State which observations and actions actually ran. Keep the boundary between simulated operations, read-only integrations and production writes explicit.
+State what ran and which observation proves the result.
 
 
 ## Engineering review
 
 
-- Show the source and tool result.
+- Show sources.
 
-- Inspect a denied case.
+- Show a denial.
 
-- Review the exact proposal.
+- Review exact action.
 
-- Verify rather than narrate recovery.
+- Verify health.
 
 
 ## Further reading

@@ -4,80 +4,87 @@
 05 / Operate the system
 
 
-## What makes an agent runnable?
+## In everyday words
 
-A harness is the execution machinery around the model: context, tool dispatch, state, limits and recovery. Frameworks can supply parts of it; the application still needs a coherent operational design.
-
-
-
-**Control.** Track state, routes, deadlines and stop reasons.
+A harness is the machinery around the model: state, tools, limits, saved progress and failure handling.
 
 
-**Execution.** Validate requests and handle tool results and errors.
+## Picture it
+
+The rider chooses a direction. The bicycle frame, brakes and controls make the ride manageable.
+
+The picture explains supporting machinery. A harness still needs correctly designed permissions and recovery.
 
 
-**Operations.** Persist progress, observe outcomes and enforce budgets.
+
+**State.** What the task knows so far.
+
+
+**Limits.** How much work it may do.
+
+
+**Recovery.** What happens after a failure.
 
 
 ## Put the model inside a controlled system
 
-The model is one component. Connect the surrounding machinery deliberately so a restart, timeout or repeated tool request has a defined outcome.
+Treat the model as one part of a system you can inspect.
 
 
 ### Diagram reading order
 
 
-1. **Context + state:** Messages, evidence, proposal and ownership.
+1. **Context + state:** Messages, evidence and ownership.
 
-2. **Tool dispatcher:** Validation, permissions, execution and results.
+2. **Tool dispatcher:** Check requests and save results.
 
-3. **Budgets + recovery:** Call limits, deadlines and retry policy.
+3. **Budgets + recovery:** Deadlines, call limits and retries.
 
-4. **Traces + outcomes:** Observed steps, human decisions and verified state.
-
-
-
-A timeout limits waiting. A retry is another attempt. Idempotency prevents repeated attempts for one logical operation from duplicating effects. Store important progress outside process memory.
-
-
-## The provider times out
-
-A model request times out while an investigation is active. The system needs to distinguish a lost response from a completed side effect.
+4. **Traces + outcomes:** Steps, decisions and verified state.
 
 
 
-1. **Classify:** Was this a read, model call or write action?
-
-2. **Inspect:** Check the saved execution record before issuing a duplicate write.
-
-3. **Retry safely:** Use bounded backoff for suitable transient failures.
-
-4. **Report:** Return a partial result or explicit failure if recovery is exhausted.
+Timeout: stop waiting. Retry: try again. Idempotency: avoid duplicate effects for one logical operation. Choose one retry owner.
 
 
+## The provider stops responding
 
-Choose one owner for retries across layers. Multiplying SDK, application and workflow retries can amplify cost and load.
+You cannot tell whether a requested write finished.
+
+
+
+1. **Classify:** Was this a model call, read or write?
+
+2. **Inspect:** Check the saved execution record.
+
+3. **Recover:** Retry suitable transient failures within limits.
+
+4. **Report:** Show failure or partial results honestly.
+
+
+
+Choose one retry owner. Retries at many layers can multiply work and cost.
 
 
 ## Failure and correction
 
-A timeout triggers an automatic retry of a write whose outcome is unknown, applying the change twice.
+Retrying an uncertain write and applying it twice.
 
 
 
-Design an idempotency key and durable execution record. Reconcile actual target state when the result is ambiguous.
+Use an idempotency key, saved record and target-state checks.
 
 
 ## Engineering review
 
 
-- Bound total work.
+- Bound the work.
 
-- Persist important transitions.
+- Save progress.
 
-- Classify failures before retry.
+- Classify failures.
 
-- Expose final and partial status.
+- Show the stop reason.
 
 
 ## Further reading

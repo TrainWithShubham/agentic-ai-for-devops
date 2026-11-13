@@ -4,80 +4,87 @@
 02 / Agents and tools
 
 
-## How do applications connect to tools?
+## In everyday words
 
-Model Context Protocol (MCP) standardizes exchanges between an AI application and capability servers. A host owns the user experience; its clients communicate with servers that expose tools and other context.
-
-
-
-**Host.** The application coordinates model use and connections.
+MCP is a protocol for connecting an AI application to capability servers. It gives them a shared way to describe and call tools.
 
 
-**Client.** A protocol participant communicates with an MCP server.
+## Picture it
+
+A common socket makes connections easier. You still decide which device to trust and switch on.
+
+MCP does not decide the goal or make a connected tool safe.
 
 
-**Server.** Publishes capabilities such as tools, resources and prompts.
+
+**Host.** The AI application.
+
+
+**Client.** The part that talks to a server.
+
+
+**Server.** The part exposing tools or context.
 
 
 ## A connection is not an agent
 
-The host can obtain tool descriptions, present suitable schemas to the model, validate a chosen request and call the server. The protocol does not decide the investigation goal.
+The application discovers tools, checks a chosen request and calls the server.
 
 
 ### Diagram reading order
 
 
-1. **AI application:** Host + model interaction + policy checks.
+1. **AI application:** Model interaction and access rules.
 
-2. **MCP client:** Lists capabilities and issues protocol calls.
+2. **MCP client:** Lists and calls capabilities.
 
-3. **MCP server:** Exposes a bounded CI-log capability.
+3. **MCP server:** Exposes a CI-log tool.
 
-4. **DevOps system:** The underlying run store or API.
-
-
-
-Local stdio uses process input/output. Remote Streamable HTTP has a different deployment and authorization surface. Match SDK and protocol versions.
-
-
-## Discover, then request a tool
-
-These method names illustrate the tool exchange; they are not a complete version-specific wire transcript.
+4. **DevOps system:** The underlying API or data store.
 
 
 
-1. **Discover:** tools/list returns names, descriptions and input schemas.
-
-2. **Select:** The model requests one capability; the host checks the request.
-
-3. **Call:** tools/call sends the name and arguments to the server.
-
-4. **Return:** The server result is available to the host and subsequent model step.
+MCP also supports resources and prompts. Local stdio and remote Streamable HTTP have different authorization needs. Match protocol versions.
 
 
+## Discover, then call
 
-MCP also supports resources and prompts. A tool catalog alone does not prove that a model used any tool.
+These method names show the idea, not a full wire transcript.
+
+
+
+1. **Discover:** tools/list describes available tools.
+
+2. **Choose:** The model requests one; the host checks it.
+
+3. **Call:** tools/call sends its name and arguments.
+
+4. **Return:** The server sends the observed result.
+
+
+
+MCP also supports resources and prompts. A listed tool is not proof it ran.
 
 
 ## Failure and correction
 
-A demo labels a direct Python function call "MCP" without a client/server exchange.
+Calling any Python function "MCP" without a protocol exchange.
 
 
 
-Show the actual transport and request/result boundary. Use separate names for the agent loop, protocol and server.
+Show the client, server, transport and real request/result.
 
 
 ## Engineering review
 
 
-- Identify host, client and server.
+- Inspect tools.
 
-- Inspect schemas before granting use.
+- Scope credentials.
 
-- Keep server credentials scoped.
+- Check transport.
 
-- Verify supported protocol versions.
+- Match versions.
 
 
 ## Further reading

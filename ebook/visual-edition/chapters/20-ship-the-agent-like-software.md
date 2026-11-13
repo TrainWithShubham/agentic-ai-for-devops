@@ -4,80 +4,87 @@
 05 / Operate the system
 
 
-## What changes when the prompt changes?
+## In everyday words
 
-Prompts, tool schemas, models and knowledge indexes can change behavior as much as application code. Release them with visible versions, relevant checks and a recovery plan.
-
-
-
-**Version.** Code, prompts, schemas, configuration and index build identity.
+Ship prompts, tools and model settings with the same care as code. Keep versions, checks and a way back to a known working combination.
 
 
-**Gate.** Run boundary tests and representative behavior checks.
+## Picture it
+
+An assembly line needs parts that fit. Changing one part can break the whole product.
+
+A passing check reduces risk; it does not prove every future response will be correct.
 
 
-**Operate.** Observe changes, limit exposure and keep rollback options.
+
+**Version.** Know which parts were released.
+
+
+**Gate.** Check before promotion.
+
+
+**Recover.** Restore a known combination when needed.
 
 
 ## A release is a set of compatible parts
 
-A prompt tested with one tool schema may fail with another. Preserve the combination that produced the observed result.
+Review the combination of code, prompt, tool schema, model and knowledge index.
 
 
 ### Diagram reading order
 
 
-1. **Build:** Resolve dependencies and create a reproducible artifact.
+1. **Build:** Create a reproducible artifact.
 
-2. **Validate:** Check contracts, permissions and selected evaluations.
+2. **Validate:** Check rules and representative cases.
 
-3. **Release:** Promote a versioned configuration under explicit policy.
+3. **Release:** Promote a versioned combination.
 
-4. **Observe / roll back:** Compare real outcomes and restore a known combination if needed.
-
-
-
-Avoid exposing deployment credentials to untrusted pull-request code. Give automation the smallest permissions it needs.
-
-
-## A model upgrade changes tool behavior
-
-The new model omits a required resource identifier in some tool requests.
+4. **Observe / roll back:** Watch outcomes and recover from regressions.
 
 
 
-1. **Detect:** Contract checks reject invalid requests before dispatch.
-
-2. **Compare:** Run the same reviewed task set against both configurations.
-
-3. **Contain:** Keep the old version serving while investigating the regression.
-
-4. **Promote:** Release only after the new combination meets the chosen criteria.
+Keep deployment credentials away from untrusted pull-request code. Scope automation permissions. Record model identity; aliases and provider behavior can change.
 
 
+## A new model omits a field
 
-Model aliases and provider behavior can change independently of your code. Record the most precise identity available and keep monitoring.
+Tool requests arrive without a required resource ID.
+
+
+
+1. **Detect:** Reject the invalid request.
+
+2. **Compare:** Run reviewed cases against both versions.
+
+3. **Contain:** Keep the known version serving.
+
+4. **Promote:** Release after the new combination meets the checks.
+
+
+
+Record precise model identity when available. Aliases and provider behavior can change.
 
 
 ## Failure and correction
 
-CI only lints Python, so a prompt edit that recommends disabling tests is released without a behavior check.
+Testing only Python syntax after changing an important prompt.
 
 
 
-Make evaluation inputs part of release review. Treat a new dangerous recommendation as a release regression.
+Review behavior changes before release.
 
 
 ## Engineering review
 
 
-- Pin what can be pinned.
+- Version the parts.
 
-- Protect CI credentials.
+- Protect CI access.
 
-- Record the released combination.
+- Test behavior.
 
-- Practice recovery from regressions.
+- Keep recovery options.
 
 
 ## Further reading
