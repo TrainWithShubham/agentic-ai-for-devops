@@ -279,6 +279,25 @@ def draw_scene(b, kind, x=48, y=247):
         box(124, 86, 79, 63, "white", 3, ink)
         glyph("activity", 138, 101, 48, teal)
         person(340, 62, teal)
+    elif kind == "crossroads":
+        # Shared road, then several routes: a learning choice, not a hierarchy.
+        line(252, 48, 252, 123, ink, 32)
+        line(252, 123, 129, 208, ink, 28)
+        line(252, 123, 373, 208, ink, 28)
+        line(252, 123, 252, 234, ink, 28)
+        for yy in (55, 82, 109):
+            line(252, yy, 252, yy + 11, gold, 3)
+        for xx, yy in [(218, 148), (178, 176), (285, 148), (325, 176)]:
+            circle(xx, yy, 3, gold)
+        for yy in (154, 181, 208):
+            line(252, yy, 252, yy + 11, gold, 3)
+        box(57, 125, 80, 61, "white", 9, purple)
+        glyph("activity", 77, 139, 38, purple)
+        box(371, 125, 80, 61, "white", 9, purple)
+        glyph("layers", 391, 139, 38, purple)
+        box(292, 208, 74, 45, gold, 7, ink)
+        glyph("brain-circuit", 315, 215, 28, purple)
+        person(101, 41, teal)
     elif kind == "building":
         for xoff, fill in [(87, "#D9C7EB"), (287, "#B9DBD0")]:
             box(xoff, 44, 134, 178, fill, 4, ink)

@@ -920,3 +920,58 @@ CHAPTERS[3]["memory_tiles"] = [
 ]
 
 CHAPTERS[15]["case_title"] = "The write request times out"
+
+CHAPTERS.append(
+    {
+        "number": 24,
+        "title": "DevOps in the agentic AI era",
+        "module": "Next / learning choices",
+        "intro": "DevOps skills still matter. AI adds work: using agents, operating AI applications and building platforms that control how agents act.",
+        "scene": "crossroads",
+        "analogy": "Several roads can start from the same town. Choose the route that fits the work you want to do.",
+        "analogy_limit": "These fields overlap. The roads show learning choices, not separate teams or guaranteed jobs.",
+        "principles": [
+            ("Use AI", "Investigate and prepare changes."),
+            ("Operate AI", "Check quality, cost and reliability."),
+            ("Build platforms", "Give people and agents safe tools."),
+        ],
+        "kind": "ops-map",
+        "diagram_title": "Four names, different jobs",
+        "diagram_intro": "AIOps uses AI for operations. MLOps and LLMOps operate AI systems. Agent operations adds control over tool choices and actions.",
+        "nodes": [
+            (
+                "AIOps",
+                "AI for IT operations: connect alerts, spot unusual behavior and help investigate incidents.",
+            ),
+            (
+                "MLOps",
+                "Operate machine-learning models and data pipelines: train, version, deploy and watch for changes in data and model performance.",
+            ),
+            (
+                "LLMOps / GenAIOps",
+                "Operate language-model apps: version prompts, refresh RAG, evaluate answers and monitor cost.",
+            ),
+            (
+                "Agent operations",
+                "Operate tool-using agents: identity, approvals, budgets, recovery and action records.",
+            ),
+        ],
+        "diagram_note": "Fields overlap. GenAIOps can cover non-language models too. Agent operations is a descriptive label here. AIOps can use predictive ML without an agent.",
+        "case_title": "Your next project, one step at a time",
+        "case_intro": "Example: a CI helper that reads evidence and prepares a fix for review. Add responsibility as your checks improve.",
+        "steps": [
+            ("Keep the foundations", "Linux, networking, Python, Git, cloud, IAM and CI/CD."),
+            ("Use one agent well", "Inspect a small patch, its evidence and the actual check results."),
+            ("Operate the helper", "Add evaluation gates, traces, scoped tools, cost limits and rollback."),
+            (
+                "Choose a direction",
+                "AIOps for incidents; AI platforms for shared tools; MLOps for model pipelines.",
+            ),
+        ],
+        "case_note": "A learning direction for 2027, not a hiring forecast. Show a failed dependency, a denied action and a verified result in your next project.",
+        "failure": "Collecting framework names while accepting changes you cannot explain.",
+        "correction": "Choose one useful task. Show evidence, a safe failure and a checked outcome.",
+        "checks": ["Strong foundations.", "Useful task.", "Observed outcome.", "One specialization."],
+        "sources": ["aiops-scope", "mlops-scope", "llmops-scope", "agent-platforms"],
+    }
+)

@@ -2,7 +2,7 @@
 
 Beginner learning edition for 2027; technical review dated 13 November 2026. By Shubham Londhe, Train With Shubham.
 
-The book has 85 pages and 23 standalone, three-page chapters. Each chapter opens with a large everyday illustration, then explains the technical diagram and a small DevOps example. It follows the six v2 course modules, then adds separate Temporal and Amazon Bedrock AgentCore bonuses. It assumes no AI background; basic Linux and Python familiarity helps. Models, inference, APIs and learning mistakes come before tools and frameworks. Examples are fictional, require no setup and do not depend on exercise files. Application-specific material first appears in chapter 21.
+The book has 89 pages and 24 standalone, three-page chapters. Each chapter opens with a large everyday illustration, then explains the technical diagram and a small DevOps example. It follows the six v2 course modules, then adds separate Temporal and Amazon Bedrock AgentCore bonuses and a final chapter on DevOps learning directions. It assumes no AI background; basic Linux and Python familiarity helps. Models, inference, APIs and learning mistakes come before tools and frameworks. Examples are fictional, require no setup and do not depend on exercise files. Application-specific material first appears in chapter 21.
 
 Reader deliverables in the repository root:
 
@@ -16,12 +16,12 @@ The individual chapters preserve printed book page numbers for easy cross-refere
 - `content.py`: original core chapter copy and diagram data.
 - `beginner_content.py`: beginner additions and chapter ordering.
 - `plain_content.py`: canonical plain-language chapter copy and analogy data, applied over the original sources.
-- `scenes.py`: 23 original vector scenes for everyday comparisons.
+- `scenes.py`: 24 original vector scenes for everyday comparisons.
 - `resources.py`: 12 owner-selected learning links and checked short descriptions.
 - [RESOURCES.md](RESOURCES.md): accessible link list matching the final QR page.
 - `RESOURCE_QR.json`: decoded QR destinations tied to the final PDF hash.
 - `VIDEO.json`: YouTube metadata confirming the linked Hindi-channel tutorial.
-- `illustrations.py`: 23 technical vector diagrams.
+- `illustrations.py`: 24 technical vector diagrams.
 - `build_book.py`: ReportLab renderer and standalone exports.
 - `sources.py`: primary-source links and glossary.
 - [MANUSCRIPT.md](MANUSCRIPT.md): reading transcript, regenerated from the canonical source.
@@ -58,3 +58,5 @@ The publication verifier checks the decoded-QR evidence recorded in `VIDEO.json`
 The footer monogram is an unchanged copy of the owner-provided `TWS Monogram 3 (1).png` found in Downloads/Images/2026-11, stored with the shared assets as `tws-monogram.png`. Its transparent padding is preserved.
 
 The final page has clickable cards and QR codes for the TWS YouTube channel and all 11 requested repositories. The descriptions are based on their current project pages, not a comparative ranking or independent security audit. Resources are optional; nothing is installed by building the book. Resource-page QR codes must also be decoded from the final rendered page and their evidence refreshed before publication verification.
+
+Chapter 24, “DevOps in the agentic AI era”, spans pages 75–77. It compares AIOps, MLOps, LLMOps/GenAIOps and agent operations, explains the platform engineering connection and offers a practical learning path. The resource page remains last, on page 89.

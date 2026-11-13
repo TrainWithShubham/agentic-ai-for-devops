@@ -369,7 +369,7 @@ def front(b):
     for start, end, subtitle in [
         (0, 8, "Start from scratch, then understand tools and loops"),
         (8, 16, "Connect knowledge, control actions and operate the system"),
-        (16, 23, "Measure, release, integrate and explore the bonuses"),
+        (16, 24, "Measure, release and choose what to learn next"),
     ]:
         b.page("Contents", "Find your chapter", bookmark=f"contents-{start}")
         b.heading("Contents", subtitle, "Read in sequence or choose a chapter")
@@ -412,7 +412,7 @@ def front(b):
         b.text(title, 100, y + 6, 13, "Bold")
         b.prose(body, 100, y - 5, 440, 10.8, max_height=33)
     b.note(
-        "Bonuses cover Temporal and AgentCore. Policies and scenarios are fictional. Architecture illustrations do not claim a live deployment, production safety certification or hiring outcome."
+        "Bonuses cover Temporal and AgentCore. Chapter 24 maps AIOps, MLOps, LLMOps and the next learning choices. Scenarios are fictional; diagrams do not prove a live deployment or hiring outcome."
     )
     b.finish()
 

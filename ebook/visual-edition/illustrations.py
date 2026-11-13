@@ -227,6 +227,24 @@ def draw(b, ch):
             node(x, y, 240, 152, title, body, name)
         b.circle(300, 401, 26, b.dark)
         ic("circle-check", 286, 387, 28, b.gold)
+    elif kind == "ops-map":
+        for (x, y), (title, body), name in zip(
+            [(48, 427), (312, 427), (48, 240), (312, 240)],
+            nodes,
+            ["activity", "database", "files", "shield-check"],
+            strict=True,
+        ):
+            node(x, y, 240, 152, title, body, name)
+        r(48, 170, 504, 48, "#F5EDDD", radius=9)
+        ic("layers", 61, 182, 24)
+        p(
+            "Platform engineering supplies shared identity, tools and deployment paths for people and agents.",
+            102,
+            207,
+            432,
+            10.5,
+            max_height=32,
+        )
     elif kind == "release":
         for i, (title, body) in enumerate(nodes):
             y = 469 - i * 84

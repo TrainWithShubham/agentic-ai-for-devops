@@ -1,7 +1,7 @@
 {
   "reviewed_on": "2026-11-13",
-  "page": 85,
-  "pdf_sha256": "cde590450b35e88150a9c861aee9292e3e7345437d1ef28dbd824e196d864817",
+  "page": 89,
+  "pdf_sha256": "813e31e5f1422fc93868ce6717f6d2dfb11bf41a8f9fde5adb433b13487f62e5",
   "decoder": "zxing-cpp 3.1.1",
   "render_height_pixels": 1000,
   "decoded_urls": [

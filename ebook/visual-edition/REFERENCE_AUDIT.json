@@ -418,5 +418,37 @@
     "status": 200,
     "final_url": "https://www.youtube.com/watch?v=14K2noGTJ1M",
     "title": null
+  },
+  {
+    "key": "aiops-scope",
+    "url": "https://www.ibm.com/think/topics/aiops",
+    "status": 200,
+    "final_url": "https://www.ibm.com/think/topics/aiops",
+    "title": "What is AIOps? | IBM",
+    "checked_on": "2026-11-13"
+  },
+  {
+    "key": "mlops-scope",
+    "url": "https://docs.cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning",
+    "status": 200,
+    "final_url": "https://docs.cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning",
+    "title": "MLOps: Continuous delivery and automation pipelines in machine learning &nbsp;|&nbsp; Cloud Architecture Center &nbsp;|&nbsp; Google Cloud Documentation",
+    "checked_on": "2026-11-13"
+  },
+  {
+    "key": "llmops-scope",
+    "url": "https://learn.microsoft.com/en-us/ai/playbook/technology-guidance/generative-ai/mlops-in-openai/",
+    "status": 200,
+    "final_url": "https://learn.microsoft.com/en-us/ai/playbook/technology-guidance/generative-ai/mlops-in-openai/",
+    "title": "LLMOps - Operational management of LLMs | Microsoft Learn",
+    "checked_on": "2026-11-13"
+  },
+  {
+    "key": "agent-platforms",
+    "url": "https://www.cncf.io/blog/2026/07/21/platform-engineering-for-the-agentic-enterprise-managing-applications-resources-and-ai-agents/",
+    "status": 200,
+    "final_url": "https://www.cncf.io/blog/2026/07/21/platform-engineering-for-the-agentic-enterprise-managing-applications-resources-and-ai-agents/",
+    "title": "Platform engineering for the agentic enterprise: Managing applications, resources, and AI agents | CNCF",
+    "checked_on": "2026-11-13"
   }
 ]

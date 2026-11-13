@@ -4,7 +4,7 @@ Beginner learning edition: reviewed 13 November 2026. The 2027 framing is a reco
 
 ## Sources and examples
 
-The 60 linked sources in `sources.py` support the relevant technical topics and further study. Concrete CI errors, role assignments, policies and incident scenarios are synthetic teaching examples. Prompt templates are original examples for adaptation, not measured best-performing prompts. Learning mistakes are recommended traps to watch for, not survey results. Diagrams are conceptual; they are not captured live executions.
+The 64 linked sources in `sources.py` support the relevant technical topics and further study. Concrete CI errors, role assignments, policies and incident scenarios are synthetic teaching examples. Prompt templates are original examples for adaptation, not measured best-performing prompts. Learning mistakes are recommended traps to watch for, not survey results. Diagrams are conceptual; they are not captured live executions.
 
 | Chapters | Review focus | Primary references and limits |
 |---|---|---|
@@ -52,3 +52,9 @@ The 85-page edition incorporates the source-backed recommendations in FINAL_REVI
 The last page contains 12 owner-selected resources: the previously verified TrainWithShubham YouTube channel and 11 canonical GitHub repositories. Checked the project pages on 13 November 2026. ECC uses affaan-m/ECC; REA uses morluto/rea. Descriptions are deliberately short and descriptive. Superpowers supplies workflow instructions rather than a general enforcement guarantee. Awesome Claude Code is a community directory, not an assurance that every entry is independently verified. Graphiti is a graph-building framework rather than a ready-made enterprise memory service. n8n is described as self-hostable rather than assigning every listed project the same open-source license. No stars, comparative rankings, performance claims or free-service guarantees are printed. Mem0 and claude-mem descriptions do not imply retraining model weights.
 
 The public link list is regenerated in RESOURCES.md. Each card links directly to its named destination; the vector QR encodes that same destination without a tracking or shortening service. RESOURCE_QR.json records the decoded URLs, final page number and PDF hash. Verification checks all 12 links and decoded codes as well as the existing video code. This verifies publication destinations, not the safety or current installation of any third-party project.
+
+## Chapter 24: DevOps learning directions
+
+Added a three-page standalone chapter, bringing the current edition to 89 pages and 24 chapters. Four additional sources from IBM, Google Cloud, Microsoft and CNCF support the scope comparison. AIOps uses AI for IT operations; MLOps covers ML models and data/training/deployment pipelines; LLMOps covers language-model application lifecycles; GenAIOps can extend beyond language models. “Agent operations” is explicitly a descriptive label, not a universally standardized discipline. AIOps can use predictive ML without an agent. Platform engineering provides shared capabilities for people and agents; the cited CNCF article is practitioner guidance, not a representative hiring-market measurement.
+
+The learning path and specialization choices are editorial recommendations, not a sequence every engineer must complete, an exhaustive skills syllabus, a prediction of 2027 products or a job guarantee. The example CI helper is conceptual. No new application or model execution was added. Existing chapters retain their numbering and pages; the new chapter is pages 75–77. An extra references page brings the total to 89, with all 12 resource cards still on the final page.

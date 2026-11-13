@@ -229,3 +229,22 @@ GLOSSARY.extend(
         ("Rate limit", "A provider limit on request or token throughput over a time window."),
     ]
 )
+
+# Chapter 24: scope and learning direction, checked 2026-11-13.
+SOURCES.update(
+    {
+        "aiops-scope": ("IBM: AIOps explained", "https://www.ibm.com/think/topics/aiops"),
+        "mlops-scope": (
+            "Google Cloud: MLOps pipelines",
+            "https://docs.cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning",
+        ),
+        "llmops-scope": (
+            "Microsoft: the LLMOps lifecycle",
+            "https://learn.microsoft.com/en-us/ai/playbook/technology-guidance/generative-ai/mlops-in-openai/",
+        ),
+        "agent-platforms": (
+            "CNCF: platforms for people and agents",
+            "https://www.cncf.io/blog/2026/07/21/platform-engineering-for-the-agentic-enterprise-managing-applications-resources-and-ai-agents/",
+        ),
+    }
+)

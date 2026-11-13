@@ -24,8 +24,8 @@ def main():
     reader = PdfReader(PDF)
     layout = json.loads((ROOT / "artifacts/book-layout.json").read_text())
     front_pages = layout["front_pages"]
-    assert len(reader.pages) == 85
-    assert [c["number"] for c in CHAPTERS] == list(range(1, 24))
+    assert len(reader.pages) == 89
+    assert [c["number"] for c in CHAPTERS] == list(range(1, 25))
     for ch in CHAPTERS:
         assert all(key in SOURCES for key in ch["sources"])
         assert len(ch["steps"]) == len(ch["checks"]) == 4
@@ -42,7 +42,7 @@ def main():
         dest = destinations[ch["title"]]
         assert reader.get_destination_page_number(dest) == front_pages + (ch["number"] - 1) * 3
     contents_links = [annotation.get_object() for page in reader.pages[1:4] for annotation in page["/Annots"]]
-    assert len(contents_links) == 23
+    assert len(contents_links) == 24
     for i, link in enumerate(contents_links):
         assert link["/Dest"][0].idnum == reader.pages[front_pages + i * 3].indirect_reference.idnum
     video_links = [
@@ -71,7 +71,7 @@ def main():
     assert not overflow, overflow[:10]
     with ZipFile(ARCHIVE) as z:
         names = sorted(z.namelist())
-        assert len(names) == 23 and all(n.endswith(".pdf") for n in names)
+        assert len(names) == 24 and all(n.endswith(".pdf") for n in names)
         for i, name in enumerate(names):
             chapter = PdfReader(BytesIO(z.read(name)))
             assert len(chapter.pages) == 3
@@ -115,7 +115,7 @@ def main():
         "model_calls": 0,
         "pdf_sha256": hashlib.sha256(PDF.read_bytes()).hexdigest(),
         "chapters_zip_sha256": hashlib.sha256(ARCHIVE.read_bytes()).hexdigest(),
-        "visual_review": "All 85 pages rendered; changed diagrams, examples and final resources page visually reviewed. Unchanged pages pixel-matched against the reviewed edition.",
+        "visual_review": "All 89 pages rendered; the new chapter, contents, guide and changed reference pages visually reviewed. Existing content compared with the reviewed edition, accounting for shifted page numbers.",
         "limits": [
             "Conceptual content, not production-system verification",
             "Fictional operational examples",
