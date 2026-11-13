@@ -310,3 +310,9 @@ Created a portrait promotional cover image with the built-in image generator, us
 ## November 13 — landscape cover banner
 
 Adapted the portrait promotional artwork with the built-in image generator for the requested 1024-by-556 crop. Repositioned type and branding on the left, with the connected agent/tool illustration on the right. The generated raster was 1701 by 925, so exported it proportionally at 1024 pixels wide and cropped the single excess pixel of height with macOS sips. Verified the final file is exactly 1024 by 556 and inspected readable text and edge margins. Preserved the portrait, source generated image and book; saved the new prompt beside the banner.
+
+## November 13 — close book work and resume v2
+
+The owner marked the book finished and asked to preserve its knowledge for repository work. Added root CONTEXT.md as a tracked handoff rather than installing a global skill. It records approved course scope, reusable factual distinctions, writing/design choices, final book/artwork paths and hashes, verification limits, current branch status and a scoped next alignment pass. Linked it from AGENTS.md and the root README so future work loads it before editing. Marked the book as finished unless another book change is requested.
+
+Confirmed the clean checkout was already on v2. Ran the 14 existing course tests, including actual local MCP stdio; all pass. Checked local links, both 180-minute schedules, the 75-minute capstone and module isolation; all pass. The first source/docs inspection shows local MCP trust, volatile graph state, RAG missing-evidence behavior and uncertain writes are already explained, so no blanket duplication of the book was made. This resume check did not use credential files, live generative inference, AWS or remote CI. Book/PDF/artwork were not changed.

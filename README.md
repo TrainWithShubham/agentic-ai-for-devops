@@ -45,7 +45,7 @@ uv run python scripts/verify_docs.py
 
 Module 6 links to [RunbookOps](https://github.com/TrainWithShubham/runbookops), a separate application. Its source, UI, tests and AWS deployment stay there. The earlier modules do not import it or depend on its incident/story.
 
-[Recovery checkpoints](checkpoints/README.md) · [Instructor start page](instructor/START_HERE.md) · [Verification](instructor/VERIFICATION.md) · [Decisions](DECISIONS.md)
+[Working context](CONTEXT.md) · [Recovery checkpoints](checkpoints/README.md) · [Instructor start page](instructor/START_HERE.md) · [Verification](instructor/VERIFICATION.md) · [Decisions](DECISIONS.md)
 
 ## Editions
 

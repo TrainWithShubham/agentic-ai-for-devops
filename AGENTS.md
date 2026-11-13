@@ -1,5 +1,7 @@
 # Course material
 
+Read [CONTEXT.md](CONTEXT.md) for the completed e-book handoff, reusable technical decisions and the current v2 course-work boundary. The book is finished; change it only when requested.
+
 Work on `v2`. Preserve `main` and `v1`. Keep commits short and omit co-author trailers. Do not push, merge, create a PR, or provision AWS resources unless requested.
 
 Modules 1–5 teach concepts through independent CI and deployment-document examples in this repository. They must not mention or depend on the module-6 application, its characters, its package, its data or its checkout. Module 6 introduces the separate application and owns its capstone/AWS demo instructions. Root navigation and instructor records may link to module 6.
