@@ -44,7 +44,7 @@ Keep a condition and its required action together.
 
 
 
-No chunk size fits every source. Scanned PDFs need OCR. Tables and slide diagrams may need more processing and review.
+No chunk size fits every source. Scanned PDFs need OCR; tables and diagrams need review. Fixed RAG can use keyword search and needs no agent loop.
 
 
 ## Different ways to search

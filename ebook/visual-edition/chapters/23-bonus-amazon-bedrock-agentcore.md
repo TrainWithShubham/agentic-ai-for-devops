@@ -38,13 +38,13 @@ A custom LangGraph loop belongs on Runtime. Managed Harness is a separate approa
 
 2. **Managed loop:** Configure model, tools and limits.
 
-3. **Tool connection:** Gateway can expose MCP-compatible tools.
+3. **Model tool access:** Limit tool selection in your code or managed Harness configuration.
 
-4. **App boundary:** Your UI/API still needs approval and access rules.
+4. **Caller + API access:** IAM separately controls direct command APIs and other calls.
 
 
 
-Architecture only. Managed sessions do not replace approval records. Check tool defaults, invocation overrides, region, quotas and pricing before deployment.
+Harness: allowedTools does not restrict InvokeAgentRuntimeCommand. Limit IAM separately. Keep approval rules in your UI/API. Check region, quotas and costs.
 
 
 ## A private instructor demo
@@ -55,7 +55,7 @@ Keep AWS credentials on the trusted backend.
 
 1. **Choose:** Custom Runtime code or managed Harness.
 
-2. **Configure:** Scope roles, tools, models and limits.
+2. **Configure:** Scope caller IAM, named tools and limits; review overrides.
 
 3. **Observe:** Inspect real invocation events and saved state.
 

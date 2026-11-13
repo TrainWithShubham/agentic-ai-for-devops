@@ -22,6 +22,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 from reportlab.platypus import Paragraph
+from resources import RESOURCES
 from scenes import draw_scene
 from sources import GLOSSARY, SOURCES
 from svglib.svglib import svg2rlg
@@ -223,6 +224,10 @@ class Book:
             self.note(ch["case_note"] + " " + ch["correction"])
             self.finish()
             return
+        if ch["number"] == 19:
+            self.evaluation_scorecard(ch)
+            self.finish()
+            return
         if ch["number"] != CLAUDE_CHAPTER:
             positions = [(48, 418), (328, 418), (328, 252), (48, 252)]
             if ch["number"] in {12, 17}:
@@ -278,6 +283,47 @@ class Book:
         else:
             self.note(ch["case_note"])
         self.finish()
+
+    def evaluation_scorecard(self, ch):
+        self.text("CASE", 61, 569, 8.5, "Mono", self.purple)
+        self.text("EXPECTED", 181, 569, 8.5, "Mono", self.green)
+        self.text("FORBIDDEN", 410, 569, 8.5, "Mono", self.red)
+        for i, (case, expected, forbidden) in enumerate(ch["eval_cases"]):
+            y = 483 - i * 68
+            self.rect(48, y, 504, 60, self.pale if i % 2 == 0 else "#F5F1E9", 8)
+            self.prose(case, 61, y + 46, 105, 11, self.ink, font="Bold", max_height=33)
+            self.prose(expected, 181, y + 46, 205, 11, self.ink, max_height=33)
+            self.prose(forbidden, 410, y + 46, 128, 10.5, self.red, max_height=33)
+        self.prose(
+            "Score retrieval, answer support and action safety separately. Compare delay and cost with a simple script or manual baseline.",
+            48,
+            193,
+            504,
+            11.2,
+            self.ink,
+            max_height=49,
+        )
+        self.prose(
+            "Repeat live-model cases; save the configuration and failed runs. A small case set is a starting point, not a reliability guarantee.",
+            48,
+            130,
+            504,
+            10.5,
+            max_height=40,
+        )
+        for i, key in enumerate(ch["sources"]):
+            label, url = SOURCES[key]
+            x = 48 + i % 2 * 264
+            y = 76 - i // 2 * 12
+            self.text(label, x, y, 7.3, fill=self.muted)
+            self.c.linkURL(url, (x, y - 1, x + 240, y + 9), relative=0)
+
+    def qr(self, url, x, y, size):
+        qr = QrCodeWidget(url, barLevel="M")
+        x0, y0, x1, y1 = qr.getBounds()
+        drawing = Drawing(size, size, transform=[size / (x1 - x0), 0, 0, size / (y1 - y0), 0, 0])
+        drawing.add(qr)
+        renderPDF.draw(drawing, self.c, x, y)
 
     def video_panel(self, caption):
         self.rect(48, 73, 504, 159, "#F5EDDD")
@@ -478,6 +524,32 @@ def back(b):
         b.finish()
 
 
+def helpful_resources(b):
+    b.page("Helpful resources", "Explore / reviewed Nov 2026", bookmark="helpful-resources")
+    b.heading(
+        "Keep learning",
+        "Scan a code or click a card. Pick one tool that helps with your next task.",
+        "Helpful resources / heading into 2027",
+    )
+    for i, (title, description, url) in enumerate(RESOURCES):
+        x = 48 + i % 2 * 258
+        y = 515 - i // 2 * 86
+        b.rect(x, y, 246, 80, "#F5EDDD" if i == 0 else b.pale, 9)
+        b.prose(title, x + 12, y + 66, 150, 11.2, b.purple, font="Bold", max_height=32)
+        b.prose(description, x + 12, y + 37, 150, 9.8, b.ink, max_height=31)
+        b.qr(url, x + 174, y + 8, 64)
+        b.c.linkURL(url, (x, y, x + 246, y + 80), relative=0)
+    b.prose(
+        "Review current permissions, licenses and costs before use. These are learning links, not security certifications.",
+        48,
+        77,
+        504,
+        8.7,
+        max_height=25,
+    )
+    b.finish()
+
+
 def manuscripts():
     directory = HERE / "chapters"
     directory.mkdir(exist_ok=True)
@@ -505,8 +577,21 @@ def manuscripts():
         lines.extend(f"**{title}.** {body}\n" for title, body in ch["principles"])
         lines.extend([f"## {ch['diagram_title']}", ch["diagram_intro"], "\n### Diagram reading order\n"])
         lines.extend(f"{i + 1}. **{title}:** {body}" for i, (title, body) in enumerate(ch["nodes"]))
+        if "memory_tiles" in ch:
+            lines.extend(f"- **{title}:** {body}" for title, body in ch["memory_tiles"])
+        if "rag_outcomes" in ch:
+            lines.extend(f"- **{title}:** {body}" for title, body in ch["rag_outcomes"])
         lines.extend(["", ch["diagram_note"], f"\n## {ch['case_title']}", ch["case_intro"], ""])
-        lines.extend(f"{i + 1}. **{title}:** {body}" for i, (title, body) in enumerate(ch["steps"]))
+        if "eval_cases" in ch:
+            lines.extend(["| Case | Expected | Forbidden |", "|---|---|---|"])
+            lines.extend(
+                f"| {case} | {expected} | {forbidden} |" for case, expected, forbidden in ch["eval_cases"]
+            )
+            lines.append(
+                "Score retrieval, answer support and action safety separately. Compare delay and cost with a script or manual baseline. Repeat variable cases and record configuration."
+            )
+        else:
+            lines.extend(f"{i + 1}. **{title}:** {body}" for i, (title, body) in enumerate(ch["steps"]))
         lines.extend(
             [
                 "",
@@ -524,6 +609,11 @@ def manuscripts():
         )
         path.write_text("\n\n".join(lines) + "\n")
         paths.append(path)
+    (HERE / "RESOURCES.md").write_text(
+        "# Helpful resources\n\nOwner-selected links; project descriptions checked 13 November 2026.\n\n"
+        + "\n\n".join(f"- [{title}]({url}): {description}" for title, description, url in RESOURCES)
+        + "\n\nReview current permissions, licenses and costs. Inclusion is not a security certification or a comparative ranking.\n"
+    )
     (HERE / "MANUSCRIPT.md").write_text(
         "# Agentic AI for DevOps\n\nA visual field guide by Shubham Londhe.\n\n"
         + "\n\n---\n\n".join(p.read_text() for p in paths)
@@ -548,6 +638,7 @@ def main():
         b.chapter_ranges.append((ch, start, b.page_number))
     learning_path(b)
     back(b)
+    helpful_resources(b)
     b.c.save()
     reader = PdfReader(BytesIO(OUT.read_bytes()))
     writer = PdfWriter()

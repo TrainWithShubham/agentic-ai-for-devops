@@ -49,7 +49,7 @@ MCP also supports resources and prompts. Local stdio and remote Streamable HTTP 
 
 ## Discover, then call
 
-These method names show the idea, not a full wire transcript.
+A local MCP server runs code on your laptop. Review its source, command and permissions; sandbox it.
 
 
 

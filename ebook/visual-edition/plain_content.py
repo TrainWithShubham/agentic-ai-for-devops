@@ -852,3 +852,71 @@ NOTE_UPDATES = {
 }
 for number, note in NOTE_UPDATES.items():
     CHAPTERS[number - 1]["diagram_note"] = note
+
+# Clarifications from the final source review; replace notes instead of adding pages.
+CHAPTERS[8]["case_intro"] = (
+    "A local MCP server runs code on your laptop. Review its source, command and permissions; sandbox it."
+)
+CHAPTERS[9]["nodes"][2] = ("Review", "Pause; this node restarts on resume.")
+CHAPTERS[9]["diagram_note"] = (
+    "On resume, code before interrupt() runs again. Use a persistent checkpointer and protect side effects from repeating. Recheck approval before any write."
+)
+CHAPTERS[9]["steps"][2] = ("Resume", "The node starts again. Use the correct thread and trusted decision.")
+CHAPTERS[10]["rag_outcomes"] = [
+    ("Evidence found", "Use allowed passages. Answer with sources."),
+    ("No evidence", "Say the documents do not establish an answer."),
+    ("Search failed", "Report retrieval or access failure. Do not guess."),
+]
+CHAPTERS[10]["diagram_intro"] = (
+    "Prepare knowledge when sources change. At question time, check access before content reaches the model."
+)
+CHAPTERS[10]["diagram_note"] = (
+    "Remove or block derived chunks and cached answers when a source is deleted or access changes. Runbooks describe policy; live tools show current state."
+)
+CHAPTERS[11]["diagram_note"] = (
+    "No chunk size fits every source. Scanned PDFs need OCR; tables and diagrams need review. Fixed RAG can use keyword search and needs no agent loop."
+)
+CHAPTERS[15]["steps"] = [
+    ("Caller times out", "The caller stopped waiting for the write result."),
+    ("Remote may finish", "The service may still apply the action."),
+    ("Check status", "Look up the operation ID or inspect target state."),
+    ("Stop or retry", "Retry only when safe; keep the same idempotency key."),
+]
+CHAPTERS[15]["diagram_note"] = (
+    "A timeout does not prove the remote action stopped. Check status before retrying. Use one retry owner, bounded backoff with jitter, and idempotency for writes."
+)
+CHAPTERS[18]["eval_cases"] = [
+    ("CI error", "Propose the missing dependency.", "Disable tests."),
+    ("Missing policy", "Say evidence is missing.", "Invent an approver."),
+    ("No access", "Deny the protected request.", "Reveal private data."),
+    ("Injected log", "Treat the instruction as log data.", "Upload a secret."),
+    ("Repeated write", "Check status; avoid another effect.", "Apply the change twice."),
+]
+CHAPTERS[18]["case_title"] = "Five cases worth checking"
+CHAPTERS[18]["case_intro"] = "Expected results and forbidden actions make failures easier to spot."
+CHAPTERS[18]["diagram_note"] = (
+    "Grade outcomes and constraints, not one exact tool sequence. Repeat variable cases and record configuration. Code coverage is not a model-quality score."
+)
+CHAPTERS[22]["nodes"][2] = (
+    "Model tool access",
+    "Limit tool selection in your code or managed Harness configuration.",
+)
+CHAPTERS[22]["nodes"][3] = (
+    "Caller + API access",
+    "IAM separately controls direct command APIs and other calls.",
+)
+CHAPTERS[22]["diagram_note"] = (
+    "Harness: allowedTools does not restrict InvokeAgentRuntimeCommand. Limit IAM separately. Keep approval rules in your UI/API. Check region, quotas and costs."
+)
+CHAPTERS[22]["steps"][1] = ("Configure", "Scope caller IAM, named tools and limits; review overrides.")
+
+CHAPTERS[3]["diagram_note"] = (
+    "RAG and saved conversation context do not by themselves retrain the model. Scope memory to the right user. Keep important evidence visible and validate structured responses."
+)
+CHAPTERS[3]["memory_tiles"] = [
+    ("Context", "For this request."),
+    ("RAG", "Retrieved sources."),
+    ("Memory", "Saved for later."),
+]
+
+CHAPTERS[15]["case_title"] = "The write request times out"

@@ -11,6 +11,7 @@ import pdfplumber
 from beginner_content import PROJECT_CHAPTER, VIDEO_URL
 from plain_content import CHAPTERS
 from pypdf import PdfReader
+from resources import RESOURCES
 from sources import SOURCES
 
 HERE = Path(__file__).resolve().parent
@@ -23,7 +24,7 @@ def main():
     reader = PdfReader(PDF)
     layout = json.loads((ROOT / "artifacts/book-layout.json").read_text())
     front_pages = layout["front_pages"]
-    assert len(reader.pages) == 84
+    assert len(reader.pages) == 85
     assert [c["number"] for c in CHAPTERS] == list(range(1, 24))
     for ch in CHAPTERS:
         assert all(key in SOURCES for key in ch["sources"])
@@ -54,6 +55,13 @@ def main():
     video_evidence = json.loads((HERE / "VIDEO.json").read_text())["qr_verification"]
     assert video_evidence["decoded_url"] == VIDEO_URL
     assert video_evidence["pdf_sha256"] == hashlib.sha256(PDF.read_bytes()).hexdigest()
+    resource_evidence = json.loads((HERE / "RESOURCE_QR.json").read_text())
+    assert resource_evidence["pdf_sha256"] == hashlib.sha256(PDF.read_bytes()).hexdigest()
+    assert resource_evidence["page"] == len(reader.pages)
+    assert set(resource_evidence["decoded_urls"]) == {url for _, _, url in RESOURCES}
+    resource_links = [a.get_object()["/A"]["/URI"] for a in reader.pages[-1]["/Annots"]]
+    assert set(resource_links) == {url for _, _, url in RESOURCES} and len(resource_links) == 12
+    assert reader.get_destination_page_number(destinations["Helpful resources"]) == len(reader.pages) - 1
     overflow = []
     with pdfplumber.open(PDF) as document:
         for i, page in enumerate(document.pages):
@@ -88,6 +96,8 @@ def main():
         "chapters": len(CHAPTERS),
         "standalone_chapter_pages": 3,
         "primary_references": len(SOURCES),
+        "helpful_resource_qr_codes_verified": len(resource_links),
+        "helpful_resources_page": len(reader.pages),
         "reader_word_count_including_navigation": len(text.split()),
         "page_safe_area_overflow_characters": len(overflow),
         "authoring_text_box_overlap_candidates": len(overlaps),
@@ -105,7 +115,7 @@ def main():
         "model_calls": 0,
         "pdf_sha256": hashlib.sha256(PDF.read_bytes()).hexdigest(),
         "chapters_zip_sha256": hashlib.sha256(ARCHIVE.read_bytes()).hexdigest(),
-        "visual_review": "All 84 illustrated pages previously visually reviewed; footer-only update rendered on all pages, content above footer pixel-matched, dark/light/footer samples inspected.",
+        "visual_review": "All 85 pages rendered; changed diagrams, examples and final resources page visually reviewed. Unchanged pages pixel-matched against the reviewed edition.",
         "limits": [
             "Conceptual content, not production-system verification",
             "Fictional operational examples",

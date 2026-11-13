@@ -42,9 +42,15 @@ Give the task and the evidence. Say what a useful result should contain.
 
 4. **Output:** Facts, cause, proposal, checks, unknowns.
 
+- **Context:** For this request.
+
+- **RAG:** Retrieved sources.
+
+- **Memory:** Saved for later.
 
 
-Context windows are finite. Keep important evidence visible and validate structured responses in the application.
+
+RAG and saved conversation context do not by themselves retrain the model. Scope memory to the right user. Keep important evidence visible and validate structured responses.
 
 
 ## A useful CI request

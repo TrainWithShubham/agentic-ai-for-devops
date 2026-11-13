@@ -44,22 +44,22 @@ Treat the model as one part of a system you can inspect.
 
 
 
-Timeout: stop waiting. Retry: try again. Idempotency: avoid duplicate effects for one logical operation. Choose one retry owner.
+A timeout does not prove the remote action stopped. Check status before retrying. Use one retry owner, bounded backoff with jitter, and idempotency for writes.
 
 
-## The provider stops responding
+## The write request times out
 
 You cannot tell whether a requested write finished.
 
 
 
-1. **Classify:** Was this a model call, read or write?
+1. **Caller times out:** The caller stopped waiting for the write result.
 
-2. **Inspect:** Check the saved execution record.
+2. **Remote may finish:** The service may still apply the action.
 
-3. **Recover:** Retry suitable transient failures within limits.
+3. **Check status:** Look up the operation ID or inspect target state.
 
-4. **Report:** Show failure or partial results honestly.
+4. **Stop or retry:** Retry only when safe; keep the same idempotency key.
 
 
 

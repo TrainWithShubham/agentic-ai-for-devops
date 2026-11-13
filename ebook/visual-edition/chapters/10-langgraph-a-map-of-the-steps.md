@@ -38,13 +38,13 @@ Make tool use, answers and review visible as separate routes.
 
 2. **Tools:** Check inputs and return results.
 
-3. **Review:** Pause before an authorized write.
+3. **Review:** Pause; this node restarts on resume.
 
 4. **End:** Record the final or incomplete result.
 
 
 
-In-memory checkpoints disappear on restart. Use suitable persistent storage. Repeated writes still need protection against duplicate effects.
+On resume, code before interrupt() runs again. Use a persistent checkpointer and protect side effects from repeating. Recheck approval before any write.
 
 
 ## Pause, then continue
@@ -57,7 +57,7 @@ A release proposal waits for human review.
 
 2. **Pause:** Show the exact proposal for review.
 
-3. **Resume:** Use the correct thread and trusted decision.
+3. **Resume:** The node starts again. Use the correct thread and trusted decision.
 
 4. **Recheck:** Check identity, proposal and current target state.
 

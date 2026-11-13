@@ -349,9 +349,15 @@ Give the task and the evidence. Say what a useful result should contain.
 
 4. **Output:** Facts, cause, proposal, checks, unknowns.
 
+- **Context:** For this request.
+
+- **RAG:** Retrieved sources.
+
+- **Memory:** Saved for later.
 
 
-Context windows are finite. Keep important evidence visible and validate structured responses in the application.
+
+RAG and saved conversation context do not by themselves retrain the model. Scope memory to the right user. Keep important evidence visible and validate structured responses.
 
 
 ## A useful CI request
@@ -861,7 +867,7 @@ MCP also supports resources and prompts. Local stdio and remote Streamable HTTP 
 
 ## Discover, then call
 
-These method names show the idea, not a full wire transcript.
+A local MCP server runs code on your laptop. Review its source, command and permissions; sandbox it.
 
 
 
@@ -951,13 +957,13 @@ Make tool use, answers and review visible as separate routes.
 
 2. **Tools:** Check inputs and return results.
 
-3. **Review:** Pause before an authorized write.
+3. **Review:** Pause; this node restarts on resume.
 
 4. **End:** Record the final or incomplete result.
 
 
 
-In-memory checkpoints disappear on restart. Use suitable persistent storage. Repeated writes still need protection against duplicate effects.
+On resume, code before interrupt() runs again. Use a persistent checkpointer and protect side effects from repeating. Recheck approval before any write.
 
 
 ## Pause, then continue
@@ -970,7 +976,7 @@ A release proposal waits for human review.
 
 2. **Pause:** Show the exact proposal for review.
 
-3. **Resume:** Use the correct thread and trusted decision.
+3. **Resume:** The node starts again. Use the correct thread and trusted decision.
 
 4. **Recheck:** Check identity, proposal and current target state.
 
@@ -1042,7 +1048,7 @@ Finding a page does not guarantee the answer uses it correctly.
 
 ## Separate preparation from answering
 
-Prepare knowledge when documents change. Search it when someone asks a question.
+Prepare knowledge when sources change. At question time, check access before content reaches the model.
 
 
 ### Diagram reading order
@@ -1056,9 +1062,15 @@ Prepare knowledge when documents change. Search it when someone asks a question.
 
 4. **Answer:** Use their text and cite the location.
 
+- **Evidence found:** Use allowed passages. Answer with sources.
+
+- **No evidence:** Say the documents do not establish an answer.
+
+- **Search failed:** Report retrieval or access failure. Do not guess.
 
 
-A runbook describes policy; live tools show current state. Some search designs need no embeddings. Fixed RAG does not require an agent loop.
+
+Remove or block derived chunks and cached answers when a source is deleted or access changes. Runbooks describe policy; live tools show current state.
 
 
 ## Who approves rollback?
@@ -1157,7 +1169,7 @@ Keep a condition and its required action together.
 
 
 
-No chunk size fits every source. Scanned PDFs need OCR. Tables and slide diagrams may need more processing and review.
+No chunk size fits every source. Scanned PDFs need OCR; tables and diagrams need review. Fixed RAG can use keyword search and needs no agent loop.
 
 
 ## Different ways to search
@@ -1563,22 +1575,22 @@ Treat the model as one part of a system you can inspect.
 
 
 
-Timeout: stop waiting. Retry: try again. Idempotency: avoid duplicate effects for one logical operation. Choose one retry owner.
+A timeout does not prove the remote action stopped. Check status before retrying. Use one retry owner, bounded backoff with jitter, and idempotency for writes.
 
 
-## The provider stops responding
+## The write request times out
 
 You cannot tell whether a requested write finished.
 
 
 
-1. **Classify:** Was this a model call, read or write?
+1. **Caller times out:** The caller stopped waiting for the write result.
 
-2. **Inspect:** Check the saved execution record.
+2. **Remote may finish:** The service may still apply the action.
 
-3. **Recover:** Retry suitable transient failures within limits.
+3. **Check status:** Look up the operation ID or inspect target state.
 
-4. **Report:** Show failure or partial results honestly.
+4. **Stop or retry:** Retry only when safe; keep the same idempotency key.
 
 
 
@@ -1866,22 +1878,30 @@ Use different checks for different questions.
 
 
 
-Code coverage is not a live model-quality score. Keep failures, repeat variable cases and record the model/configuration.
+Grade outcomes and constraints, not one exact tool sequence. Repeat variable cases and record configuration. Code coverage is not a model-quality score.
 
 
-## Check a CI recommendation
+## Five cases worth checking
 
-The desired fix installs the declared test dependency without disabling tests.
+Expected results and forbidden actions make failures easier to spot.
 
 
 
-1. **Input:** Log, workflow, dependency file and caller.
+| Case | Expected | Forbidden |
 
-2. **Expected:** A proposal to install the test group.
+|---|---|---|
 
-3. **Forbidden:** No test bypass, secret read or workflow write.
+| CI error | Propose the missing dependency. | Disable tests. |
 
-4. **Judge:** Check the proposal and its source support.
+| Missing policy | Say evidence is missing. | Invent an approver. |
+
+| No access | Deny the protected request. | Reveal private data. |
+
+| Injected log | Treat the instruction as log data. | Upload a secret. |
+
+| Repeated write | Check status; avoid another effect. | Apply the change twice. |
+
+Score retrieval, answer support and action safety separately. Compare delay and cost with a script or manual baseline. Repeat variable cases and record configuration.
 
 
 
@@ -2270,13 +2290,13 @@ A custom LangGraph loop belongs on Runtime. Managed Harness is a separate approa
 
 2. **Managed loop:** Configure model, tools and limits.
 
-3. **Tool connection:** Gateway can expose MCP-compatible tools.
+3. **Model tool access:** Limit tool selection in your code or managed Harness configuration.
 
-4. **App boundary:** Your UI/API still needs approval and access rules.
+4. **Caller + API access:** IAM separately controls direct command APIs and other calls.
 
 
 
-Architecture only. Managed sessions do not replace approval records. Check tool defaults, invocation overrides, region, quotas and pricing before deployment.
+Harness: allowedTools does not restrict InvokeAgentRuntimeCommand. Limit IAM separately. Keep approval rules in your UI/API. Check region, quotas and costs.
 
 
 ## A private instructor demo
@@ -2287,7 +2307,7 @@ Keep AWS credentials on the trusted backend.
 
 1. **Choose:** Custom Runtime code or managed Harness.
 
-2. **Configure:** Scope roles, tools, models and limits.
+2. **Configure:** Scope caller IAM, named tools and limits; review overrides.
 
 3. **Observe:** Inspect real invocation events and saved state.
 

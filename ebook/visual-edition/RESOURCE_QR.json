@@ -1,0 +1,21 @@
+{
+  "reviewed_on": "2026-11-13",
+  "page": 85,
+  "pdf_sha256": "cde590450b35e88150a9c861aee9292e3e7345437d1ef28dbd824e196d864817",
+  "decoder": "zxing-cpp 3.1.1",
+  "render_height_pixels": 1000,
+  "decoded_urls": [
+    "https://github.com/affaan-m/ECC",
+    "https://github.com/getzep/graphiti",
+    "https://github.com/hesreallyhim/awesome-claude-code",
+    "https://github.com/mattpocock/skills",
+    "https://github.com/mem0ai/mem0",
+    "https://github.com/morluto/rea",
+    "https://github.com/n8n-io/n8n",
+    "https://github.com/obra/superpowers",
+    "https://github.com/openclaw/openclaw",
+    "https://github.com/thedotmack/claude-mem",
+    "https://github.com/unclecode/crawl4ai",
+    "https://www.youtube.com/@TrainWithShubham"
+  ]
+}

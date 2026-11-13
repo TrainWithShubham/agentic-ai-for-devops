@@ -9,7 +9,7 @@
   "qr_verification": {
     "decoded_url": "https://www.youtube.com/watch?v=14K2noGTJ1M",
     "decoder": "zxing-cpp 3.1.1",
-    "pdf_sha256": "4ea89e30b80a82b213b1269b8ecc946a9cc89acf3065d5b4819b41f4625a0d17",
+    "pdf_sha256": "cde590450b35e88150a9c861aee9292e3e7345437d1ef28dbd824e196d864817",
     "page": 23
   }
 }

@@ -28,7 +28,7 @@ Finding a page does not guarantee the answer uses it correctly.
 
 ## Separate preparation from answering
 
-Prepare knowledge when documents change. Search it when someone asks a question.
+Prepare knowledge when sources change. At question time, check access before content reaches the model.
 
 
 ### Diagram reading order
@@ -42,9 +42,15 @@ Prepare knowledge when documents change. Search it when someone asks a question.
 
 4. **Answer:** Use their text and cite the location.
 
+- **Evidence found:** Use allowed passages. Answer with sources.
+
+- **No evidence:** Say the documents do not establish an answer.
+
+- **Search failed:** Report retrieval or access failure. Do not guess.
 
 
-A runbook describes policy; live tools show current state. Some search designs need no embeddings. Fixed RAG does not require an agent loop.
+
+Remove or block derived chunks and cached answers when a source is deleted or access changes. Runbooks describe policy; live tools show current state.
 
 
 ## Who approves rollback?

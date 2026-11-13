@@ -1,5 +1,7 @@
 # Final technical review
 
+**Follow-up status:** Recommendations 1–7 were applied to the 85-page edition on 13 November 2026, with a new final resource page. The findings below describe the reviewed 84-page snapshot and preserve the evidence behind the changes. Current artifact hashes and publication results are in VERIFICATION.json.
+
 Reviewed 13 November 2026 from AI application engineering and DevOps/SRE perspectives. Reviewer: Codex. This is an evidence-backed editorial review, not an independent human certification.
 
 Artifact: the 84-page rocket-footer edition, SHA-256 `4ea89e30b80a82b213b1269b8ecc946a9cc89acf3065d5b4819b41f4625a0d17`. The PDF and chapter ZIP were not changed during this review.

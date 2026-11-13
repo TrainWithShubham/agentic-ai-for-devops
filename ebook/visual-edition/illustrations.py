@@ -50,7 +50,12 @@ def draw(b, ch):
             ic(["file-text", "user-round", "files", "list-checks"][i], x + 13, y + 24, 24)
             t(title, x + 51, y + 43, 12, "Bold")
             p(body, x + 51, y + 31, 424 - i * 12, 10.7)
-        t("A REQUEST IS ASSEMBLED, THEN SENT TO THE MODEL", 48, 213, 9, "Mono", b.purple)
+        for i, (title, body) in enumerate(ch["memory_tiles"]):
+            x = 48 + i * 172
+            r(x, 171, 160, 61, b.pale)
+            t(title, x + 12, 211, 11, "Bold", b.purple)
+            p(body, x + 12, 198, 136, 10.5, max_height=22)
+        b.record_diagram(ch["memory_tiles"])
     elif kind == "sequence":
         positions = [111, 300, 489]
         for x, title, name in zip(
@@ -110,18 +115,26 @@ def draw(b, ch):
         b.center("result", 300, 440, 8.7, b.muted)
         b.center("write proposal", 442, 393, 8.2, b.purple)
         b.center("answer", 185, 395, 8.5, b.muted)
+        b.line(555, 260, 566, 260, b.purple)
+        b.line(566, 260, 566, 352, b.purple)
+        a(566, 352, 553, 352)
+        b.center("RESUME = RESTART THE REVIEW NODE", 300, 181, 9, b.purple)
     elif kind == "rag":
         t("PREPARATION", 48, 568, 9, "Mono", b.purple)
-        node(48, 407, 224, 140, *nodes[0], "files")
-        node(328, 407, 224, 140, *nodes[1], "database")
-        a(280, 477, 320, 477)
-        t("QUESTION TIME", 48, 357, 9, "Mono", b.purple)
-        node(48, 194, 224, 140, *nodes[2], "search")
-        node(328, 194, 224, 140, *nodes[3], "brain-circuit")
-        a(280, 263, 320, 263)
-        a(440, 398, 440, 365)
-        a(440, 365, 160, 365)
-        a(160, 357, 160, 343)
+        node(48, 443, 224, 104, *nodes[0], "files")
+        node(328, 443, 224, 104, *nodes[1], "database")
+        a(280, 495, 320, 495)
+        t("QUESTION TIME", 48, 413, 9, "Mono", b.purple)
+        node(48, 318, 504, 79, *nodes[2], "search", compact=True)
+        a(440, 434, 440, 405)
+        for i, (title, body) in enumerate(ch["rag_outcomes"]):
+            x = 48 + i * 172
+            a(300, 310, x + 80, 293)
+            r(x, 177, 160, 107, ["#E8F1EB", b.pale, "#F7E9EB"][i])
+            ic(["circle-check", "files", "triangle-alert"][i], x + 12, 253, 20)
+            t(title, x + 39, 258, 10.6, "Bold")
+            p(body, x + 12, 239, 136, 11.4, max_height=53)
+        b.record_diagram(ch["rag_outcomes"])
     elif kind == "chunks":
         r(48, 434, 504, 143, b.dark)
         t("SOURCE / POLICY / SECTION 4", 67, 550, 9, "Mono", b.gold)
@@ -261,8 +274,8 @@ def draw(b, ch):
         node(312, 389, 240, 178, *nodes[1], "brain-circuit", fill="#F5EDDD")
         b.center("AgentCore Runtime", 168, 412, 12, b.purple)
         b.center("Managed Harness", 432, 412, 12, "#624A28")
-        node(48, 196, 240, 145, *nodes[2], "list-checks")
-        node(312, 196, 240, 145, *nodes[3], "shield-check")
+        node(48, 196, 240, 145, *nodes[2], "lock-keyhole")
+        node(312, 196, 240, 145, *nodes[3], "lock-keyhole")
         a(168, 381, 168, 366)
         a(432, 381, 432, 366)
         b.line(168, 366, 432, 366, b.purple)

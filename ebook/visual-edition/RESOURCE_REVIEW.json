@@ -1,0 +1,101 @@
+{
+  "scope": "Project identity and short description checked against canonical pages; not an installation, security audit or performance ranking.",
+  "resources": [
+    {
+      "name": "TrainWithShubham",
+      "description": "DevOps and AI videos on YouTube.",
+      "url": "https://www.youtube.com/@TrainWithShubham",
+      "status": 200,
+      "final_url": "https://www.youtube.com/@TrainWithShubham",
+      "checked_on": "2026-11-13"
+    },
+    {
+      "name": "ECC",
+      "description": "Skills, harness setup and AgentShield checks.",
+      "url": "https://github.com/affaan-m/ECC",
+      "status": 200,
+      "final_url": "https://github.com/affaan-m/ECC",
+      "checked_on": "2026-11-13"
+    },
+    {
+      "name": "Superpowers",
+      "description": "Planning, TDD and debugging workflows.",
+      "url": "https://github.com/obra/superpowers",
+      "status": 200,
+      "final_url": "https://github.com/obra/superpowers",
+      "checked_on": "2026-11-13"
+    },
+    {
+      "name": "Matt Pocock's Skills",
+      "description": "Small, adaptable engineering workflows.",
+      "url": "https://github.com/mattpocock/skills",
+      "status": 200,
+      "final_url": "https://github.com/mattpocock/skills",
+      "checked_on": "2026-11-13"
+    },
+    {
+      "name": "Awesome Claude Code",
+      "description": "Community directory of skills and tools.",
+      "url": "https://github.com/hesreallyhim/awesome-claude-code",
+      "status": 200,
+      "final_url": "https://github.com/hesreallyhim/awesome-claude-code",
+      "checked_on": "2026-11-13"
+    },
+    {
+      "name": "claude-mem",
+      "description": "Save and recall coding-session context.",
+      "url": "https://github.com/thedotmack/claude-mem",
+      "status": 200,
+      "final_url": "https://github.com/thedotmack/claude-mem",
+      "checked_on": "2026-11-13"
+    },
+    {
+      "name": "Mem0",
+      "description": "A memory layer for agents and apps.",
+      "url": "https://github.com/mem0ai/mem0",
+      "status": 200,
+      "final_url": "https://github.com/mem0ai/mem0",
+      "checked_on": "2026-11-13"
+    },
+    {
+      "name": "Graphiti by Zep",
+      "description": "Build knowledge graphs that track time.",
+      "url": "https://github.com/getzep/graphiti",
+      "status": 200,
+      "final_url": "https://github.com/getzep/graphiti",
+      "checked_on": "2026-11-13"
+    },
+    {
+      "name": "REA",
+      "description": "Inspect software through MCP tools.",
+      "url": "https://github.com/morluto/rea",
+      "status": 200,
+      "final_url": "https://github.com/morluto/rea",
+      "checked_on": "2026-11-13"
+    },
+    {
+      "name": "Crawl4AI",
+      "description": "Turn web pages into Markdown or data.",
+      "url": "https://github.com/unclecode/crawl4ai",
+      "status": 200,
+      "final_url": "https://github.com/unclecode/crawl4ai",
+      "checked_on": "2026-11-13"
+    },
+    {
+      "name": "OpenClaw",
+      "description": "A local assistant with messaging channels.",
+      "url": "https://github.com/openclaw/openclaw",
+      "status": 200,
+      "final_url": "https://github.com/openclaw/openclaw",
+      "checked_on": "2026-11-13"
+    },
+    {
+      "name": "n8n",
+      "description": "Build visual workflows; self-host or cloud.",
+      "url": "https://github.com/n8n-io/n8n",
+      "status": 200,
+      "final_url": "https://github.com/n8n-io/n8n",
+      "checked_on": "2026-11-13"
+    }
+  ]
+}
