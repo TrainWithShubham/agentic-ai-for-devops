@@ -44,3 +44,6 @@ CLAUDE.md
 .coverage*
 htmlcov/
 node_modules/
+
+# Temporary PDF renders
+tmp/

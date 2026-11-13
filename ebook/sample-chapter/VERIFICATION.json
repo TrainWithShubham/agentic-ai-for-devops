@@ -1,0 +1,47 @@
+{
+  "reviewed_on": "2026-11-13",
+  "scope": "Sample chapter and standalone companion lab; not the complete ebook",
+  "pdf": {
+    "pages": 23,
+    "link_annotations": 39,
+    "body_overflow_characters": 0,
+    "python_listings_parse": true,
+    "visual_review": "All 23 rendered pages reviewed, with detailed page checks during layout revision; no clipping or overlap found",
+    "sha256": "a122326d91e95c05895875a9afaeb5003a50723f8b509606bb7a6e55ccb892f8"
+  },
+  "lab": {
+    "standalone_checks_passed": 6,
+    "fresh_archive_checks_passed": 6,
+    "archive_files": 18,
+    "formats": [
+      "PDF",
+      "DOCX",
+      "PPTX",
+      "MD",
+      "TXT"
+    ],
+    "document_ids": 7,
+    "initial_chunks": 18,
+    "semantic_model": "BAAI/bge-small-en-v1.5",
+    "embedding_dimensions": 384,
+    "fresh_base_environment": "Keyword mode tested without fastembed or the capstone application",
+    "sha256": "d6f95b8fe87363c2063121631d7d0f9b422e831d1baa477188455744367e92d6"
+  },
+  "live_sample": {
+    "provider": "OpenRouter",
+    "model": "cohere/north-mini-code:free",
+    "source_id_present": true,
+    "provider_reported_cost": 0,
+    "total_tokens": 391,
+    "fallback_used": false,
+    "scope": "One successful sample; not a source-support or reliability benchmark"
+  },
+  "cloud_resources_created": false,
+  "limits": [
+    "No OCR, complex-layout coverage or production authorization",
+    "Free model capacity and availability can change",
+    "No broad model-quality benchmark or load test",
+    "No tagged-PDF accessibility certification",
+    "Temporal and AgentCore are outside this sample"
+  ]
+}
