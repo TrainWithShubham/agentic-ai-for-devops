@@ -105,7 +105,7 @@ def main():
         "model_calls": 0,
         "pdf_sha256": hashlib.sha256(PDF.read_bytes()).hexdigest(),
         "chapters_zip_sha256": hashlib.sha256(ARCHIVE.read_bytes()).hexdigest(),
-        "visual_review": "All 84 illustrated pages rendered and visually reviewed; final changed pages reviewed again.",
+        "visual_review": "All 84 illustrated pages previously visually reviewed; footer-only update rendered on all pages, content above footer pixel-matched, dark/light/footer samples inspected.",
         "limits": [
             "Conceptual content, not production-system verification",
             "Fictional operational examples",

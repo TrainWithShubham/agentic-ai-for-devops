@@ -146,10 +146,9 @@ class Book:
         self.text("AGENTIC AI FOR DEVOPS", 48, 744, 8, "Bold", self.gold if dark else self.purple)
         self.text(section.upper()[:27], 391, 744, 7.5, "Mono", "#D3C6E0" if dark else self.muted)
         self.line(48, 49, 552, 49, "#3C3149" if dark else "#DED6E6")
-        self.text("T", 48, 27, 15, "Bold", "#A37AE0" if dark else self.purple)
-        self.text("W", 58, 27, 15, "Bold", self.gold if dark else "#8A581A")
-        self.text("S", 73, 27, 15, "Bold", "#A37AE0" if dark else self.purple)
-        self.text("TRAIN WITH SHUBHAM", 99, 29, 7.3, "Bold", "#D3C6E0" if dark else self.muted)
+        self.c.drawImage(
+            str(ASSETS / "tws-monogram.png"), 41, 12, 38, 38, mask="auto", preserveAspectRatio=True
+        )
         self.text(f"{self.page_number:02}", 532, 29, 9, "Mono", self.gold if dark else self.purple)
         if bookmark:
             self.c.bookmarkPage(bookmark)

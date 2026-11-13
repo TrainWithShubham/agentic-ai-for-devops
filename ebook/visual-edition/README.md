@@ -26,7 +26,7 @@ The individual chapters preserve printed book page numbers for easy cross-refere
 - [FACT_CHECK.md](FACT_CHECK.md): source and claim review scope.
 - `VERIFICATION.json`: publication checks and artifact hashes.
 
-Edit the Python content data before rebuilding; edits made only to a generated Markdown transcript will be overwritten. Shared font, icon and branding assets live in `../sample-chapter/assets`. They are included in this repository, not downloaded at build time. Asset license notices are embedded in the PDFs. The earlier approved sample remains available independently. The original TWS logo is unchanged; the black cover background blends with its existing background. Purple and gold, licensed icons and a small TWS footer carry the branding through the book.
+Edit the Python content data before rebuilding; edits made only to a generated Markdown transcript will be overwritten. Shared font, icon and branding assets live in `../sample-chapter/assets`. They are included in this repository, not downloaded at build time. Asset license notices are embedded in the PDFs. The earlier approved sample remains available independently. The original TWS logo is unchanged; the black cover background blends with its existing background. Purple and gold, licensed icons and the original rocket monogram in each footer carry the branding through the book.
 
 Rebuild from the repository root:
 
@@ -51,3 +51,5 @@ Recheck the linked primary references before each new edition. Review changes to
 The book explains engineering concepts. It does not certify a production architecture, provide tagged-PDF accessibility, establish model reliability or claim a fresh cloud deployment. No infrastructure provisioning or model calls occur during the build.
 
 The publication verifier checks the decoded-QR evidence recorded in `VIDEO.json` against the final PDF hash. After rebuilding an edited edition, render the video page, decode its QR, then refresh that public evidence before running `verify_book.py`. The current edition was decoded with zxing-cpp 3.1.1. The verifier needs pypdf and pdfplumber in the authoring environment; these are publication tools, not reader requirements.
+
+The footer monogram is an unchanged copy of the owner-provided `TWS Monogram 3 (1).png` found in Downloads/Images/2026-11, stored with the shared assets as `tws-monogram.png`. Its transparent padding is preserved.
