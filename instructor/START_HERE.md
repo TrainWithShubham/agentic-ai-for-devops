@@ -30,10 +30,19 @@ Use a clean course terminal and a large font. Have three artifacts visible durin
 
 Start with modules 4–5 and the small security/operations/evaluation examples. After the break, introduce [module 6](../module-6/README.md), switch explicitly to its separate checkout and open its UI.
 
-AgentCore is part of the Day 2 demonstration. The previous AWS resources were deleted; [module 6](../module-6/README.md#instructor-agentcore-demo) has the current rebuild, probe, paid smoke and presenter commands. A fresh successful invocation is required before describing the demo as ready. Do not use old deployment scripts from historical course notes.
+AgentCore is part of the Day 2 demonstration. The previous AWS resources were deleted; [the instructor guide](AGENTCORE_DEMO.md) has the current rebuild, probe, paid smoke and presenter commands. A fresh successful invocation is required before describing the demo as ready. Do not use old deployment scripts from historical course notes.
 
 Never share AWS credentials, private signing keys or model keys. The instructor owns cloud usage and cleanup. The browser/API bridge stays local. Prepare the cloud deployment before class, not during the fifteen-minute demo.
 
 ## Remaining rehearsal
 
 Confirm class start times and a support channel with attendees. Run a timed rehearsal, verify one learner laptop and send [setup](../setup/README.md). Technical checks cannot establish that 50–100 attendees will finish every edit on time.
+
+## Optional authoring
+
+Rebuilding mixed-format fixtures in the course repository is also an authoring task, not learner setup:
+
+```bash
+uv sync --frozen --extra authoring
+uv run python scripts/build_documents.py
+```

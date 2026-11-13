@@ -26,20 +26,30 @@ def is_free_tool_model(item):
 
 @lru_cache(maxsize=1)
 def catalog():
-    with httpx.Client(timeout=20) as client:
-        response = client.get(BASE + "/models")
-        response.raise_for_status()
-        return response.json()["data"]
+    try:
+        with httpx.Client(timeout=20) as client:
+            response = client.get(BASE + "/models")
+            response.raise_for_status()
+            return response.json()["data"]
+    except (httpx.HTTPError, ValueError, KeyError):
+        raise RuntimeError(
+            "Could not read OpenRouter's model list. Check your connection and retry "
+            "uv run python -m course_labs.models. No model was called."
+        ) from None
 
 
 def complete(messages, tools=None):
     load_dotenv(ROOT / ".env", override=False)
     key, model = os.getenv("OPENROUTER_API_KEY", ""), os.getenv("OPENROUTER_MODEL", "")
     if not key or not model:
-        raise ValueError("Set your own OPENROUTER_API_KEY and OPENROUTER_MODEL in .env; see setup/README.md")
+        raise ValueError(
+            "Live mode needs your own OPENROUTER_API_KEY and OPENROUTER_MODEL in .env. See setup/README.md."
+        )
     selected = next((item for item in catalog() if item["id"] == model and is_free_tool_model(item)), None)
     if selected is None:
-        raise ValueError("Selected model must be a currently listed, zero-priced :free tool model")
+        raise ValueError(
+            "Selected model must be a currently listed, zero-priced :free tool model. Run uv run python -m course_labs.models and update OPENROUTER_MODEL."
+        )
     payload = {
         "model": model,
         "messages": messages,

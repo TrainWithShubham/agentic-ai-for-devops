@@ -2,7 +2,7 @@
 
 import argparse
 
-from .common import read_json, show
+from .common import read_json, run_cli, show
 
 GOOD = {
     "answer": "pytest did not start because --no-dev excluded its development group. Propose removing that flag, request human review and rerun the test job.",
@@ -51,4 +51,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    run_cli(main, "See module-5/README.md or checkpoints/README.md for the next step.")

@@ -2,7 +2,17 @@
 
 This record covers the redesigned `v2` course, not the standalone application. The [machine-readable summary](evidence/concept-course-verification.json) records counts and scope. [Earlier verification](VERIFICATION_HISTORY.md) is historical material from the previous course layout.
 
-## Executed checks
+## Learner experience update
+
+The [learner-review evidence](evidence/learner-experience-review.json) records the latest pass on November 13. All 17 current checks pass on Python 3.12.12 on macOS, including a fresh locked environment. Sixteen documented offline/check commands returned their expected results, including deliberately failing evaluations and incomplete starters. The public model-list command also succeeded without inference. Expected configuration/catalog/optional-dependency failures now provide a next step and retain a nonzero exit code.
+
+Rewrote the root README, setup and all six modules from the learner's perspective using the humanizer guidance. Added expected-output explanations and recovery steps, defined jargon where introduced, and moved cloud commands to the [instructor guide](AGENTCORE_DEMO.md). This was an editorial/code review, not an observed beginner usability study. No new dependency, live generative request, semantic download, AWS deployment or application execution was needed. The finished book is unchanged.
+
+## Earlier redesign checks
+
+The table and sampled live evidence below describe the earlier 14-check baseline, not a new run of every Python version or live endpoint.
+
+
 
 | Check | Observed result |
 |---|---|
@@ -37,6 +47,6 @@ No paid/offline model fallback was used. The free catalog and provider access ca
 
 ## Cloud and classroom readiness
 
-AgentCore remains in the Day 2 module-6 demonstration. The previous AWS deployment was deleted; this redesign did not recreate it or run a fresh cloud invocation. Follow [the module-6 preflight](../module-6/README.md#instructor-agentcore-demo) before class. Old successful cloud evidence is historical, not a currently running deployment.
+AgentCore remains in the Day 2 module-6 demonstration. The previous AWS deployment was deleted; this redesign did not recreate it or run a fresh cloud invocation. Follow [the instructor preflight](AGENTCORE_DEMO.md) before class. Old successful cloud evidence is historical, not a currently running deployment.
 
 The redesigned course was checked locally on macOS with managed Python environments. Windows laptops, a new browser-lab allocation, the new GitHub workflow on a remote runner, a timed instructor rehearsal and a 50–100-person session were not tested in this pass. The original application retains its own separate verification records.

@@ -7,7 +7,7 @@ import math
 import re
 from functools import lru_cache
 
-from .common import ROOT, show
+from .common import ROOT, run_cli, show
 from .provider import complete
 
 DOCS = ROOT / "data/deployment-docs"
@@ -60,6 +60,7 @@ def extract(path):
 
 
 def split(text, size=450, overlap=80):
+    """Split by characters; repeat overlap characters to keep some neighboring context."""
     if size <= 0 or not 0 <= overlap < size:
         raise ValueError("Require chunk size > 0 and 0 <= overlap < size")
     return [text[start : start + size] for start in range(0, len(text), size - overlap)]
@@ -67,12 +68,20 @@ def split(text, size=450, overlap=80):
 
 @lru_cache(maxsize=1)
 def embedding_model():
-    from fastembed import TextEmbedding
+    try:
+        from fastembed import TextEmbedding
+    except ImportError:
+        raise RuntimeError(
+            "Semantic search needs the optional embedding package. "
+            "Run uv sync --frozen --extra semantic, then retry. "
+            "The first run also downloads a model; keyword search works without it."
+        ) from None
 
     return TextEmbedding("BAAI/bge-small-en-v1.5", cache_dir=str(ROOT / ".cache/models"))
 
 
 def build_index(backend="keyword"):
+    """Extract documents, make chunks and save a local searchable copy."""
     manifest = json.loads((DOCS / "manifest.json").read_text())
     digest = hashlib.sha256((DOCS / "manifest.json").read_bytes())
     chunks = []
@@ -103,6 +112,7 @@ def cosine(left, right):
 
 
 def retrieve(index, question, role="engineer", backend="keyword", limit=3):
+    """Filter by current access first, then rank the remaining chunks."""
     if role not in ("engineer", "release-manager"):
         raise PermissionError("Unknown teaching identity")
     eligible_positions = [i for i, c in enumerate(index["chunks"]) if c["current"] and role in c["roles"]]
@@ -189,4 +199,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    run_cli(main, "See module-3/README.md or checkpoints/README.md for the next step.")

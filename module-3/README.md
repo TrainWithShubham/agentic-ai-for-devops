@@ -1,101 +1,107 @@
-# Module 3 — RAG pipelines for deployment knowledge
+# Module 3: RAG pipelines for deployment knowledge
 
-Day 1, 60 minutes. RAG means retrieval-augmented generation: find relevant external evidence, add it to a model request and ask for an answer grounded in that evidence. It does not retrain the model.
+**Day 1 · 60 minutes** · [Previous](../module-2/README.md) · [Glossary](../GLOSSARY.md)
 
-## What is a RAG pipeline?
+You will turn company documents into searchable pieces, find supporting passages and inspect their sources. RAG means **retrieval-augmented generation**: find external evidence, give it to a model and ask for an answer. It does not retrain the model.
 
-A pipeline is the sequence that turns source documents and a question into retrieved context and an answer. It has two paths with different operational responsibilities.
+## Understand the two paths
 
-```mermaid
-flowchart LR
-    Docs[PDF / DOCX / PPTX / MD / TXT] --> Extract[Extract text + source locations]
-    Extract --> Chunk[Chunk + attach metadata]
-    Chunk --> Embed[Embed when using semantic search]
-    Embed --> Index[Store searchable chunks / vectors]
-```
-
-This preparation path runs when documents are added or changed. A production ingestion job also needs source permissions, deletion handling, versioning, extraction failures and freshness checks.
+The **preparation path** runs when documents change:
 
 ```mermaid
 flowchart LR
-    Question[Question + trusted caller context] --> Search[Query + authorized current search space]
-    Index[Stored chunks / vectors] --> Search
-    Search --> Rank[Rank and bound results]
-    Rank --> Context[Assemble source excerpts + question]
-    Context --> LLM[Model generates answer]
-    LLM --> Inspect[Inspect claims and source locations]
+    Docs[PDF / DOCX / PPTX / MD / TXT] --> Extract[Read text + source locations]
+    Extract --> Chunk[Split text + keep document details]
+    Chunk --> Index[Store searchable chunks]
+    Chunk --> Embed[Optional: create embeddings]
+    Embed --> Index
 ```
 
-The query path should retrieve evidence the caller may read. A similarity score measures a matching function; it is not a probability that a claim is true. Retrieval can return the wrong document, extraction can lose meaning and a model can misuse a valid citation.
+A chunk is a small piece of text. Metadata records details such as its source, page, version and allowed roles. An embedding represents text as numbers so related passages can be compared.
 
-## Open the corpus
+The **question path** uses that prepared knowledge:
 
-Inspect [data/deployment-docs](../data/deployment-docs/manifest.json):
+```mermaid
+flowchart LR
+    Question[Question + trusted identity] --> Search[Search allowed, current sources]
+    Index[Prepared index] --> Search
+    Search --> Found{Supporting text?}
+    Found -->|yes| Context[Give excerpts + question to model]
+    Context --> Answer[Inspect answer and sources]
+    Found -->|no| Missing[Say evidence is missing]
+```
 
-| File | What to inspect |
+A retrieval failure is different from an empty search result. Report the failure instead of silently answering company-policy questions from model memory. A search score measures a match; it is not the probability that an answer is true.
+
+## Open the documents
+
+The [manifest](../data/deployment-docs/manifest.json) lists the made-up documents and their metadata.
+
+| File | What it teaches |
 |---|---|
-| `release-process.md` | Current deployment and promotion steps |
+| `release-process.md` | Current deployment steps |
 | `deployment-policy.txt` | Engineer and release-manager responsibilities |
-| `rollback-checklist.pdf` | Approval and validation, with a page citation |
-| `release-incident.docx` | Historical incident with paragraph locations |
-| `deployment-architecture.pptx` | Deployment flow with a slide citation |
-| `old-release-process.md` | Retired guidance retained for the freshness check |
-| `restricted-operations.txt` | A role-restricted document for the access exercise |
+| `rollback-checklist.pdf` | Approval and validation, with a page location |
+| `release-incident.docx` | Historical incident, with paragraph locations |
+| `deployment-architecture.pptx` | Architecture text, with a slide location |
+| `old-release-process.md` | Retired guidance to exclude |
+| `restricted-operations.txt` | A document only the release-manager fixture may retrieve |
 
-These files were created for teaching. DOCX tables, slide diagrams, scanned pages and complex layouts need more extraction work than this small text-focused loader provides. A scanned PDF needs OCR; this example does not pretend OCR happened.
+The loader reads text from all five formats. Scanned PDFs need OCR: software that reads text from an image. DOCX tables, slide diagrams and complex layouts need more processing than this small loader provides.
 
-## Run the pipeline and inspect each stage
+## Run keyword retrieval
 
 ```bash
 uv run python -m course_labs.rag
-uv run python -m course_labs.rag --question "What does the catalog route depend on?"
+```
+
+You should see `stage: index`, then `stage: retrieval`, then `stage: answer`. In retrieval, inspect each source's `id`, `location`, `score` and `text`. The offline answer says `offline extractive evidence view; no generated answer` and `model_called: false`.
+
+This is real extraction and keyword search, followed by displayed excerpts. It is not a generated answer or semantic search. Open `.state/deployment-index.json` to see the stored chunks. The tiny index rebuilds on every run. `corpus_version` is a fingerprint of the document collection: changing its content or manifest changes that value.
+
+```bash
+uv run python -m course_labs.rag --question "zebras astrophysics xyzzy"
 uv run python -m course_labs.rag --question "Who is tomorrow's on-call engineer?"
 ```
 
-The on-call question is unsupported by this corpus. A broad keyword match may still return an excerpt; ask whether it actually supports an answer.
+The first query returns no matching evidence and does not call a model. The second question is also unsupported, but common words may still retrieve an excerpt. Read it: a matching passage is not necessarily supporting evidence.
 
-The default backend is keyword retrieval. It performs real extraction, chunking, metadata filtering and search, then displays cited excerpts without calling an LLM. Open `.state/deployment-index.json` to inspect the actual index. The CLI rebuilds the tiny index for each run so edits are visible.
+## Optional: compare semantic search and generation
 
-For semantic retrieval:
+After [semantic setup](../setup/README.md#optional-semantic-retrieval):
 
 ```bash
-# Prepare before class: downloads dependencies and, on first semantic run, the embedding model.
-uv sync --frozen --extra semantic
 uv run python -m course_labs.rag --backend semantic
 ```
 
-This path embeds the document chunks during indexing and embeds the question during retrieval using a real local FastEmbed model. It stores the small vectors in the local JSON index and compares cosine similarity. A managed vector database is unnecessary for this corpus; production scale, persistence, filters and operations may justify one.
+This uses a real local FastEmbed model for document and query embeddings, stored in the JSON index. It compares vectors using cosine similarity, a measure of their direction. Its threshold is a teaching choice, not a universal confidence value. This corpus needs no vector database.
 
-For a generated answer using retrieved context:
+After [live model setup](../setup/README.md#optional-live-model), use `--live` for a generated answer. You can combine both options:
 
 ```bash
-uv run python -m course_labs.rag --live
-# Or combine real semantic retrieval and generation:
 uv run python -m course_labs.rag --backend semantic --live
 ```
 
-`--live` controls answer generation; `--backend` controls retrieval. They are independent choices. Without retrieved context, the example returns a missing-evidence message without calling a model.
+`--backend` chooses search; `--live` chooses answer generation. Without retrieved context, the example returns a missing-evidence message without calling a model. With context, the live answer still needs source review.
 
-## Practical: inspect freshness and permissions
+## Change one thing and check it
 
-Complete [exercises/source_filter.py](../exercises/source_filter.py). Keep current documents allowed for the supplied role; reject unknown roles. Then run:
+Complete [exercises/source_filter.py](../exercises/source_filter.py): keep current documents allowed for the supplied role and reject unknown roles.
 
 ```bash
 uv run python scripts/check_exercise.py rag
 ```
 
-Compare with [the solution](../solutions/source_filter.py). In the working pipeline, access/freshness filtering happens in Python before context reaches a model. A role typed into a user prompt must not become trusted authorization. Here `--role` deliberately selects a teaching identity on the learner laptop. In a real service, validated server-side identity supplies that role and the protected index stays behind the service boundary.
+Success prints `Passed: rag`. Try each teaching role and explain which documents remain. `--role` selects a fixture on your laptop, not an authenticated login. A real service must supply the role from validated identity and protect the index itself.
 
-Next, change chunk size/overlap in `course_labs/rag.py` or add one sentence to the current deployment document. Rebuild and inspect how excerpts and the corpus fingerprint change. Preserve IDs, locations and filters. Search results may change; explain the observed change rather than assuming smaller chunks are better.
+Then change chunk `size` or `overlap` in [rag.py](../course_labs/rag.py), or add one sentence to a current document. These settings count **characters**, not tokens. Rerun and inspect the chunks, source locations and corpus fingerprint. Keep access and retired-document filters intact.
 
-AI coding prompt:
+Optional coding-assistant prompt:
 
-> Explain the preparation and query functions in this file. Help me change chunk settings for one experiment. Keep source metadata, the role filter and retired-document exclusion. Print the retrieved excerpts so I can assess the result myself.
+> Explain extract, split, build_index and retrieve. Help me change chunk settings for one experiment. Preserve source metadata and access checks. Show the excerpts so I can assess the result.
 
-## Deployment questions a DevOps engineer should ask
+A real ingestion service must also track source deletion, changed permissions, extraction failures and stale knowledge. Derived chunks and cached answers need corresponding updates or removal.
 
-Where do ingestion failures appear? How does the index learn that a document was deleted? Can a shared cache leak restricted context? Which embedding model/version built the collection? How would you test a stale procedure after a release? What should happen if no source supports the requested action?
+If you are stuck, use [the completed filter](../solutions/source_filter.py) and [recovery checkpoints](../checkpoints/README.md). Explain one PDF page or slide's path from extraction to its displayed citation before moving on.
 
-Check understanding: trace one PDF page or PPTX slide from extraction through retrieval to the displayed citation. Explain what an embedding model does and what it does not establish about the truth of an answer.
-
-Day 2 starts with [module 4](../module-4/README.md).
+**Next:** [Module 4: identity, guardrails and approval](../module-4/README.md), on Day 2.

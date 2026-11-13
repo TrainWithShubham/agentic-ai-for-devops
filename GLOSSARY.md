@@ -1,4 +1,4 @@
-# Working glossary
+# Terms you will meet
 
 | Term | Meaning in this course |
 |---|---|
@@ -22,7 +22,21 @@
 | Checkpoint | Saved execution state used to inspect or resume work |
 | Harness | Software around the agent loop that manages execution and controls |
 | Evaluation | Checking behavior against explicit expected outcomes |
-| Idempotency | Repeating an operation does not repeat its side effect |
+| Idempotency | Repeating the same logical operation does not create an extra side effect |
 | Runtime | The environment executing the application code |
+| CLI | Command-line interface: run a program by typing a command in a terminal |
+| Fixture | Prepared data or model replies used for a repeatable learning example |
+| Schema | The fields and types a structured value is expected to contain |
+| Index | A searchable copy or representation of source material |
+| Corpus | The document collection being searched |
+| Metadata | Details about a source, such as its ID, location, version and allowed roles |
+| Hash / fingerprint | A value derived from contents, used to detect changes against a trusted reference |
+| TTL | Time to live: how long a cache entry may be reused |
+| Trace | Recorded steps that help explain what happened during a task |
+| Candidate | An answer or system being evaluated |
+| Audience | The intended recipient of a token |
+| Scope | A granted area of access; resource permission still needs checking |
+| OCR | Extracting text from an image, such as a scanned document |
+| Sanitized output | Output checked to remove secrets and private information before sharing |
 
 See the [syllabus](CURRICULUM.md) for how these concepts fit together.

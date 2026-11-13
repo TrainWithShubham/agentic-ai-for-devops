@@ -2,7 +2,7 @@
 
 import argparse
 
-from .common import ROOT, show
+from .common import ROOT, run_cli, show
 from .provider import complete
 
 
@@ -39,4 +39,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    run_cli(main, "See module-1/README.md or checkpoints/README.md for the next step.")

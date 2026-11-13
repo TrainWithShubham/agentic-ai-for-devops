@@ -5,7 +5,7 @@ import json
 import time
 from dataclasses import dataclass, field
 
-from .common import ROOT, show
+from .common import ROOT, run_cli, show
 
 
 def route(task):
@@ -77,4 +77,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    run_cli(main, "See module-5/README.md or checkpoints/README.md for the next step.")

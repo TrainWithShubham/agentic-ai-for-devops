@@ -1,6 +1,6 @@
-# Recovery checkpoints
+# Get unstuck
 
-Run these commands from the course root. Each concept example works without the final project checkout. Offline examples need no model key.
+Save your edits first. Run these commands from the folder containing the course `pyproject.toml`. Each concept example works without the final project checkout. Offline examples need no model key.
 
 | Module | Working example | Completed learner edit |
 |---|---|---|
@@ -13,6 +13,6 @@ Run these commands from the course root. Each concept example works without the 
 | 5 | `uv run python -m course_labs.operations` | `uv run python scripts/check_exercise.py evaluation --solution` |
 | 5: evaluations | `uv run python -m course_labs.evaluations` | Explain the deliberately bad candidate's failures |
 
-The [module-6 page](../module-6/README.md) owns the separate project and cloud-demo recovery instructions.
+For the separate application, use [module 6](../module-6/README.md). Cloud preparation is handled by the instructor.
 
-Save your work before comparing with `solutions`. There is no destructive reset command and no need to switch branches during class. To check the full course, run `uv run python scripts/check_course.py` and `uv run python scripts/verify_docs.py`.
+`--solution` runs a check against the completed example; it does not replace your exercise. A starter showing `Not passed yet` is expected until you finish it. There is no need to reset your files or switch branches during class. To check the full course, run `uv run python scripts/check_course.py` and `uv run python scripts/verify_docs.py`.

@@ -6,7 +6,7 @@ import sys
 from fastmcp import Client
 from fastmcp.client.transports import StdioTransport
 
-from .common import ROOT, show
+from .common import ROOT, run_cli, show
 
 
 async def inspect():
@@ -25,5 +25,9 @@ async def inspect():
         return {"names": sorted(t.name for t in tools), "log": result.data}
 
 
-if __name__ == "__main__":
+def main():
     asyncio.run(inspect())
+
+
+if __name__ == "__main__":
+    run_cli(main, "Run uv sync --frozen from the course folder, then retry; see module-2/README.md.")

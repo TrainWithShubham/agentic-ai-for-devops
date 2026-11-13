@@ -1,68 +1,78 @@
-# Module 1 — AI foundations and system prompts
+# Module 1: AI foundations and system prompts
 
-Day 1, 45 minutes. Run commands from the course repository root. Start with [setup](../setup/README.md).
+**Day 1 · 45 minutes** · [Setup](../setup/README.md) · [Glossary](../GLOSSARY.md)
 
-## What you should understand
+You will explain a failed CI job, separate evidence from a guess and write instructions that make the answer easier to check. Run commands from the course folder.
 
-| Term | First explanation |
+## Understand the idea
+
+| Term | In everyday words |
 |---|---|
-| AI | Software techniques for tasks such as prediction, perception and decision-making |
-| Machine learning | Systems learn patterns from examples/data |
-| Generative AI | Systems produce content such as text, code or images |
-| LLM | A language model that produces responses from context |
-| Chat application | An interface around models, tools and stored conversation context |
-| Agent | A controlled loop where a model can choose permitted next steps |
+| AI | Software techniques for tasks such as prediction and decision-making |
+| Machine learning | Learning patterns from data |
+| Generative AI | Producing content such as text, code or images |
+| LLM | A language model that responds using learned patterns and the context supplied to it |
+| Chat application | A product around models, messages and sometimes tools |
+| Agent | A loop in which a model can choose the next permitted step |
 
-An LLM predicts a response from its input context. Generative AI describes systems that produce content; an LLM is one kind of model. A chat interface is a product around a model. An agent adds a loop in which model output can request tools and the application supplies the resulting observations.
+Use a script for a known rule. Use a workflow when code defines the routes between steps. Consider an agent when choosing the next check from varied evidence is useful. Installing CI dependencies can stay deterministic even when an agent helps diagnose a failure.
 
-A fixed workflow chooses the order in code. An agent can choose a next step from observations. Use a normal script when the inputs, checks and steps are already known. Use an agent when interpreting varied evidence and choosing among permitted steps adds value. A CI dependency installer should stay deterministic even if a model helps investigate its failure.
+A prompt is a request. System instructions describe the task and limits; context includes the messages, files and tool results available now. Context engineering means choosing and maintaining that information. Tokens are the units models process; the context window is finite and is not permanent memory. Models can produce outdated or unsupported answers.
 
-Tokens are the units a model processes. The context window limits what fits in a request; it is not permanent memory. Repeating an entire log on each turn can increase latency and usage. Give the model the relevant step output and source IDs. Discuss model knowledge cutoffs, outdated answers and plausible unsupported explanations.
+```mermaid
+flowchart LR
+    Evidence[CI log + workflow] --> Request[Question + system instructions]
+    Request --> Model[Model or prepared learning response]
+    Model --> Review[Facts / likely cause / proposal / check]
+```
 
-| Input | Purpose | Trust boundary |
-|---|---|---|
-| System instructions | Define the assistant's task, limits and response contract | Application-owned instructions |
-| User request | State the task | Cannot grant new permissions |
-| Logs and documents | Supply evidence | Untrusted data, including any embedded instructions |
-| Tool schema/result | Describe permitted calls and actual observations | Application validates and executes calls |
+Logs and documents are untrusted evidence. A sentence inside a log cannot grant permission. System instructions guide the model; application code must enforce what can run.
 
-Context engineering means selecting and maintaining the instructions, evidence, messages and tool results that fit the task. Use the [glossary](../GLOSSARY.md) when a term is unfamiliar.
-
-## Demo: a failed CI job
+## Run the example
 
 ```bash
 uv run python -m course_labs.prompts
 ```
 
-Open [the log](../data/ci/test-output.txt), [workflow excerpt](../data/ci/workflow.txt) and [system prompt](../prompts/ci-system.txt). The test job excluded the dev dependency group, which contains pytest. The process fails before any tests run. Removing `--no-dev` is a proposed correction to the fixture; the demo has not changed or rerun a real pipeline.
+## Read the result
 
-The default response is a fixed offline example. For an actual model response, configure your own free model as described in setup and run:
+Look for these fields in the answer:
+
+| Field | What it tells you |
+|---|---|
+| `mode` | `offline fixture, no LLM call`: a prepared learning response |
+| `observed` | `pytest` could not start |
+| `likely_cause` | The install excluded the development dependency group |
+| `proposal` | Remove `--no-dev` for this test job |
+| `validation` | A person must review and rerun the job; no rerun happened |
+| `sources` | `ci-log` and `ci-workflow` |
+
+Open [the log](../data/ci/test-output.txt), [workflow and dependency excerpt](../data/ci/workflow.txt) and [system instructions](../prompts/ci-system.txt). `pytest` is in the development group. No test assertion failed: the runner never started. The program has not edited a real pipeline.
+
+## Change one thing
+
+Edit [exercises/system_prompt.txt](../exercises/system_prompt.txt). Ask for observed facts with source IDs, a likely cause, a minimal proposal and a validation step. Require the response to state what actually ran.
+
+You can try the prompt in ChatGPT/Claude using these synthetic inputs. To test it with this CLI, copy your chosen wording into `prompts/ci-system.txt`; that is the file the CLI reads. Review the diff first.
+
+Optional coding-assistant prompt:
+
+> Help me improve this CI investigator's response format. Keep its read-only boundary. Explain each instruction. Do not invent a successful rerun or new permissions.
+
+## Check your work
+
+In the prepared response, identify one fact, one inference and one proposed action. Then explain why valid JSON can still contain a wrong diagnosis.
+
+The offline response is fixed: changing the prompt changes the displayed instructions, not the prepared answer. For a real model comparison, configure [optional live access](../setup/README.md#optional-live-model), then run:
 
 ```bash
 uv run python -m course_labs.prompts --live
 ```
 
-Ask learners to find an observed fact, an inference and a proposed action. If the model claims it fixed the pipeline, compare that claim with the tools actually available.
+The live answer can vary. Check its sources and reject any claim of a fix without an execution result.
 
-## Practical: make the answer reviewable
+## If you get stuck
 
-Edit [exercises/system_prompt.txt](../exercises/system_prompt.txt). Require:
+If packages or commands are missing, return to [setup](../setup/README.md). For wording ideas, read `prompts/ci-system.txt`. You do not need live access to understand the prepared example.
 
-- Observed failure and supporting source IDs.
-- Likely cause, with uncertainty if evidence is missing.
-- Minimal proposed change for human review.
-- A validation step and a statement of what was actually executed.
-
-Try the prompt in ChatGPT/Claude with the synthetic fixture, or temporarily copy it to `prompts/ci-system.txt` for the CLI demo. Review the diff before retaining a change. The CLI reads only that documented prompt file.
-
-AI coding prompt:
-
-> Help me improve the response contract for this CI investigator. Keep the existing read-only boundary. Explain each instruction you add. Do not invent a successful rerun or change the tool permissions.
-
-A structured format makes an answer easier to inspect. Valid JSON alone does not make a diagnosis correct. Application validation and observed results still matter.
-
-## Check understanding
-
-Explain why a fixed dependency-install step does not need an agent. Identify why `pytest` failing to start differs from a failing test assertion. Name one limit a system prompt can describe but only application code can enforce.
-
-Continue with [module 2](../module-2/README.md).
+**Next:** [Module 2: agents, tools and MCP](../module-2/README.md).

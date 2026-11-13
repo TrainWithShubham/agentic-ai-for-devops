@@ -76,8 +76,16 @@ def main():
     try:
         for name in ("ci", "rag", "approval", "evaluation") if args.exercise == "all" else (args.exercise,):
             print("Passed:", check(name, args.solution))
-    except (NotImplementedError, AssertionError) as error:
-        print(str(error))
+    except (
+        NotImplementedError,
+        AssertionError,
+        ValueError,
+        TypeError,
+        KeyError,
+        OSError,
+        SyntaxError,
+    ) as error:
+        print(f"Not passed yet: {error or 'the result does not match the exercise contract'}")
         print("Complete the learner file or use --solution to check the supplied completed version.")
         return 1
     return 0

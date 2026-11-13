@@ -1,77 +1,89 @@
-# Module 5 — agent harnesses and operations
+# Module 5: agent harnesses and operations
 
-Day 2, 40 minutes. Learn to inspect and control the agent as a system you operate.
+**Day 2 · 40 minutes** · [Previous](../module-4/README.md) · [Glossary](../GLOSSARY.md)
 
-## What is an agent harness?
+You will inspect a cache result, follow a trace and run checks that catch a misleading answer. The question is familiar to DevOps: how do we know what the system actually did?
 
-A harness is the surrounding software that runs the loop: constructs context, calls the model, dispatches tools, carries state and handles limits, failures, review and telemetry. Different products include different responsibilities under that name.
+## Understand the harness
 
-| Term | Responsibility |
+A harness is the software around the model: it builds context, runs tools, carries state and handles limits, failures and telemetry. Products use the name for different combinations of these responsibilities.
+
+| Part | Responsibility |
 |---|---|
-| Model | Produces text or structured requests from context |
-| Agent loop | Chooses/executes permitted steps using observations |
-| Framework | Libraries for expressing state and control flow |
-| Harness | The surrounding execution and control machinery |
-| Runtime/hosting | The environment running that code |
-| External state store | Data needed beyond one process/session |
+| Model | Produce text or a tool request |
+| Agent loop | Choose permitted next steps using tool observations |
+| Framework | Express state and routes in code |
+| Harness | Coordinate execution and its controls |
+| Runtime | Run the application code |
+| Persistent state | Keep needed information after a process exits |
 
-Map these terms onto the small CI loop. Its counters bound work, tool handlers validate calls and model/provider errors stop the run. Its state is volatile. A production harness also needs cancellation, authentication, persistence and safe handling of retries around side effects. A framework name alone does not supply those policies.
+The small CI agent has counters, validated tools and volatile state. Production also needs suitable identity, persistence, cancellation and safe recovery. Adding a framework does not automatically implement these policies.
 
-## Cache, route and trace
+## Run cache, routing and trace examples
 
 ```bash
 uv run python -m course_labs.operations
 ```
 
-Inspect [operations.py](../course_labs/operations.py) and `.state/operations-trace.jsonl`.
+Look for these results:
 
-The first cache read hits. Changing role or corpus version misses. The key also includes question, model and prompt version. This small exact-match cache has a TTL. It is not a distributed cache or semantic cache, and its printed routing labels do not invoke different models.
+```json
+{
+  "kind": "cache",
+  "same_role_hit": true,
+  "other_role_hit": false,
+  "changed_corpus_hit": false
+}
+```
 
-| Technique | Useful for | Failure to consider |
+A **hit** reuses a saved answer. A **miss** means it was not found under that key. The key includes the question, role, document version, model and prompt version. TTL, or time to live, limits how long an entry can be reused. Read `cache_key` and `Cache` in [operations.py](../course_labs/operations.py).
+
+Next, inspect `kind: routing` and `live_models_selected: false`. Routing means choosing who handles a task. These labels demonstrate that choice; they do not call different models. Finally, find `result: recommendation_only` in the trace event. A trace records what happened. The example writes actual local events to `.state/operations-trace.jsonl`; it is not an OpenTelemetry deployment.
+
+| Technique | Useful for | What to check |
 |---|---|---|
-| Exact response cache | Repeated authorized questions | Stale context or a key that omits user/resource scope |
-| Retrieval/embedding cache | Avoiding repeated preparation | Document/model changes require invalidation |
-| Prompt/provider cache | Repeated model-input prefixes | Provider-specific eligibility and pricing |
-| Task/model routing | Different quality, cost and latency needs | A smaller model may fail the actual tool/schema/evidence task |
+| Saved answer | Repeated authorized questions | Is the caller still allowed? Is the source current? |
+| Retrieval/embedding cache | Avoiding repeated preparation | Did the document or embedding model change? |
+| Provider prompt cache | Reusing eligible model-input processing | Does this provider/model support it, and what does it cost? |
+| Model routing | Matching a task to cost, delay and capability | Does the chosen model pass the actual task checks? |
 
-Measure before deciding a route is cheaper or faster. Include failed requests, repeated context, tool time, retries and human waiting. A rate limit is not a spending cap.
+## Change one thing
 
-Traces should let you locate the failing stage: retrieval, model output, argument validation, tool result, review or verification. Record IDs, duration, model/usage metadata and sanitized outcomes. Use correlation IDs across logs. OpenTelemetry and trace backends are production extensions; this lab writes actual local JSONL events.
+In `operations.py`, change the document version or role used for the lookup. Predict whether it will hit, then rerun. Explain why a production system may also need user, tenant and resource scope. A role-only example is not a complete multi-tenant cache.
 
-## Reliability decisions
+Trace records should connect sources, tool results, review decisions and the final result through an ID. Keep secrets and unnecessary private content out of traces. OpenTelemetry and a trace backend are follow-up choices, not requirements for this exercise.
 
-Set deadlines and step budgets. Retry transient read failures with a limit and backoff; classify permanent authorization/schema failures separately. A timeout after a write request may leave an unknown result, so a blind retry can duplicate a change. Use an idempotency key and verify actual external state before calling an action successful. Include cancellation and partial failure in reviews.
+## Run the evaluations
 
-Deployment needs an immutable artifact, dependency lock, appropriate runtime identity, health/readiness checks, durable state, logs, release checks, rollback and teardown. Separate local process memory from durable checkpoints. Discuss CI gates for prompts, tools and evaluation datasets as well as Python tests.
-
-## Evaluations: test an outcome, not a sentence's confidence
+An evaluation is a task with an expected result and a way to check it. A **candidate** is the answer being checked.
 
 ```bash
 uv run python -m course_labs.evaluations
-# Deliberate failing candidate: exits nonzero and displays which outcomes failed.
 uv run python -m course_labs.evaluations --bad-candidate
 ```
 
-The dataset in [data/evaluations.json](../data/evaluations.json) checks whether the CI answer cites required evidence, identifies the missing test runner and avoids claiming an applied fix. These checks run against supplied fixed candidates; they do not measure live model reliability. The course regression checks separately test actual role, RAG and tool boundaries.
+The first reports `passed: 5`, `failed: 0`. The deliberate bad answer reports `passed: 0`, `failed: 5` and exits with code 1. That failure is the expected result: the checks caught an answer that claimed a fix by deleting tests and lacked supporting sources.
 
-For a live evaluation, save the actual input, model/version, tool results and answer, then evaluate that run. Avoid a judge that only checks wording. Human review is still needed to assess source support and the quality of a proposed change.
+Read [the cases](../data/evaluations.json) and `evaluate` in [evaluations.py](../course_labs/evaluations.py). These small text/field checks run against fixed answers; they do not measure live-model quality. A citation-presence check cannot establish source support. Use [the saved answer-review exercise](../data/rag-answer-for-review.md) to find a recovery instruction that the cited checklist did not authorize.
 
-Read [the recorded RAG answer for review](../data/rag-answer-for-review.md). Compare the added recovery step with the PDF checklist. A citation-presence check alone would not prove that the source supports that step.
-
-## Practical: add a case that catches a real mistake
-
-Edit [exercises/extra_evaluation.json](../exercises/extra_evaluation.json) with one denied or missing-evidence case. Explain the input, expected outcome and why it matters.
+Complete [exercises/extra_evaluation.json](../exercises/extra_evaluation.json) with one concrete case. Fill in its name, input, expected outcome and why the case matters.
 
 ```bash
 uv run python scripts/check_exercise.py evaluation
 ```
 
-Then change the corpus version or role in the cache demo and predict the result before running it. Name which fields you would add for multi-tenant resource permissions.
+Success prints `Passed: evaluation`. This checks that your case has the required non-placeholder fields, not that a model passes it. Run `--solution` or read [the completed case](../solutions/extra_evaluation.json) if stuck. For a live evaluation, save actual model inputs, outputs, tool results and configuration; check supported answers and observed outcomes, not just wording.
 
-AI coding prompt:
+Optional coding-assistant prompt:
 
-> Help me add one evaluation for a model claiming it fixed CI without an execution result. Use a concrete expected outcome. Keep live-model quality claims separate from deterministic regression results.
+> Help me write one evaluation for an assistant claiming CI is fixed when it only read evidence. Use an observable expected outcome. Keep the case small and explain its limits.
 
-Check understanding: show which event you would inspect for a wrong tool argument, a stale answer and an unauthorized change. Explain why an offline test pass is not a live-model success rate.
+## Apply your DevOps judgment
 
-After the break, open [module 6](../module-6/README.md).
+Set call limits and deadlines. A timeout means the caller stopped waiting; a remote write may still finish. Check operation status or target state before retrying, use an idempotency contract to prevent duplicate effects, and bound retries with backoff. A rate limit is not a spending cap. Measure failed requests, tool time and retries as well as model usage.
+
+Releases need versioned code, prompts, tool definitions and evaluation cases, with health checks, rollback and cleanup. Do not claim an operation succeeded until its observed result supports that claim.
+
+Before the break, explain which event you would inspect for a wrong tool argument, stale answer or unauthorized change. Use [recovery checkpoints](../checkpoints/README.md) if a command fails unexpectedly.
+
+**Next:** [Module 6: the integrated capstone](../module-6/README.md), after the break.

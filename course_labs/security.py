@@ -5,7 +5,7 @@ import json
 import time
 from dataclasses import dataclass
 
-from .common import show
+from .common import run_cli, show
 
 ALLOWED_PATCH = {"run_id": 1042, "before": "uv sync --frozen --no-dev", "after": "uv sync --frozen"}
 
@@ -70,4 +70,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    run_cli(main, "See module-4/README.md or checkpoints/README.md for the next step.")

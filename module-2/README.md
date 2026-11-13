@@ -1,76 +1,83 @@
-# Module 2 — agents, tool calling and MCP
+# Module 2: agents, tool calling and MCP
 
-Day 1, 50 minutes. This module investigates synthetic CI run 1042 with three read-only tools.
+**Day 1 · 50 minutes** · [Previous](../module-1/README.md) · [Glossary](../GLOSSARY.md)
 
-## Follow the loop before the framework
+You will follow a request from the model to a real tool, inspect an MCP exchange and recognize the same loop in LangGraph. All examples investigate synthetic CI run **1042**.
+
+## Understand the loop
 
 ```mermaid
 flowchart LR
-    Request[User request + system instructions] --> Model[Model response]
-    Model --> Choice{Tool request?}
-    Choice -->|yes| Validate[Validate name, arguments and caller access]
-    Validate --> Tool[Execute approved read-only function]
-    Tool --> Observation[Actual result]
-    Observation --> Model
-    Choice -->|no| Answer[Inspect final answer]
+    Model[Model chooses a step] --> Choice{Tool request?}
+    Choice -->|yes| Validate[Check name, arguments and access]
+    Validate --> Tool[Read CI evidence]
+    Tool --> Result[Return actual result]
+    Result --> Model
+    Choice -->|no| Answer[Review the answer]
 ```
 
-A tool call is structured model output. It becomes an action only when application code dispatches it. A tool schema helps a model choose valid arguments; the handler must validate them again. A model should receive errors as observations where recovery is safe, and the application must stop at its budget.
+A tool call is a request containing a tool name and arguments. The application checks and executes it. A schema describes the expected fields; the handler must still validate them. A budget limits how much work a run may do.
+
+## Run the agent
 
 ```bash
 uv run python -m course_labs.agent
 ```
 
-The offline model requests are scripted and labeled. The Python tool functions actually run. Inspect [agent.py](../course_labs/agent.py) and [tools.py](../course_labs/tools.py). Find the message list, tool dispatch, tool-call IDs and the four-call/six-tool-step limits.
+You should see three `kind: tool` events with these `source_id` values, followed by an answer:
 
-```bash
-uv run python -m course_labs.agent --live
+```text
+ci-run → ci-log → ci-workflow → recommendation
 ```
 
-This asks a real free model to choose tools. It may request several tools in one turn or stop early. Inspect its source use; a fluent final answer is not proof it checked the workflow. Provider failures remain failures, with no automatic mode switch.
+The final status is `read-only recommendation; no CI change applied`. Offline tool choices are prepared, but the Python tools really read the supplied files. A live model can choose a different order.
 
-## Practical: summarize a verified CI result
+Read [agent.py](../course_labs/agent.py) in this order: `fixture_message`, `run`, then the tool loop. `fixture_message` supplies the prepared model replies. Read [tools.py](../course_labs/tools.py) to find validation and file access. Limits are four model calls and six tool steps; exceeding a limit stops the run.
 
-Complete [exercises/ci_summary.py](../exercises/ci_summary.py), then run:
+After [optional live setup](../setup/README.md#optional-live-model), `uv run python -m course_labs.agent --live` lets a real model select tools. It may stop early or request multiple tools in a turn. Inspect the actual results instead of assuming the answer used every source.
 
-```bash
-uv run python scripts/check_exercise.py ci
-```
+## See MCP in action
 
-The function accepts only run 1042 with required fields. It returns the run ID, conclusion and failed step. Try an unknown run ID and missing fields. Use the [completed version](../solutions/ci_summary.py) to catch up.
-
-AI coding prompt:
-
-> Implement only ci_summary using its documented contract. Reject an unknown run ID, missing fields and an invalid conclusion. Do not add network calls, shell execution or an LLM dependency. Explain the validation before returning the summary.
-
-## MCP: a standard connection to tools
-
-MCP is a protocol, not an LLM or an agent framework. A host application uses an MCP client to talk to a server. The server advertises tool names and schemas; the client can call them and receive results. The host still decides how models, users and tools interact.
+MCP is a shared protocol for connecting an AI application to capability servers. The host is the application, the client talks to a server, and the server exposes tools or context.
 
 ```bash
 uv run python -m course_labs.mcp_client
 ```
 
-This launches [mcp_server.py](../course_labs/mcp_server.py) in a separate Python process and performs an actual stdio exchange. Read the discovered schemas and the returned log. No model is called by this command. Compare it with the direct Python-tool loop above: same CI evidence, different connection boundary.
+Look for `transport: stdio`, `model_called: false`, the three tool names and a `ci_read_log` result containing `source_id: ci-log`. Some library startup messages may appear too.
 
-Use stdio for this local exercise. Remote servers commonly use Streamable HTTP and need an appropriate authorization design. An MCP tool's read-only annotation helps describe behavior; it is not an access-control implementation. An MCP server can run code and must be treated as trusted software before installation.
+This starts a separate local Python server and performs real discovery and a tool call. **stdio** means the processes communicate through standard input/output. Remote servers commonly use Streamable HTTP. Local and remote connections need suitable trust and authorization controls. A local server runs code on your laptop; review its source, startup command and permissions. A read-only tool annotation describes intent, not enforced access control.
 
-To inspect locally with MCP Inspector, follow [the official inspector instructions](https://modelcontextprotocol.io/docs/tools/inspector) and point it at `uv run python -m course_labs.mcp_server`. The tested course client above provides the no-Node path.
+The plain agent calls Python functions directly. This MCP example has no model. They share evidence, but are separate examples so each connection is visible. If you want an optional visual inspection tool, follow [the official MCP Inspector guide](https://modelcontextprotocol.io/docs/tools/inspector); the course client itself needs no Node.js.
 
-## LangGraph: make state and transitions visible
+## See the loop as a graph
 
 ```bash
 uv run python -m course_labs.graph
-# Optional live model, using the same free-only provider:
-uv run python -m course_labs.graph --live
 ```
 
-Read [graph.py](../course_labs/graph.py). `State` holds messages and counters. The model node requests a tool or ends. The tools node returns observations, then control returns to the model. This is the same design expressed as a graph. State here is in memory; compiling a graph alone does not make it durable across process restarts.
+You should see `node: model` and `node: tools` events, then an answer and `state_scope: in-memory only; persistence is a separate feature`.
 
-The graph demonstration does not call the MCP server. Keeping the small examples separate lets you inspect the loop, protocol and framework without hiding one inside another.
+In [graph.py](../course_labs/graph.py), **state** holds messages and counters, **nodes** do work, and **edges** route to the next step. Find `State`, the two node functions and `add_conditional_edges`. Compiling this graph does not make it survive a restart. It does not call the MCP server. Optional `--live` uses the same provider as the plain agent.
 
-## Check understanding
+## Change one thing
 
-Point to the function that actually reads a log. Explain which part is a model, which part is MCP and which part is LangGraph. Predict what happens when the model requests an unknown run or keeps calling tools.
+Complete [exercises/ci_summary.py](../exercises/ci_summary.py). Return a string containing the known run ID, conclusion and failed step. Reject missing fields, an unknown run and an invalid conclusion with `ValueError`.
 
-Continue with [module 3](../module-3/README.md).
+```bash
+uv run python scripts/check_exercise.py ci
+```
+
+Success prints `Passed: ci`. `Not passed yet` is expected before you finish the starter.
+
+Optional coding-assistant prompt:
+
+> Implement only ci_summary using its contract. Explain the input checks. Do not add network calls, shell execution or a model dependency.
+
+## Check your understanding
+
+Point to the function that reads the log. Explain which part is a model, MCP and LangGraph. Predict what happens with an unknown run ID or repeated tool requests.
+
+Stuck? Compare [the solution](../solutions/ci_summary.py), or run `uv run python scripts/check_exercise.py ci --solution`. This checks the completed example without changing your file. Use [recovery checkpoints](../checkpoints/README.md) if setup fails.
+
+**Next:** [Module 3: RAG pipelines](../module-3/README.md).

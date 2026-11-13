@@ -82,3 +82,10 @@ uv run ruff check .
 ```
 
 Run exercise-specific checks when changing exercises. Reserve book publication checks for actual book edits. Do not read/copy credential files, run paid inference or recreate AWS resources merely to resume this branch.
+
+
+## Learner-facing pass completed
+
+The owner approved the beginner-focused cleanup after the handoff above. README/setup/modules now explain prerequisites, expected results, one learner change and recovery. Main navigation is learner-facing; maintainer links are collapsed. Cloud preparation moved to instructor/AGENTCORE_DEMO.md. The course still has six modules and two 180-minute sessions.
+
+Added a small shared CLI error boundary, actionable catalog/configuration/optional-semantic messages and clearer exercise failures. No dependency or application architecture was added. Current course tests: 17 passing, including three new failure-path checks; fresh Python 3.12 installation and 16 documented offline/check commands also pass. Public catalog access worked; no inference, cloud deployment or standalone-app run was performed. Latest scope and limits are recorded in instructor/evidence/learner-experience-review.json. Book content and assets remain finished and unchanged.

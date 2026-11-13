@@ -4,12 +4,13 @@ import argparse
 import json
 import time
 
-from .common import ROOT, show
+from .common import ROOT, run_cli, show
 from .provider import complete
 from .tools import SCHEMAS, execute
 
 
 def fixture_message(turn):
+    """Return a prepared model message so the loop can be learned without an API key."""
     if turn < 3:
         name = ["ci_get_run", "ci_read_log", "ci_read_workflow"][turn]
         return {
@@ -87,4 +88,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    run_cli(main, "See module-2/README.md or checkpoints/README.md for the next step.")

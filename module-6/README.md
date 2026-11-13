@@ -1,39 +1,44 @@
-# Module 6 — RunbookOps capstone and AgentCore demo
+# Module 6: RunbookOps capstone
 
-Day 2, 75 minutes. This is where we introduce the integrated application. Modules 1–5 have their own examples and do not require this repository.
+**Day 2 · 75 minutes** · [Previous](../module-5/README.md)
 
-RunbookOps lives in **[TrainWithShubham/runbookops](https://github.com/TrainWithShubham/runbookops)**. Gada Electronics has a simulated checkout failure. Bagha investigates, Jethalal reviews the exact proposed correction and the application verifies the resulting health state. The technical incident and responsibilities are fictional.
+Bring the concepts together in a complete application. You will follow an investigation, inspect its sources, prepare a correction and see an authorized person approve it.
 
-## Prepare the separate checkout
+RunbookOps is in **[its own repository](https://github.com/TrainWithShubham/runbookops)**. Gada Electronics has a simulated checkout problem. Bagha investigates and Jethalal reviews the proposed correction. The story and incident are fictional; the application does not change a production service.
 
-Complete the dependency download before the Day 2 session if you plan to follow the whole project. The concept labs remain runnable without it.
+## 1. Open the application
+
+Use a new terminal so it is clear which project you are running. Complete the download before Day 2 if you plan to follow along.
 
 ```bash
 git clone https://github.com/TrainWithShubham/runbookops.git
 cd runbookops
 uv sync --frozen
-uv run runbookops --mode offline serve --demo-auth --port 8002
+uv run runbookops --mode offline --embedding hash preflight
+uv run runbookops --mode offline --embedding hash serve --demo-auth --port 8002
 ```
 
-Open http://127.0.0.1:8002/. The offline model path is deterministic and labeled. Follow the [beginner demo](https://github.com/TrainWithShubham/runbookops/blob/main/docs/BEGINNER_DEMO.md). Live model access uses your own key and the application guide; a subscription to a coding assistant does not supply an application API key.
+Already have this checkout? Open its folder instead of cloning again. These commands run in `runbookops`, not in the course folder. Open **http://127.0.0.1:8002/** when the server starts. Keep that terminal running; press Ctrl+C when you want to stop it.
 
-## Guided session
+You need no AWS account or model key for this path. `offline` uses prepared model behavior. `hash` is a deterministic teaching representation, not a learned semantic embedding model. `--demo-auth` selects teaching identities; it is not a production login.
 
-| Minutes | Work |
-|---|---|
-| 0–5 | Introduce the scenario, separate repository and viewer/approver roles |
-| 5–20 | Investigate from the UI; inspect prompts, tool results, RAG excerpts and a pending proposal |
-| 20–35 | Make one bounded learner change and verify its effect |
-| 35–45 | Deny viewer approval, review as an approver and verify recovery to HTTP 200 |
-| 45–60 | Instructor demonstrates the same LangGraph agent on AgentCore Runtime |
-| 60–70 | Inspect traces, saved state and evaluation outcomes |
-| 70–75 | Save evidence and explain one improvement and limitation |
+Use the application's [current run guide](https://github.com/TrainWithShubham/runbookops/blob/main/RUNBOOK.md) if commands differ from your checkout. For a terminal-only walkthrough, `uv run runbookops --mode offline --embedding hash demo` should show a denied approval, an accepted authorized approval and simulated health changing from HTTP 503 to HTTP 200. That is the documented expected result, not evidence that you have run it yet.
 
-### Learner change
+## 2. Follow an investigation
 
-Choose one edit: improve the system response contract or add a synthetic knowledge sentence with source metadata. Review the diff. Reindex when changing documents. Run the application's documented relevant check and inspect the effect in the UI. Avoid redesigning authentication, swapping dependencies or modifying the frontend during this short exercise.
+Try this request:
 
-For the knowledge edit, use `resources/company-knowledge/checkout-runbook.md` in the application checkout. Add a short synthetic validation note, increment that entry's `version` and `updated` metadata in the manifest, then stop the local server and run:
+> Checkout is not working. Suggest a fix, but ask a person before changing anything.
+
+Inspect the tool cards, company-note excerpts and pending proposal. The proposed correction should remain unapplied until an authorized review. Use Try approving as Bagha, then Review as Jethalal. Bagha's request should be denied; Jethalal can approve the exact correction. Check the resulting health observation instead of trusting the word “fixed”.
+
+Ask yourself: which steps read evidence, which step prepared a proposal, and which step changed simulator state?
+
+## 3. Make one small change
+
+Choose either a clearer system response instruction or one synthetic sentence in `resources/company-knowledge/checkout-runbook.md`. Review the diff. Avoid changing authentication, dependencies or the frontend during this exercise.
+
+For a document change, increment its `version` and `updated` values in the knowledge manifest. Stop the server with Ctrl+C, then run from the application folder:
 
 ```bash
 uv run runbookops --mode offline --embedding hash index --rebuild
@@ -41,39 +46,37 @@ uv run runbookops --mode offline --embedding hash search "YOUR_NEW_SEARCH_PHRASE
 uv run runbookops --mode offline --embedding hash serve --demo-auth --port 8002
 ```
 
-Start a new investigation after restarting, then inspect the new excerpt and citation. Do not reuse an old pending approval after changing its source. Keep the CLI and UI on the same embedding backend; changing only one would make the comparison misleading. Do not edit restricted-source permissions or add real credentials.
+Replace the quoted phrase with words from your new sentence. Check that the search returns the edited passage and source location. Start a new investigation after restarting. Keep the CLI and UI on the same embedding backend; do not reuse an old approval after its supporting source changed.
 
-Use the [run guide](https://github.com/TrainWithShubham/runbookops/blob/main/RUNBOOK.md), [harness walkthrough](https://github.com/TrainWithShubham/runbookops/blob/main/docs/HARNESS_DEMOS.md) and [testing guide](https://github.com/TrainWithShubham/runbookops/blob/main/docs/TESTING.md). Do not claim a change worked until its observed result supports that claim.
+Offline model text is prepared. A prompt change may not alter the generated-looking answer in this mode. You can still inspect the stored instructions; assess model behavior separately in an explicitly configured live run. Do not add credentials or edit restricted-source permissions.
 
-## Instructor AgentCore demo
+## 4. Watch the instructor's cloud demonstration
 
-The previous deployment was deleted on November 12 at the owner's request. This course revision does not provision AWS resources. Recreate, rehearse and verify the deployment before class using the current [Terraform AWS guide](https://github.com/TrainWithShubham/runbookops/blob/main/docs/AWS.md). The previous GitHub deployment workflow is disabled and its environment configuration was removed; restore that setup only if using CI deployment.
+The instructor may show this LangGraph agent hosted on **AgentCore Runtime**. You do not need to create AWS resources or copy the instructor's credentials. Observe which calls use the cloud and which actions still affect only the simulator. Managed AgentCore Harness is a different managed-loop option.
 
-Run the following from the **application** checkout after deployment:
+| Minutes | Your activity |
+|---|---|
+| 0–5 | Understand the incident and teaching roles |
+| 5–20 | Investigate and inspect sources/tools |
+| 20–35 | Make and check one learner change |
+| 35–45 | Compare denied and authorized approval, then inspect health |
+| 45–60 | Watch the instructor's AgentCore demonstration |
+| 60–70 | Follow traces, saved state and evaluation results |
+| 70–75 | Save your result and explain its limits |
 
-```bash
-uv sync --frozen --extra aws
-uv run --extra aws python deploy/manage.py probe
-uv run --extra aws python deploy/manage.py smoke
-uv run runbookops present --runtime-arn YOUR_RUNTIME_ARN
-```
+Watching the cloud demonstration does not mean you deployed the application yourself. If it is unavailable, continue the local capstone; any recorded cloud example should be labeled historical.
 
-Open http://127.0.0.1:8005/. `smoke` makes billed Bedrock calls. Keep AWS credentials and the demo private signing key on the instructor laptop. Learners do not need AWS accounts or access to the instructor's credits.
+## Finish your capstone
 
-Show the actual streamed investigation, discovered MCP tools, retrieved sources, pending proposal and durable approval state. Deny a viewer's approval, then approve through a fresh session and inspect the verified health result. Explain the boundaries:
+Save the diagnosis and sources, reviewed proposal, denied request, authorized simulator result and one sanitized trace. Record your own edit and its observed result. State whether model calls were prepared or live, and which cloud steps you only watched.
 
-- LangGraph owns the agent loop; AgentCore Runtime hosts it.
-- Managed AgentCore Harness is a separate managed loop, not the hosting wrapper for this LangGraph project.
-- IAM admits the cloud invocation; application identities still enforce the viewer/approver boundary.
-- The browser/API bridge stays local; durable cloud state is stored separately from runtime memory.
-- The operational correction is a simulator action. An optional read-only CloudWatch source is not a production remediation integration.
+If the UI does not open, keep the server terminal visible and read its error. If port 8002 is occupied, choose `--port 8003` and open that port in the browser. Use the [application run guide](https://github.com/TrainWithShubham/runbookops/blob/main/RUNBOOK.md) for further recovery.
 
-Use [costs and shutdown](https://github.com/TrainWithShubham/runbookops/blob/main/docs/COSTS.md). Stop/review/delete the dedicated AWS resources after the demonstration. A local server shutdown does not remove cloud storage or the runtime configuration.
+<details>
+<summary>Instructor: cloud preparation and cleanup</summary>
 
-If the live demo fails, label the saved [release verification](https://github.com/TrainWithShubham/runbookops/blob/main/docs/VERIFICATION.md) as historical evidence and continue the local capstone. Do not present saved traces as a new invocation.
+Use the separate [AgentCore demonstration guide](../instructor/AGENTCORE_DEMO.md). Learners should not run those deployment or billed smoke-test commands.
 
-## Completion evidence
+</details>
 
-Save the diagnosis and sources, reviewed proposal, viewer denial, authorized recovery result and a sanitized trace. Explain which operations ran locally, which used a live model and which were an instructor cloud demonstration. Record one failed/refused case and the result of the learner's edit.
-
-An interview explanation should describe actual participation. Watching the cloud demonstration does not mean the learner independently deployed the application.
+**You have finished the course.** Explain one design decision, one failed/refused case and what would need to change before connecting real infrastructure.

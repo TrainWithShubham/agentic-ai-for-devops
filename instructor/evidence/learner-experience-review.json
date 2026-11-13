@@ -1,0 +1,115 @@
+{
+  "reviewed_on": "2026-11-13",
+  "branch": "v2",
+  "scope": "Learner-facing prose, onboarding, expected output and actionable CLI failures",
+  "python": "3.12.12",
+  "platform": "macOS",
+  "clean_environment_install_passed": true,
+  "course_checks_passed": 17,
+  "documented_commands": [
+    {
+      "command": "uv run python -m course_labs.prompts",
+      "exit_code": 0,
+      "expected": 0
+    },
+    {
+      "command": "uv run python -m course_labs.agent",
+      "exit_code": 0,
+      "expected": 0
+    },
+    {
+      "command": "uv run python -m course_labs.graph",
+      "exit_code": 0,
+      "expected": 0
+    },
+    {
+      "command": "uv run python -m course_labs.mcp_client",
+      "exit_code": 0,
+      "expected": 0
+    },
+    {
+      "command": "uv run python -m course_labs.rag",
+      "exit_code": 0,
+      "expected": 0
+    },
+    {
+      "command": "uv run python -m course_labs.rag --question zebras astrophysics xyzzy",
+      "exit_code": 0,
+      "expected": 0
+    },
+    {
+      "command": "uv run python -m course_labs.rag --question Who is tomorrow's on-call engineer?",
+      "exit_code": 0,
+      "expected": 0
+    },
+    {
+      "command": "uv run python -m course_labs.security",
+      "exit_code": 0,
+      "expected": 0
+    },
+    {
+      "command": "uv run python -m course_labs.operations",
+      "exit_code": 0,
+      "expected": 0
+    },
+    {
+      "command": "uv run python -m course_labs.evaluations",
+      "exit_code": 0,
+      "expected": 0
+    },
+    {
+      "command": "uv run python -m course_labs.evaluations --bad-candidate",
+      "exit_code": 1,
+      "expected": 1
+    },
+    {
+      "command": "uv run python scripts/check_exercise.py all --solution",
+      "exit_code": 0,
+      "expected": 0
+    },
+    {
+      "command": "uv run python scripts/check_exercise.py ci",
+      "exit_code": 1,
+      "expected": 1
+    },
+    {
+      "command": "uv run python scripts/check_exercise.py rag",
+      "exit_code": 1,
+      "expected": 1
+    },
+    {
+      "command": "uv run python scripts/check_exercise.py approval",
+      "exit_code": 1,
+      "expected": 1
+    },
+    {
+      "command": "uv run python scripts/check_exercise.py evaluation",
+      "exit_code": 1,
+      "expected": 1
+    }
+  ],
+  "new_failure_checks": [
+    "missing live configuration makes no provider request",
+    "model catalog failure gives recovery without echoing network details",
+    "missing semantic dependency explains installation and keyword option"
+  ],
+  "ruff_check": "passed",
+  "ruff_format": "passed",
+  "docs_schedules_isolation": "passed",
+  "public_catalog_cli_passed": true,
+  "public_catalog_free_tool_models_at_check": 11,
+  "live_inference_calls": 0,
+  "aws_resources_created": false,
+  "third_party_application_executed": false,
+  "core_code_lines_before": 829,
+  "core_code_lines_after": 870,
+  "new_dependencies": [],
+  "book_sha256_unchanged": "813e31e5f1422fc93868ce6717f6d2dfb11bf41a8f9fde5adb433b13487f62e5",
+  "limits": [
+    "No fresh Windows/Linux laptop run",
+    "No new live inference or semantic-model download",
+    "No fresh cloud or standalone-capstone run",
+    "No remote GitHub Actions run",
+    "No timed learner usability trial or class-wide provider-capacity test"
+  ]
+}

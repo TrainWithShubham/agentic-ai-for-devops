@@ -7,7 +7,7 @@ from typing import TypedDict
 from langgraph.graph import END, START, StateGraph
 
 from .agent import fixture_message
-from .common import ROOT, show
+from .common import ROOT, run_cli, show
 from .provider import complete
 from .tools import SCHEMAS, execute
 
@@ -86,4 +86,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    run_cli(main, "See module-2/README.md or checkpoints/README.md for the next step.")
