@@ -1,0 +1,15 @@
+{
+  "verified_on": "2026-11-13",
+  "url": "https://www.youtube.com/watch?v=14K2noGTJ1M",
+  "title": "Claude Code In One Shot | Build Production Ready Apps | 2026",
+  "channel": "TrainWithShubham",
+  "channel_url": "https://www.youtube.com/@TrainWithShubham",
+  "verification": "YouTube oEmbed metadata; no transcript or timestamp claims",
+  "language": "Hindi, as identified by the channel owner",
+  "qr_verification": {
+    "decoded_url": "https://www.youtube.com/watch?v=14K2noGTJ1M",
+    "decoder": "zxing-cpp 3.1.1",
+    "pdf_sha256": "dfe6edebe632ba294a01b7cafb7283d61b5c81473e2c831b8d1ec90d12d310d7",
+    "page": 28
+  }
+}

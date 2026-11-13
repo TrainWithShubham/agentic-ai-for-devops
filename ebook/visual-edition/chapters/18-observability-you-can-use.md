@@ -6,7 +6,7 @@
 
 ## Which step explains the outcome?
 
-A useful trace connects the user request with retrieval, model calls, tool results and approval events. It lets an engineer distinguish a bad source from a bad decision or a failed executor.
+Observability means understanding a system from the evidence it emits. A trace connects one request to retrieval, model calls, tools and review. It helps locate a bad source, a bad decision or a failed operation.
 
 
 

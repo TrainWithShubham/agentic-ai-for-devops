@@ -165,3 +165,67 @@ GLOSSARY = [
     ("AgentCore Runtime", "AWS hosting for an agent or tool implementation that you supply."),
     ("Managed Harness", "AgentCore configuration-based loop, powered by Strands."),
 ]
+
+# Sources for the beginner / 2027 learning revision, reviewed 2026-11-13.
+SOURCES.update(
+    {
+        "models-overview": (
+            "Claude: model families and capabilities",
+            "https://platform.claude.com/docs/en/models/overview",
+        ),
+        "embeddings-intro": (
+            "Claude: embeddings explained",
+            "https://platform.claude.com/docs/en/build-with-claude/embeddings",
+        ),
+        "api-access": (
+            "Claude: subscriber API credit eligibility",
+            "https://platform.claude.com/docs/en/about-claude/api-credits-for-subscribers",
+        ),
+        "local-models": ("Ollama: local inference FAQ", "https://docs.ollama.com/faq"),
+        "free-models": (
+            "OpenRouter: free model variants",
+            "https://openrouter.ai/docs/guides/routing/model-variants/free",
+        ),
+        "model-families": ("OpenRouter: model catalog", "https://openrouter.ai/models"),
+        "claude-best": ("Claude Code: best practices", "https://code.claude.com/docs/en/best-practices"),
+        "claude-memory": ("Claude Code: CLAUDE.md and memory", "https://code.claude.com/docs/en/memory"),
+        "claude-permissions": (
+            "Claude Code: permission boundaries",
+            "https://code.claude.com/docs/en/permissions",
+        ),
+        "claude-skills": ("Claude Code: skills", "https://code.claude.com/docs/en/skills"),
+        "claude-hooks": ("Claude Code: hooks", "https://code.claude.com/docs/en/hooks-guide"),
+        "tws-video": ("TWS: Claude Code In One Shot / Hindi", "https://www.youtube.com/watch?v=14K2noGTJ1M"),
+    }
+)
+GLOSSARY.extend(
+    [
+        (
+            "Model",
+            "A trained system that maps input to output; its capability depends on the model and task.",
+        ),
+        ("Training", "Learning model parameters from data; distinct from answering one request."),
+        ("Inference", "Running an existing model on an input to obtain an output."),
+        ("API", "Application programming interface; a way for software to request another service."),
+        ("Hallucination", "Generated content that is false or unsupported, even when it sounds convincing."),
+        ("Provider", "A service that hosts or supplies access to models; its policies and billing apply."),
+        (
+            "Reasoning budget",
+            "Computation a supported model can spend on a task; more does not guarantee correctness.",
+        ),
+        ("CLAUDE.md", "Project instructions read as model context; not a security or permission boundary."),
+        ("Skill", "Reusable task instructions and supporting material; review before trusting its behavior."),
+        (
+            "Hook",
+            "Configured behavior triggered at a tool/application lifecycle event; review the implementation.",
+        ),
+    ]
+)
+GLOSSARY.extend(
+    [
+        ("Schema", "Rules for the fields and types a structured message may contain."),
+        ("Caller", "The person or service making a request; its identity and permissions matter."),
+        ("Credential", "A secret or proof used to authenticate access, such as an API key or token."),
+        ("Rate limit", "A provider limit on request or token throughput over a time window."),
+    ]
+)

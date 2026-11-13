@@ -8,7 +8,7 @@ from pathlib import Path
 from zipfile import ZipFile
 
 import pdfplumber
-from content import CHAPTERS
+from beginner_content import CHAPTERS, PROJECT_CHAPTER, VIDEO_URL
 from pypdf import PdfReader
 from sources import SOURCES
 
@@ -20,13 +20,15 @@ ARCHIVE = ROOT / "output/pdf/agentic-ai-for-devops-chapters.zip"
 
 def main():
     reader = PdfReader(PDF)
-    assert len(reader.pages) == 86
-    assert [c["number"] for c in CHAPTERS] == list(range(1, 20))
+    layout = json.loads((ROOT / "artifacts/book-layout.json").read_text())
+    front_pages = layout["front_pages"]
+    assert len(reader.pages) == 107
+    assert [c["number"] for c in CHAPTERS] == list(range(1, 24))
     for ch in CHAPTERS:
         assert all(key in SOURCES for key in ch["sources"])
         assert len(ch["steps"]) == len(ch["checks"]) == 4
         assert len(ch["principles"]) == 3
-        if ch["number"] <= 16:
+        if ch["number"] < PROJECT_CHAPTER:
             assert not re.search(r"runbookops|gada|bagha|jethalal", json.dumps(ch), re.I)
     text = "\n".join(p.extract_text() for p in reader.pages)
     assert not re.search(r"\b(lab|labs|companion|course_labs|uv sync|pip install)\b", text, re.I)
@@ -36,11 +38,21 @@ def main():
     destinations = {entry.title: entry for entry in reader.outline}
     for ch in CHAPTERS:
         dest = destinations[ch["title"]]
-        assert reader.get_destination_page_number(dest) == 4 + (ch["number"] - 1) * 4
-    contents_links = [annotation.get_object() for page in reader.pages[1:3] for annotation in page["/Annots"]]
-    assert len(contents_links) == 19
+        assert reader.get_destination_page_number(dest) == front_pages + (ch["number"] - 1) * 4
+    contents_links = [annotation.get_object() for page in reader.pages[1:4] for annotation in page["/Annots"]]
+    assert len(contents_links) == 23
     for i, link in enumerate(contents_links):
-        assert link["/Dest"][0].idnum == reader.pages[4 + i * 4].indirect_reference.idnum
+        assert link["/Dest"][0].idnum == reader.pages[front_pages + i * 4].indirect_reference.idnum
+    video_links = [
+        a.get_object()
+        for p in reader.pages
+        for a in p.get("/Annots", [])
+        if a.get_object().get("/A", {}).get("/URI") == VIDEO_URL
+    ]
+    assert len(video_links) >= 3
+    video_evidence = json.loads((HERE / "VIDEO.json").read_text())["qr_verification"]
+    assert video_evidence["decoded_url"] == VIDEO_URL
+    assert video_evidence["pdf_sha256"] == hashlib.sha256(PDF.read_bytes()).hexdigest()
     overflow = []
     with pdfplumber.open(PDF) as document:
         for i, page in enumerate(document.pages):
@@ -50,18 +62,17 @@ def main():
     assert not overflow, overflow[:10]
     with ZipFile(ARCHIVE) as z:
         names = sorted(z.namelist())
-        assert len(names) == 19 and all(n.endswith(".pdf") for n in names)
+        assert len(names) == 23 and all(n.endswith(".pdf") for n in names)
         for i, name in enumerate(names):
             chapter = PdfReader(BytesIO(z.read(name)))
             assert len(chapter.pages) == 4
             assert set(chapter.attachments) == notices
             for j, page in enumerate(chapter.pages):
-                original = reader.pages[4 + i * 4 + j]
+                original = reader.pages[front_pages + i * 4 + j]
                 assert page.extract_text() == original.extract_text()
                 assert page.get_contents().get_data() == original.get_contents().get_data()
-    layout = json.loads((ROOT / "artifacts/book-layout.json").read_text())
     overlaps = []
-    for page in range(1, 87):
+    for page in range(1, len(reader.pages) + 1):
         boxes = [b for b in layout["text_bounds"] if b["page"] == page]
         for i, a in enumerate(boxes):
             for b in boxes[i + 1 :]:
@@ -72,24 +83,28 @@ def main():
     assert not overlaps, overlaps[:3]
     results = {
         "edition_date": "2026-11-13",
-        "book_pages": 86,
-        "chapters": 19,
+        "book_pages": len(reader.pages),
+        "chapters": len(CHAPTERS),
         "standalone_chapter_pages": 4,
         "primary_references": len(SOURCES),
         "reader_word_count_including_navigation": len(text.split()),
         "page_safe_area_overflow_characters": len(overflow),
         "authoring_text_box_overlap_candidates": len(overlaps),
-        "chapter_destinations_verified": 19,
+        "chapter_destinations_verified": len(CHAPTERS),
         "pdf_link_annotations": sum(len(p.get("/Annots", [])) for p in reader.pages),
         "asset_license_attachments": sorted(notices),
-        "standalone_pages_match_book_content_streams": 76,
+        "standalone_pages_match_book_content_streams": len(CHAPTERS) * 4,
+        "video_url": VIDEO_URL,
+        "video_identity_verified": "YouTube oEmbed: title and TrainWithShubham channel",
+        "video_qr_verified_against_pdf_hash": True,
+        "2027_scope": "Learning direction; product facts reviewed 2026-11-13",
         "concept_chapters_independent_of_application": True,
         "reader_setup_or_exercise_dependencies": False,
         "aws_resources_created": False,
         "model_calls": 0,
         "pdf_sha256": hashlib.sha256(PDF.read_bytes()).hexdigest(),
         "chapters_zip_sha256": hashlib.sha256(ARCHIVE.read_bytes()).hexdigest(),
-        "visual_review": "All 86 initial pages inspected. Revised pages re-rendered and inspected; unchanged pages compared at pixel level.",
+        "visual_review": "All 107 pages rendered and visually reviewed, including new beginner content and the video panel.",
         "limits": [
             "Conceptual content, not production-system verification",
             "Fictional operational examples",

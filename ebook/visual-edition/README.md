@@ -1,8 +1,8 @@
 # Agentic AI for DevOps: a visual field guide
 
-First visual edition, 13 November 2026. By Shubham Londhe, Train With Shubham.
+Beginner learning edition for 2027; technical review dated 13 November 2026. By Shubham Londhe, Train With Shubham.
 
-The book has 86 pages and 19 standalone chapters. It follows the six v2 course modules, then adds separate Temporal and Amazon Bedrock AgentCore bonuses. It assumes basic Linux, Python and DevOps familiarity. Examples are fictional, require no setup and do not depend on exercise files. Application-specific material first appears in chapter 17.
+The book has 107 pages and 23 standalone chapters. It follows the six v2 course modules, then adds separate Temporal and Amazon Bedrock AgentCore bonuses. It assumes no AI background; basic Linux and Python familiarity helps. Models, inference, APIs and learning mistakes come before tools and frameworks. Examples are fictional, require no setup and do not depend on exercise files. Application-specific material first appears in chapter 21.
 
 Reader deliverables in the repository root:
 
@@ -13,7 +13,9 @@ The individual chapters preserve printed book page numbers for easy cross-refere
 
 ## Editable source
 
-- `content.py`: canonical chapter copy and diagram data.
+- `content.py`: original core chapter copy and diagram data.
+- `beginner_content.py`: beginner chapters, final reading order and explanatory updates.
+- `VIDEO.json`: YouTube metadata confirming the linked Hindi-channel tutorial.
 - `illustrations.py`: original vector diagrams.
 - `build_book.py`: ReportLab renderer and standalone exports.
 - `sources.py`: primary-source links and glossary.
@@ -38,8 +40,12 @@ pdftoppm -scale-to 1100 -png output/pdf/agentic-ai-for-devops-visual-ebook.pdf t
 
 The renderer checks text fit while authoring. It is not a substitute for visual review or a technical content review. `artifacts/book-layout.json` is an ignored authoring record, not reader content.
 
+The Claude Code chapter includes a clickable lesson link and QR code. A first-month learning plan and a 2027 skills compass follow the chapters. The 2027 framing is a learning recommendation, not a forecast of product capabilities.
+
 ## Maintenance
 
 Recheck the linked primary references before each new edition. Review changes to MCP protocol versions, LangGraph persistence, Temporal replay/retry behavior and AgentCore Harness/Runtime capabilities in particular. Model prices, quotas, framework hiring rankings and deployment readiness are deliberately not asserted.
 
 The book explains engineering concepts. It does not certify a production architecture, provide tagged-PDF accessibility, establish model reliability or claim a fresh cloud deployment. No infrastructure provisioning or model calls occur during the build.
+
+The publication verifier checks the decoded-QR evidence recorded in `VIDEO.json` against the final PDF hash. After rebuilding an edited edition, render the video page, decode its QR, then refresh that public evidence before running `verify_book.py`. The current edition was decoded with zxing-cpp 3.1.1. The verifier needs pypdf and pdfplumber in the authoring environment; these are publication tools, not reader requirements.

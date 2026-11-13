@@ -19,7 +19,7 @@ Read the [curriculum](CURRICULUM.md) for exact timing, outcomes and topic depth.
 
 ## Visual e-book
 
-Read [Agentic AI for DevOps: a visual field guide](ebook/visual-edition/README.md): 19 standalone chapters across the six modules, with Temporal and AgentCore bonuses. The [complete PDF](output/pdf/agentic-ai-for-devops-visual-ebook.pdf) uses diagrams, short explanations and fictional DevOps examples; no setup is needed to read it.
+Read [Agentic AI for DevOps: a visual field guide](ebook/visual-edition/README.md): 23 beginner-friendly standalone chapters across the six modules, with Temporal and AgentCore bonuses. The [complete PDF](output/pdf/agentic-ai-for-devops-visual-ebook.pdf) uses diagrams, short explanations and fictional DevOps examples, with beginner model guidance, prompt patterns and Claude Code practices. No setup is needed to read it.
 
 ## Start here
 

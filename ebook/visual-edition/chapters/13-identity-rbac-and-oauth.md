@@ -6,7 +6,7 @@
 
 ## Who is allowed to do what?
 
-Identity establishes the caller. Authorization decides the allowed action on a resource. A user prompt saying "I am the admin" establishes neither.
+Authentication establishes who the caller is. Authorization decides what that caller may do on a resource. Credentials help authenticate a request; a user prompt saying "I am the admin" establishes neither identity nor permission.
 
 
 

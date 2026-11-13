@@ -90,6 +90,200 @@ Describe the available tools, who chooses them and how the system stops. Use a p
 
 ---
 
+# Mistakes to avoid early
+
+
+01 / Foundations
+
+
+## Which habits get in the way?
+
+DevOps experience gives you useful instincts about evidence, permissions and recovery. Bring those instincts into AI. Build confidence by explaining one result before adding another tool.
+
+
+
+**Trust.** A confident explanation can contain an invented fact or command.
+
+
+**Complexity.** More agents, tools or frameworks create more behavior to inspect.
+
+
+**Learning.** Ask why a change works before accepting generated code.
+
+
+## Turn familiar habits into better checks
+
+A model response can vary even when your script would be predictable. Keep the question small enough that you can compare the answer with real evidence.
+
+
+### Diagram reading order
+
+
+1. **Tool collecting:** Start with one useful capability before connecting many servers.
+
+2. **Prompt guessing:** Add missing evidence and a success condition before adding adjectives.
+
+3. **Blind copy-paste:** Inspect flags, paths and effects before running a suggested command.
+
+4. **Demo equals proof:** Repeat with denied access, missing evidence and a failed provider call.
+
+
+
+Pasting secrets, accepting unreviewed changes and granting broad credentials are avoidable engineering errors. Use sanitized examples while learning.
+
+
+## The first answer looks convincing
+
+A fictional assistant explains a CI failure by claiming that the network was unavailable. The only supplied log says the test runner was missing.
+
+
+
+1. **Pause:** Underline the claim and find the evidence offered for it.
+
+2. **Separate:** The missing executable is observed; a network failure is a hypothesis.
+
+3. **Ask:** Request the install step and dependency declaration before a fix.
+
+4. **Learn:** Write down what confirmed the cause and what remains unknown.
+
+
+
+Resist changing the prompt, model and framework at the same time. One controlled change makes the result easier to explain.
+
+
+## Failure and correction
+
+A beginner copies an entire generated pipeline, cannot explain it and treats a green-looking summary as a passed build.
+
+
+
+Review one change, inspect the actual CI outcome and explain the evidence in your own words before adding another feature.
+
+
+## Engineering review
+
+
+- Treat fluent text as a claim to check.
+
+- Start with a small, observable task.
+
+- Keep credentials out of learning examples.
+
+- Save one failure and explain its cause.
+
+
+## Further reading
+
+
+- [Anthropic: building effective agents](https://www.anthropic.com/research/building-effective-agents)
+
+- [Anthropic: agent evaluations](https://www.anthropic.com/research/demystifying-evals-for-ai-agents)
+
+- [OWASP: AI agent security](https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html)
+
+
+---
+
+# Models, APIs and access
+
+
+01 / Foundations
+
+
+## What are you actually using?
+
+A model is a trained system. Running it on an input is inference. Claude is a model family; Claude Code is a coding application that uses models and tools. An API lets your own code request a service.
+
+
+
+**Training.** Learning model parameters from data; separate from asking a question.
+
+
+**Inference.** Using an existing model to produce an output for a request.
+
+
+**Access.** A chat login, coding-tool login and application API setup can differ.
+
+
+## Choose for the job
+
+Model names change. Compare the capability you need, acceptable delay, data handling and budget. Test on examples you understand before committing to a model.
+
+
+### Diagram reading order
+
+
+1. **Text and code:** Generate explanations, structured fields or proposed patches.
+
+2. **Reasoning budget:** Some models can spend more computation on a difficult task.
+
+3. **Embeddings:** Represent content numerically for search; not a chat answer.
+
+4. **Local or hosted:** Local inference uses your hardware; hosted inference calls a service.
+
+
+
+Claude, GPT, Gemini, Qwen and Llama are examples of model families, not interchangeable products. Check current model IDs, licenses and capabilities at their official sources.
+
+
+## Choose for one CI question
+
+Your first task is to explain a sanitized missing-dependency error. You do not need to train a model or deploy an agent platform to compare answers.
+
+
+
+1. **Task:** Provide the failed step, install command and dependency declaration.
+
+2. **Capability:** Check the output format and tool-call support if your application needs tools.
+
+3. **Compare:** Use the same evidence; judge correctness, delay and actual usage.
+
+4. **Access:** Verify authentication, available credits, rate limits and data policy.
+
+
+
+Check API access and billing separately from your coding login. Some plans offer API credits with conditions; never assume an unlimited allowance. Free endpoints can have changing quotas.
+
+
+## Failure and correction
+
+A learner chooses a model by a leaderboard alone, assumes their subscription covers every API call and adds tools without testing support.
+
+
+
+Choose using your task and account. Start with a small budget and a reviewed example; check current access rather than relying on a screenshot or an old tutorial.
+
+
+## Engineering review
+
+
+- Distinguish model, provider and application.
+
+- Compare one task across candidates.
+
+- Check tool and structured-output support.
+
+- Verify credits, quotas and data handling.
+
+
+## Further reading
+
+
+- [Claude: model families and capabilities](https://platform.claude.com/docs/en/models/overview)
+
+- [Claude: embeddings explained](https://platform.claude.com/docs/en/build-with-claude/embeddings)
+
+- [Claude: subscriber API credit eligibility](https://platform.claude.com/docs/en/about-claude/api-credits-for-subscribers)
+
+- [Ollama: local inference FAQ](https://docs.ollama.com/faq)
+
+- [OpenRouter: free model variants](https://openrouter.ai/docs/guides/routing/model-variants/free)
+
+- [OpenRouter: model catalog](https://openrouter.ai/models)
+
+
+---
+
 # Prompts and context
 
 
@@ -178,6 +372,200 @@ Specify the required observations and stop conditions. Reject malformed fields a
 - [Claude: prompt engineering](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview)
 
 - [Anthropic: context engineering](https://www.anthropic.com/research/effective-context-engineering-for-ai-agents)
+
+
+---
+
+# Prompts you can adapt
+
+
+01 / Foundations
+
+
+## What makes a prompt useful?
+
+A useful DevOps prompt names the task, supplies relevant evidence, sets boundaries and asks for a checkable result. There is no single best prompt for every model or incident. Start with these patterns and assess the output.
+
+
+
+**Task.** Say what decision or explanation you need.
+
+
+**Evidence.** Name the files, excerpts or observations available.
+
+
+**Result.** Ask for sources, uncertainty and a validation plan.
+
+
+## Give the request a clear shape
+
+Use ordinary language and concrete constraints. Replace vague instructions such as "make it production ready" with the changes and checks that would establish success.
+
+
+### Diagram reading order
+
+
+1. **Goal:** Explain why the test job failed; prepare a proposal.
+
+2. **Evidence:** Use only this log, workflow and dependency file.
+
+3. **Boundary:** Do not execute commands or change the workflow.
+
+4. **Acceptance:** Return facts, cause, exact proposal, validation and unknowns.
+
+
+
+Ask for a short explanation tied to source locations. Inspect the evidence and observed actions when checking the result.
+
+
+## Four DevOps prompt patterns
+
+Supply the named evidence before using a pattern. Replace the task details to fit your environment; these are examples, not tested guarantees.
+
+
+
+1. **CI failure:** Using this log and workflow, explain the failed step. Cite lines. Separate facts from hypotheses. Propose the smallest fix and a validation check. Do not edit files.
+
+2. **Document answer:** Using these deployment excerpts, answer who approves rollback. Cite the supporting section. If the evidence is missing or conflicts, say so. Do not grant approval.
+
+3. **Terraform review:** Review this Terraform diff. Explain changed resources, possible replacement, access changes and uncertainty. Suggest validation. Do not apply it or assume a cost estimate.
+
+4. **Incident summary:** Summarize these sanitized events as observed facts, hypotheses and next read-only checks. Include time and source references. Do not claim recovery without a confirming observation.
+
+
+
+When an answer is weak, inspect the evidence and the requested result before adding a longer persona. Keep the prompt version with the reviewed example.
+
+
+## Failure and correction
+
+The request says "act as a 10x engineer and fix the deployment" but supplies no target, logs or definition of success.
+
+
+
+Name the resource and evidence, ask for a proposal and state what would validate it. Prompt instructions still do not replace execution permissions.
+
+
+## Engineering review
+
+
+- Supply the evidence the model can use.
+
+- Ask for sources and missing information.
+
+- Bound actions and affected resources.
+
+- Judge the result against the actual task.
+
+
+## Further reading
+
+
+- [Claude: prompt engineering](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview)
+
+- [Anthropic: context engineering](https://www.anthropic.com/research/effective-context-engineering-for-ai-agents)
+
+- [Claude: tool use](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview)
+
+
+---
+
+# Claude Code work habits
+
+
+01 / Foundations
+
+
+## How do you learn while it writes code?
+
+Claude Code can inspect a codebase, edit files and run tools under its configured permissions. You remain responsible for understanding the change. Start with a small task you can inspect and verify.
+
+
+
+**Explore.** Ask where the behavior lives before requesting a patch.
+
+
+**Plan.** Use Plan mode to understand a nontrivial change first.
+
+
+**Verify.** Read the diff and actual check output before accepting the work.
+
+
+## Give instructions, then enforce boundaries
+
+Keep CLAUDE.md short: project facts, conventions and real check commands. It is context for the model. Permissions, sandboxing and appropriate hooks serve different enforcement purposes.
+
+
+### Diagram reading order
+
+
+1. **CLAUDE.md:** Record the relevant project structure and verification commands.
+
+2. **Plan + scope:** Choose one change and identify the files it should affect.
+
+3. **Permissions:** Grant only the tools, paths and environment access needed.
+
+4. **Review + check:** Inspect the patch, run the relevant checks and explain the result.
+
+
+
+Skills package reusable instructions. Hooks run at lifecycle events and can automate checks. Review their code and sources; both can add behavior you did not expect.
+
+
+## One small, reviewable change
+
+A fictional Python CI job installs only runtime dependencies, then tries to run pytest. Work in an isolated branch or checkout without production credentials.
+
+
+
+1. **Explore:** Find the install step and declared test dependency. Explain the mismatch; do not edit yet.
+
+2. **Plan:** Propose the smallest change that installs the declared test group. Keep the test step intact.
+
+3. **Implement:** Make only the agreed change. Summarize the diff and any assumption.
+
+4. **Verify:** Run the available relevant checks. Report exact results and anything you could not run.
+
+
+
+Watch the Hindi lesson, then explain one change without reading the generated answer. Menu names and permission behavior may change after this edition.
+
+
+## Failure and correction
+
+A learner enables broad permission bypass, asks for a whole platform and accepts a large patch because Claude reports that tests passed.
+
+
+
+Use a small scope and normal permission checks. Read the actual diff and test result; reject test removal or fabricated verification. Keep secrets outside the accessible learning environment.
+
+
+## Engineering review
+
+
+- Keep project instructions concise.
+
+- Explore and plan before broad edits.
+
+- Review commands, permissions and the diff.
+
+- Ask for exact checks and unresolved limits.
+
+
+## Further reading
+
+
+- [Claude Code: best practices](https://code.claude.com/docs/en/best-practices)
+
+- [Claude Code: CLAUDE.md and memory](https://code.claude.com/docs/en/memory)
+
+- [Claude Code: permission boundaries](https://code.claude.com/docs/en/permissions)
+
+- [Claude Code: skills](https://code.claude.com/docs/en/skills)
+
+- [Claude Code: hooks](https://code.claude.com/docs/en/hooks-guide)
+
+- [TWS: Claude Code In One Shot / Hindi](https://www.youtube.com/watch?v=14K2noGTJ1M)
 
 
 ---
@@ -750,7 +1138,7 @@ Check eligibility, source freshness and ranked passages before changing the gene
 
 ## Who is allowed to do what?
 
-Identity establishes the caller. Authorization decides the allowed action on a resource. A user prompt saying "I am the admin" establishes neither.
+Authentication establishes who the caller is. Authorization decides what that caller may do on a resource. Credentials help authenticate a request; a user prompt saying "I am the admin" establishes neither identity nor permission.
 
 
 
@@ -1063,7 +1451,7 @@ The model is one component. Connect the surrounding machinery deliberately so a 
 
 
 
-Session state, durable task progress and long-term knowledge are different storage needs. Do not assume process memory satisfies all three.
+A timeout limits waiting. A retry is another attempt. Idempotency prevents repeated attempts for one logical operation from duplicating effects. Store important progress outside process memory.
 
 
 ## The provider times out
@@ -1220,7 +1608,7 @@ Scope cache access to trusted context, invalidate affected entries and revalidat
 
 ## Which step explains the outcome?
 
-A useful trace connects the user request with retrieval, model calls, tool results and approval events. It lets an engineer distinguish a bad source from a bad decision or a failed executor.
+Observability means understanding a system from the evidence it emits. A trace connects one request to retrieval, model calls, tools and review. It helps locate a bad source, a bad decision or a failed operation.
 
 
 

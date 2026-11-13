@@ -1,34 +1,38 @@
 # Technical and editorial review
 
-Edition date: 13 November 2026. Scope: the visual book and its chapter exports. This is a source-grounded editorial review, not independent certification or verification of a deployed system.
+Beginner learning edition: reviewed 13 November 2026. The 2027 framing is a recommended learning direction, not a claim to know future products or job requirements. Scope: the visual book and its standalone chapter exports.
 
-## Review boundaries
+## Sources and examples
 
-The 48 primary references in `sources.py` were consulted for the relevant topics. The PDF links each chapter to its sources and includes a complete reference section. Most illustrations are original teaching designs; their concrete policies, CI run identifiers, errors, role assignments and incident scenarios are synthetic. No vendor diagrams or prose passages were copied.
+The 60 linked sources in `sources.py` support the relevant technical topics and further study. Concrete CI errors, role assignments, policies and incident scenarios are synthetic teaching examples. Prompt templates are original examples for adaptation, not measured best-performing prompts. Learning mistakes are recommended traps to watch for, not survey results. Diagrams are conceptual; they are not captured live executions.
 
-| Chapters | Claims checked | Primary reference families | Important qualification |
-|---|---|---|---|
-| 1-2 | Workflow versus agent, model context, token limits, system instructions | Anthropic agent/context guidance and Claude prompt documentation | The distinctions are an engineering vocabulary, not a universal taxonomy. Prompts do not confer authority. |
-| 3-4 | Model tool requests, application execution, bounded loops | Anthropic tools, Claude tool-use documentation, Google SRE overload guidance | The CI narratives are invented worked examples, not captured executions. |
-| 5 | Host/client/server, capability discovery, tool calls and transports | MCP architecture, authorization and security documents | Architecture/authorization links identify the 2026-07-28 specification. SDKs may support different versions; no complete wire transcript is claimed. |
-| 6 | State, nodes, edges, checkpointers, stores and interrupts | LangGraph overview, persistence and interrupts | In-memory storage is not restart-durable. The graph is conceptual; deployment and side-effect policy are application responsibilities. |
-| 7-8 | Preparation/query paths, source extraction, chunking, search and grounding | LangChain retrieval, pypdf extraction, Qdrant hybrid search/reranking, Microsoft RAG evaluation | No universal chunk size, vector dimension, top-k or retrieval success rate is asserted. OCR and diagram interpretation need suitable processing. |
-| 9 | OIDC authentication, OAuth delegated authorization, resource policy | OpenID Connect Core, RFC 9700, OWASP authorization and MCP security | Token validation depends on token/provider. An ID token is not a general API access credential. Browser flows should follow current code/PKCE guidance. |
-| 10-11 | Review binding, stale/replayed proposals and injection defenses | OWASP transaction authorization, authorization, prompt injection and AI-agent security | Hashes do not authenticate people. Rejected decisions stop; changed/expired proposals need review. Layering controls is not complete injection resistance. |
-| 12-13 | Harness responsibilities, retries, idempotency, cache types and routing | Anthropic harnesses, AWS Builders' Library, Google SRE, Claude caching, OWASP RAG security, LangChain models | Result-cache design and model routes are proposed engineering choices. Prompt caching behavior is provider-specific. No paid fallback, cost saving or reliability figure is claimed. |
-| 14-16 | Traces/spans, evaluation layers, release boundaries and CI credentials | OpenTelemetry, Anthropic evaluations, LangGraph tests, GitHub Actions security, Google SRE | GenAI conventions now have a dedicated upstream repository. No private reasoning capture is required. Coverage does not establish model quality. |
-| 17 | Application responsibilities and simulator/production distinction | Local module-6 material and the public RunbookOps repository | Fictional conceptual case study, not new verification of a live app, AWS deployment or operational remediation. |
-| 18 | Workflow determinism, Activities, history/replay, messages and retries | Temporal workflow/Activity/retry/message documentation | Activities can be attempted more than once; external effects need idempotency. Signal/Update delivery does not authenticate a business approver. |
-| 19 | Runtime versus managed Harness, Gateway, tools and invocation boundaries | AWS AgentCore Runtime, comparison, Harness, tools, Gateway and security documentation | Custom LangGraph belongs on Runtime; managed Harness supplies a Strands loop. No claim that Harness runs a custom LangGraph loop unchanged. Regions, quotas and price must be checked at deployment time. |
+| Chapters | Review focus | Primary references and limits |
+|---|---|---|
+| 1-2 | AI/workflow/agent distinction and beginner mistakes | Anthropic agents/evaluations and OWASP agent security. No survey or universal taxonomy claim. |
+| 3 | Models, inference, embeddings, API access, local/hosted choices | Claude model/embedding docs, OpenRouter catalog/free variants, Ollama FAQ. Model-family examples are not a ranking. No future model ID, price or free-capacity guarantee. |
+| 4-5 | Context and task-specific prompt patterns | Claude prompting/tool-use docs and Anthropic context guidance. Prompt instructions do not confer execution authority. Examples require the named evidence. |
+| 6 | Claude Code practices, instructions, permissions, skills and hooks | Official Claude Code best-practice, memory, permission, skill and hook pages. CLAUDE.md is model context rather than enforced configuration. No bypass-permission recommendation or claim that every hook is a complete security boundary. |
+| 7-8 | Tool requests, execution and bounded loops | Anthropic tools, Claude tool-use docs and Google SRE overload guidance. Fictional CI examples, not measured executions. |
+| 9 | MCP participants, discovery, tool calls and transports | MCP 2026-07-28 architecture/authorization/security references. Match SDK and protocol versions; no complete wire transcript is claimed. |
+| 10 | Graph state, routes, persistence and interrupts | LangGraph overview/persistence/interrupts. In-memory checkpoints are not restart-durable; graphs do not provide side-effect authorization automatically. |
+| 11-12 | RAG paths, extraction, chunking, search and source support | LangChain retrieval, pypdf, Qdrant and Microsoft RAG evaluation. No universal chunk size, vector dimension, top-k or success rate. OCR/complex layouts need suitable processing. |
+| 13-15 | Authentication, authorization, approval and injection | OIDC Core, RFC 9700, OWASP and MCP security. Hashes do not authenticate reviewers. Rejection stops execution; changed/expired proposals require review. |
+| 16-17 | Harness, retry/idempotency, cache types and routing | Anthropic harnesses, AWS Builders' Library, Google SRE, Claude caching, OWASP and LangChain models. Proposed architecture choices are not benchmark results. |
+| 18-20 | Observability, evaluations and release controls | OpenTelemetry, Anthropic evaluations, LangGraph testing and GitHub Actions security. Coverage does not establish model quality. No private reasoning capture is required. |
+| 21 | Integrated application case study | Course module-6 material and public RunbookOps source. Simulator story, not fresh cloud readiness or production remediation verification. |
+| 22 | Temporal workflow/Activities/history/replay/messages | Official Temporal references. External effects need idempotency; messages do not authenticate business approval. |
+| 23 | AgentCore Runtime versus managed Harness | Official AWS Runtime, Harness, tools, Gateway and security references. Runtime hosts the custom LangGraph loop; managed Harness provides a Strands loop. Verify service region, quotas and pricing before deployment. |
 
-## Sources that needed correction
+## Billing detail corrected during review
 
-Some older Qdrant search/tutorial URLs redirected without usable content. The book uses the current hybrid-search guide at `https://qdrant.tech/documentation/search-tuning/hybrid-search/`, read successfully. Temporal message-passing documentation was located through the official workflow page and uses the canonical encyclopedia URL. OpenTelemetry's former GenAI conventions page points to a dedicated repository; the book uses that current destination. These corrections avoid treating an obsolete link as technical evidence.
+Older guidance often says paid Claude plans never include API credits. Current Claude Platform documentation says some eligible plans include credits with conditions. Chapter 3 therefore asks readers to check account eligibility, Console access, available credits and quotas separately from a coding login. It states no dollar amounts or unlimited entitlement. See [current subscriber-credit documentation](https://platform.claude.com/docs/en/about-claude/api-credits-for-subscribers).
 
-## Illustration review
+## Video identity
 
-The source comparison, sequence arrows, proposal transitions, cache decisions, graph routes and shared cloud responsibilities were reviewed for meaning as well as alignment. A preliminary approval diagram could imply that rejection leads to execution; it now labels the continuation "approved only" and states that rejection stops. The LangGraph write route is labeled a proposal rather than implying prior approval.
+The requested tutorial is [Claude Code In One Shot | Build Production Ready Apps | 2026](https://www.youtube.com/watch?v=14K2noGTJ1M). YouTube oEmbed returned the exact title, `TrainWithShubham` author and `https://www.youtube.com/@TrainWithShubham` channel. Public metadata is retained in `VIDEO.json`. The owner identified this as the Hindi-channel video. Direct web-page retrieval was throttled; identity was verified via YouTube's own metadata endpoint. No transcript, timestamp, full-video review or summary of unseen content is claimed. The book provides a clickable link and vector QR code.
 
 ## Publication scope
 
-All reader pages are rendered and inspected. Automated checks cover text fit, PDF links/bookmarks, page counts, standalone extraction and absence of exercise/setup dependencies. These are publication checks, not operational integration tests. No infrastructure, credentials or model responses were needed. Asset notices are retained with the sources and attached to every exported PDF. Tagged-PDF accessibility is not certified.
+Reader pages are rendered and visually reviewed. Automated checks cover fit, link/bookmark destinations, chapter exports, setup independence and concept/application isolation. The video QR is decoded from the rendered page to check its destination. These checks do not certify a deployed agent, model reliability, complete security or tagged-PDF accessibility. No cloud resource or inference call is needed to publish the book.
+
+Asset notices remain with the shared sources and are attached to every PDF. The earlier approved sample remains separate. Obsolete Qdrant/Temporal paths and the moved OpenTelemetry GenAI conventions destination were corrected in the previous visual edition and remain corrected here.

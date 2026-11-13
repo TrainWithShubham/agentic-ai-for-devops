@@ -9,10 +9,12 @@ from pathlib import Path
 from urllib.parse import urlparse
 from zipfile import ZIP_DEFLATED, ZipFile
 
-from content import CHAPTERS
+from beginner_content import CHAPTERS, CLAUDE_CHAPTER, PROJECT_CHAPTER, PROMPT_CHAPTER, VIDEO_URL
 from illustrations import draw
 from pypdf import PdfReader, PdfWriter
 from reportlab.graphics import renderPDF
+from reportlab.graphics.barcode.qr import QrCodeWidget
+from reportlab.graphics.shapes import Drawing
 from reportlab.lib import colors
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.pdfbase import pdfmetrics
@@ -27,6 +29,7 @@ ROOT = HERE.parents[1]
 ASSETS = HERE.parent / "sample-chapter/assets"
 OUT = ROOT / "output/pdf/agentic-ai-for-devops-visual-ebook.pdf"
 RECORDS = []
+FRONT_PAGES = 5
 
 
 class Book:
@@ -44,7 +47,7 @@ class Book:
         self.c = canvas.Canvas(str(path), pagesize=(600, 780))
         self.c.setTitle("Agentic AI for DevOps | A visual field guide")
         self.c.setAuthor("Shubham Londhe | Train With Shubham")
-        self.c.setCreator("TWS | Visual edition 1 | 13 November 2026")
+        self.c.setCreator("TWS | Beginner learning edition | Reviewed 13 November 2026")
         self.page_number = 0
         self.current_text = []
         self.text_bounds = []
@@ -194,16 +197,41 @@ class Book:
     def example(self, ch):
         self.page(ch["case_title"], f"{ch['number']:02} / In practice")
         self.heading(ch["case_title"], ch["case_intro"], "A worked example")
+        if ch["number"] == PROMPT_CHAPTER:
+            for i, (title, body) in enumerate(ch["steps"]):
+                y = 446 - i * 94
+                self.rect(48, y, 504, 84, self.pale)
+                self.text(title, 64, y + 63, 12, "Bold", self.purple)
+                self.prose(body, 64, y + 51, 471, 10.5, self.ink, max_height=47)
+            self.note(ch["case_note"])
+            self.finish()
+            return
         for i, (title, body) in enumerate(ch["steps"]):
-            top = 548 - i * 103
+            top = 548 - i * (80 if ch["number"] == CLAUDE_CHAPTER else 103)
             self.circle(73, top - 13, 22, self.dark)
             self.center(f"{i + 1:02}", 73, top - 18, 12, self.gold, font="Mono")
             if i < 3:
                 self.line(73, top - 42, 73, top - 71, "#C8B5D8")
             self.text(title, 113, top - 5, 14, "Bold", self.purple)
             self.prose(body, 113, top - 22, 422, 12, max_height=59)
-        self.note(ch["case_note"])
+        if ch["number"] == CLAUDE_CHAPTER:
+            self.video_panel(ch["case_note"])
+        else:
+            self.note(ch["case_note"])
         self.finish()
+
+    def video_panel(self, caption):
+        self.rect(48, 73, 504, 159, "#F5EDDD")
+        qr = QrCodeWidget(VIDEO_URL, barLevel="M")
+        x0, y0, x1, y1 = qr.getBounds()
+        drawing = Drawing(112, 112, transform=[112 / (x1 - x0), 0, 0, 112 / (y1 - y0), 0, 0])
+        drawing.add(qr)
+        renderPDF.draw(drawing, self.c, 65, 96)
+        self.text("2026 VIDEO / HINDI / TRAINWITHSHUBHAM", 197, 210, 8, "Mono", "#624A28")
+        self.prose("Claude Code In One Shot", 197, 194, 338, 16, self.ink, font="Bold", max_height=47)
+        self.prose(caption, 197, 163, 332, 10.3, "#624A28", max_height=60)
+        self.text("Open the YouTube lesson", 197, 93, 10, "Bold", self.purple)
+        self.c.linkURL(VIDEO_URL, (61, 86, 538, 225), relative=0)
 
     def review(self, ch):
         self.page("When it goes wrong", f"{ch['number']:02} / Engineering review")
@@ -239,13 +267,13 @@ class Book:
 
 
 def front(b):
-    b.page("Agentic AI for DevOps", "Visual edition / 2026", True, "cover")
+    b.page("Agentic AI for DevOps", "Beginner / 2027 learning", True, "cover")
     b.c.drawImage(str(ASSETS / "tws-logo.png"), 39, 577, 125, 125, mask="auto", preserveAspectRatio=True)
     b.text("Agentic AI", 48, 534, 48, "Bold", "#FFFFFF")
     b.text("for DevOps", 48, 474, 48, "Bold", "#FFFFFF")
-    b.prose("A visual field guide", 48, 427, 480, 24, b.gold, font="Serif")
+    b.prose("A beginner's visual guide", 48, 427, 480, 24, b.gold, font="Serif")
     b.prose(
-        "Understand the decisions. Inspect the evidence. Control the action.",
+        "Start with models and useful prompts. Build the engineering habits to carry into 2027.",
         48,
         379,
         455,
@@ -262,12 +290,13 @@ def front(b):
         b.icon(name, x + 56, 235, 39, b.gold)
         b.center(title, x + 76, 203, 13, "#FFFFFF")
     b.text("SHUBHAM LONDHE", 48, 130, 12, "Bold", "#FFFFFF")
-    b.text("TRAIN WITH SHUBHAM / FIRST VISUAL EDITION", 48, 104, 8, "Mono", b.gold)
+    b.text("TRAIN WITH SHUBHAM / BEGINNER LEARNING EDITION", 48, 104, 8, "Mono", b.gold)
     b.text("Technically reviewed 13 November 2026", 48, 80, 9, "Sans", "#D8CEE3")
     b.finish()
     for start, end, subtitle in [
-        (0, 10, "Foundations, tools, knowledge and control"),
-        (10, 19, "Operate, integrate and explore the bonuses"),
+        (0, 8, "Start from scratch, then understand tools and loops"),
+        (8, 16, "Connect knowledge, control actions and operate the system"),
+        (16, 23, "Measure, release, integrate and explore the bonuses"),
     ]:
         b.page("Contents", "Find your chapter", bookmark="contents" if start == 0 else "contents-2")
         b.heading("Contents", subtitle, "Read in sequence or choose a chapter")
@@ -275,13 +304,13 @@ def front(b):
             y = 553 - i * 46
             b.text(f"{ch['number']:02}", 48, y, 11, "Mono", b.purple)
             b.text(ch["title"], 89, y, 12, "Bold")
-            pg = 5 + (ch["number"] - 1) * 4
+            pg = FRONT_PAGES + 1 + (ch["number"] - 1) * 4
             b.text(f"{pg:02}", 529, y, 10, "Mono", b.muted)
             b.line(89, y - 16, 552, y - 16, "#E4DEEA")
             b.c.linkRect("", f"chapter-{ch['number']}", (45, y - 13, 553, y + 17), relative=0, thickness=0)
-        if start == 10:
+        if start == 16:
             b.prose(
-                "A compact glossary and linked primary sources follow the chapters. Every example is self-contained; no software setup is needed.",
+                "A first-month learning plan, a 2027 skills compass, glossary and linked sources follow. Every example is self-contained; no setup is needed.",
                 48,
                 102,
                 504,
@@ -292,16 +321,16 @@ def front(b):
     b.page("How to use this guide", "Six modules / one foundation", bookmark="guide")
     b.heading(
         "How to use this guide",
-        "For engineers who know some Linux, Python and DevOps and want to understand how agent systems behave.",
+        "New to AI? Start at chapter 1. Basic Linux and Python familiarity helps; models, prompts and agent terms are explained as you go.",
         "Before you begin",
     )
     rows = [
-        ("01", "Foundations", "Chapters 1-2 / AI, agents, prompts and context."),
-        ("02", "Agents and tools", "Chapters 3-6 / tools, bounded loops, MCP and LangGraph."),
-        ("03", "Company knowledge", "Chapters 7-8 / RAG, extraction and retrieval quality."),
-        ("04", "Control and approval", "Chapters 9-11 / identity, review and guardrails."),
-        ("05", "Operate the system", "Chapters 12-16 / harness, cost, traces, evaluations and releases."),
-        ("06", "Integrated application", "Chapter 17 / a fictional simulator case study."),
+        ("01", "Foundations", "Chapters 1-6 / mistakes, models, prompts and Claude Code."),
+        ("02", "Agents and tools", "Chapters 7-10 / tools, bounded loops, MCP and LangGraph."),
+        ("03", "Company knowledge", "Chapters 11-12 / RAG, extraction and retrieval quality."),
+        ("04", "Control and approval", "Chapters 13-15 / identity, review and guardrails."),
+        ("05", "Operate the system", "Chapters 16-20 / harness, cost, traces, evaluations and releases."),
+        ("06", "Integrated application", "Chapter 21 / a fictional simulator case study."),
     ]
     for i, (num, title, body) in enumerate(rows):
         y = 540 - i * 64
@@ -315,8 +344,75 @@ def front(b):
     b.finish()
 
 
+def learning_path(b):
+    b.page("Your first month", "A suggested learning path", bookmark="first-month")
+    b.heading(
+        "Your first month",
+        "Move at your own pace. Use public or sanitized examples; these milestones do not require the course application.",
+        "Learn through small, explainable changes",
+    )
+    milestones = [
+        (
+            "Week 1 / understand",
+            "Explain one CI error using its log. Compare a vague prompt with a request that includes evidence and a validation check.",
+        ),
+        (
+            "Week 2 / retrieve",
+            "Follow a deployment question from source text to selected evidence. Explain why a current policy should beat a retired procedure.",
+        ),
+        (
+            "Week 3 / control",
+            "Draw one read-only tool call and its validation. Describe how you would deny an unknown resource or an unauthorized write.",
+        ),
+        (
+            "Week 4 / assess",
+            "Review a successful case and a failure. State which observation supports the answer and what your checks cannot establish.",
+        ),
+    ]
+    for i, (title, body) in enumerate(milestones):
+        top = 548 - i * 101
+        b.circle(73, top - 13, 21, b.purple)
+        b.center(str(i + 1), 73, top - 18, 13, "#FFFFFF")
+        b.text(title, 113, top - 5, 14, "Bold", b.purple)
+        b.prose(body, 113, top - 23, 422, 11.6, max_height=58)
+    b.note(
+        "Keep a short learning record: the question, the observed evidence, one change and its result. Explain the result without relying on the generated summary."
+    )
+    b.finish()
+    b.page("Carry these habits into 2027", "2027 / Learning direction", bookmark="2027-compass")
+    b.heading(
+        "Carry these habits into 2027",
+        "Products will change. Invest in the engineering skills that let you inspect a new tool instead of trusting its label.",
+        "What to keep learning",
+    )
+    skills = [
+        ("Linux + debugging", "Read processes, logs and errors so you can challenge a diagnosis.", "search"),
+        (
+            "Python + APIs",
+            "Understand the tool contract, inputs, exceptions and returned evidence.",
+            "list-checks",
+        ),
+        ("IAM + security", "Separate identity, permissions, credentials and human approval.", "lock-keyhole"),
+        (
+            "CI + evaluations",
+            "Test changes to prompts, tools and models against reviewed cases.",
+            "git-branch",
+        ),
+        ("Observability", "Explain a trace, a cost increase and an incomplete outcome.", "activity"),
+    ]
+    for i, (title, body, name) in enumerate(skills):
+        y = 475 - i * 64
+        b.icon(name, 52, y + 18, 28)
+        b.text(title, 105, y + 40, 13, "Bold", b.purple)
+        b.prose(body, 105, y + 24, 430, 11.2, max_height=34)
+    b.note(
+        "This is a recommended learning direction for 2027, based on documentation reviewed on 13 November 2026. Recheck product behavior, models, prices and permissions before use."
+    )
+    b.finish()
+
+
 def back(b):
-    for start in (0, 14):
+    for start in range(0, len(GLOSSARY), 14):
         b.page("A compact glossary", "Terms in plain language", bookmark=f"glossary-{start}")
         b.heading(
             "A compact glossary",
@@ -358,6 +454,13 @@ def back(b):
 def manuscripts():
     directory = HERE / "chapters"
     directory.mkdir(exist_ok=True)
+    expected = {
+        f"{ch['number']:02}-{re.sub(r'[^a-z0-9]+', '-', ch['title'].lower()).strip('-')}.md"
+        for ch in CHAPTERS
+    }
+    for stale in directory.glob("*.md"):
+        if stale.name not in expected:
+            stale.unlink()
     paths = []
     for ch in CHAPTERS:
         slug = re.sub(r"[^a-z0-9]+", "-", ch["title"].lower()).strip("-")
@@ -408,6 +511,7 @@ def main():
         b.example(ch)
         b.review(ch)
         b.chapter_ranges.append((ch, start, b.page_number))
+    learning_path(b)
     back(b)
     b.c.save()
     reader = PdfReader(BytesIO(OUT.read_bytes()))
@@ -430,7 +534,15 @@ def main():
             z.writestr(f"{ch['number']:02}-{slug}.pdf", buff.getvalue())
     manuscripts()
     (ROOT / "artifacts/book-layout.json").write_text(
-        json.dumps({"pages": RECORDS, "text_bounds": b.text_bounds}, indent=2)
+        json.dumps(
+            {
+                "pages": RECORDS,
+                "text_bounds": b.text_bounds,
+                "front_pages": FRONT_PAGES,
+                "project_chapter": PROJECT_CHAPTER,
+            },
+            indent=2,
+        )
     )
     print(f"Created {b.page_number} pages, {len(CHAPTERS)} chapters and standalone exports.")
 

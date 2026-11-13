@@ -37,7 +37,7 @@ The model is one component. Connect the surrounding machinery deliberately so a 
 
 
 
-Session state, durable task progress and long-term knowledge are different storage needs. Do not assume process memory satisfies all three.
+A timeout limits waiting. A retry is another attempt. Idempotency prevents repeated attempts for one logical operation from duplicating effects. Store important progress outside process memory.
 
 
 ## The provider times out

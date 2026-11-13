@@ -5,7 +5,34 @@ def draw(b, ch):
     nodes = ch["nodes"]
     kind = ch["kind"]
     p, t, r, a, ic, node = b.prose, b.text, b.rect, b.arrow, b.icon, b.node
-    if kind == "decision":
+    if kind in ("mistakes", "models", "claude-habits"):
+        names = {
+            "mistakes": ["git-branch", "file-text", "triangle-alert", "list-checks"],
+            "models": ["file-text", "brain-circuit", "layers", "database"],
+            "claude-habits": ["file-text", "git-branch", "lock-keyhole", "circle-check"],
+        }[kind]
+        for (x, y), (title, body), name in zip(
+            [(48, 427), (312, 427), (48, 222), (312, 222)], nodes, names, strict=True
+        ):
+            node(x, y, 240, 152, title, body, name)
+        if kind == "claude-habits":
+            b.center("SMALL SCOPE / REAL EVIDENCE", 300, 404, 9, b.purple)
+    elif kind == "prompt-pattern":
+        for i, (title, body) in enumerate(nodes):
+            y = 480 - i * 84
+            node(
+                48,
+                y,
+                504,
+                75,
+                title,
+                body,
+                ["brain-circuit", "files", "shield-check", "list-checks"][i],
+                compact=True,
+            )
+            if i < 3:
+                a(300, y - 1, 300, y - 10)
+    elif kind == "decision":
         # Branching decision tree; the labels are examples, not model recommendations.
         r(48, 318, 142, 180, b.dark)
         ic("git-branch", 96, 425, 43, b.gold)
