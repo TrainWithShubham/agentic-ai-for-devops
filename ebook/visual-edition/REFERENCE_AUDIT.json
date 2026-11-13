@@ -1,0 +1,422 @@
+[
+  {
+    "key": "agents",
+    "url": "https://www.anthropic.com/research/building-effective-agents",
+    "status": 200,
+    "final_url": "https://www.anthropic.com/research/building-effective-agents",
+    "title": "Building effective AI agents \\ Anthropic"
+  },
+  {
+    "key": "prompting",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview",
+    "status": 200,
+    "final_url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview",
+    "title": "Prompt engineering overview - Claude Platform Docs"
+  },
+  {
+    "key": "context",
+    "url": "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
+    "status": 200,
+    "final_url": "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
+    "title": "Effective context engineering for AI agents \\ Anthropic"
+  },
+  {
+    "key": "tools",
+    "url": "https://www.anthropic.com/research/writing-tools-for-agents",
+    "status": 200,
+    "final_url": "https://www.anthropic.com/research/writing-tools-for-agents",
+    "title": "Writing effective tools for AI agents \\ Anthropic"
+  },
+  {
+    "key": "tool-use",
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview",
+    "status": 200,
+    "final_url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview",
+    "title": "Tool use with Claude - Claude Platform Docs"
+  },
+  {
+    "key": "reliability",
+    "url": "https://sre.google/sre-book/handling-overload/",
+    "status": 200,
+    "final_url": "https://sre.google/sre-book/handling-overload/",
+    "title": "Google SRE: Load Balancing with Client Side Throttling"
+  },
+  {
+    "key": "mcp",
+    "url": "https://modelcontextprotocol.io/docs/2026-07-28/learn/architecture",
+    "status": 200,
+    "final_url": "https://modelcontextprotocol.io/docs/2026-07-28/learn/architecture",
+    "title": "Architecture overview - Model Context Protocol"
+  },
+  {
+    "key": "mcp-auth",
+    "url": "https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization",
+    "status": 200,
+    "final_url": "https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization",
+    "title": "Authorization - Model Context Protocol"
+  },
+  {
+    "key": "mcp-security",
+    "url": "https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices",
+    "status": 200,
+    "final_url": "https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices",
+    "title": "Security Best Practices - Model Context Protocol"
+  },
+  {
+    "key": "langgraph",
+    "url": "https://docs.langchain.com/oss/python/langgraph/overview",
+    "status": 200,
+    "final_url": "https://docs.langchain.com/oss/python/langgraph/overview",
+    "title": "LangGraph overview - Docs by LangChain"
+  },
+  {
+    "key": "persistence",
+    "url": "https://docs.langchain.com/oss/python/langgraph/persistence",
+    "status": 200,
+    "final_url": "https://docs.langchain.com/oss/python/langgraph/persistence",
+    "title": "Persistence - Docs by LangChain"
+  },
+  {
+    "key": "interrupts",
+    "url": "https://docs.langchain.com/oss/python/langgraph/interrupts",
+    "status": 200,
+    "final_url": "https://docs.langchain.com/oss/python/langgraph/interrupts",
+    "title": "Interrupts - Docs by LangChain"
+  },
+  {
+    "key": "retrieval",
+    "url": "https://docs.langchain.com/oss/python/deepagents/retrieval",
+    "status": 200,
+    "final_url": "https://docs.langchain.com/oss/python/deepagents/retrieval",
+    "title": "Retrieval - Docs by LangChain"
+  },
+  {
+    "key": "rag-security",
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/RAG_Security_Cheat_Sheet.html",
+    "status": 200,
+    "final_url": "https://cheatsheetseries.owasp.org/cheatsheets/RAG_Security_Cheat_Sheet.html",
+    "title": "RAG Security - OWASP Cheat Sheet Series"
+  },
+  {
+    "key": "extraction",
+    "url": "https://pypdf.readthedocs.io/en/stable/user/extract-text.html",
+    "status": 200,
+    "final_url": "https://pypdf.readthedocs.io/en/stable/user/extract-text.html",
+    "title": "Extract Text from a PDF &mdash; pypdf 7.1.0 documentation"
+  },
+  {
+    "key": "search",
+    "url": "https://qdrant.tech/documentation/search-tuning/hybrid-search/",
+    "status": 200,
+    "final_url": "https://qdrant.tech/documentation/search-tuning/hybrid-search/",
+    "title": "Hybrid Search in Qdrant"
+  },
+  {
+    "key": "rerank",
+    "url": "https://qdrant.tech/documentation/fastembed/fastembed-rerankers/",
+    "status": 200,
+    "final_url": "https://qdrant.tech/documentation/fastembed/fastembed-rerankers/",
+    "title": "Reranking with FastEmbed - Qdrant"
+  },
+  {
+    "key": "rag-evals",
+    "url": "https://learn.microsoft.com/en-us/azure/foundry/concepts/evaluation-evaluators/rag-evaluators",
+    "status": 200,
+    "final_url": "https://learn.microsoft.com/en-us/azure/foundry/concepts/evaluation-evaluators/rag-evaluators",
+    "title": "Retrieval-Augmented Generation (RAG) Evaluators for Generative AI - Microsoft Foundry | Microsoft Learn"
+  },
+  {
+    "key": "oidc",
+    "url": "https://openid.net/specs/openid-connect-core-1_0.html",
+    "status": 200,
+    "final_url": "https://openid.net/specs/openid-connect-core-1_0.html",
+    "title": "Final: OpenID Connect Core 1.0 incorporating errata set 2"
+  },
+  {
+    "key": "oauth",
+    "url": "https://www.rfc-editor.org/rfc/rfc9700",
+    "status": 200,
+    "final_url": "https://www.rfc-editor.org/info/rfc9700/",
+    "title": "RFC 9700: Best Current Practice for OAuth 2.0 Security | RFC Editor"
+  },
+  {
+    "key": "authorization",
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html",
+    "status": 200,
+    "final_url": "https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html",
+    "title": "Authorization - OWASP Cheat Sheet Series"
+  },
+  {
+    "key": "transaction",
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/Transaction_Authorization_Cheat_Sheet.html",
+    "status": 200,
+    "final_url": "https://cheatsheetseries.owasp.org/cheatsheets/Transaction_Authorization_Cheat_Sheet.html",
+    "title": "Transaction Authorization - OWASP Cheat Sheet Series"
+  },
+  {
+    "key": "injection",
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html",
+    "status": 200,
+    "final_url": "https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html",
+    "title": "LLM Prompt Injection Prevention - OWASP Cheat Sheet Series"
+  },
+  {
+    "key": "agent-security",
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html",
+    "status": 200,
+    "final_url": "https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html",
+    "title": "AI Agent Security - OWASP Cheat Sheet Series"
+  },
+  {
+    "key": "harness",
+    "url": "https://www.anthropic.com/research/effective-harnesses-for-long-running-agents",
+    "status": 200,
+    "final_url": "https://www.anthropic.com/research/effective-harnesses-for-long-running-agents",
+    "title": "Effective harnesses for long-running agents \\ Anthropic"
+  },
+  {
+    "key": "idempotency",
+    "url": "https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/",
+    "status": 200,
+    "final_url": "https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/",
+    "title": "references-details-empty"
+  },
+  {
+    "key": "caching",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+    "status": 200,
+    "final_url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+    "title": "Prompt caching - Claude Platform Docs"
+  },
+  {
+    "key": "routing",
+    "url": "https://docs.langchain.com/oss/python/langchain/models",
+    "status": 200,
+    "final_url": "https://docs.langchain.com/oss/python/langchain/models",
+    "title": "Models - Docs by LangChain"
+  },
+  {
+    "key": "traces",
+    "url": "https://opentelemetry.io/docs/concepts/signals/traces/",
+    "status": 200,
+    "final_url": "https://opentelemetry.io/docs/concepts/signals/traces/",
+    "title": "Traces | OpenTelemetry"
+  },
+  {
+    "key": "genai-otel",
+    "url": "https://github.com/open-telemetry/semantic-conventions-genai",
+    "status": 200,
+    "final_url": "https://github.com/open-telemetry/semantic-conventions-genai",
+    "title": "GitHub - open-telemetry/semantic-conventions-genai \u00b7 GitHub"
+  },
+  {
+    "key": "sre-monitoring",
+    "url": "https://sre.google/sre-book/monitoring-distributed-systems/",
+    "status": 200,
+    "final_url": "https://sre.google/sre-book/monitoring-distributed-systems/",
+    "title": "Google SRE: SRE Responsibilities and Management Frameworks"
+  },
+  {
+    "key": "evals",
+    "url": "https://www.anthropic.com/research/demystifying-evals-for-ai-agents",
+    "status": 200,
+    "final_url": "https://www.anthropic.com/research/demystifying-evals-for-ai-agents",
+    "title": "Demystifying evals for AI agents \\ Anthropic"
+  },
+  {
+    "key": "testing",
+    "url": "https://docs.langchain.com/oss/python/langgraph/test",
+    "status": 200,
+    "final_url": "https://docs.langchain.com/oss/python/langgraph/test",
+    "title": "Test - Docs by LangChain"
+  },
+  {
+    "key": "github-security",
+    "url": "https://docs.github.com/en/actions/reference/security/secure-use",
+    "status": 200,
+    "final_url": "https://docs.github.com/en/actions/reference/security/secure-use",
+    "title": "Secure use reference - GitHub Docs"
+  },
+  {
+    "key": "github-token",
+    "url": "https://docs.github.com/en/actions/tutorials/authenticate-with-github_token",
+    "status": 200,
+    "final_url": "https://docs.github.com/en/actions/tutorials/authenticate-with-github_token",
+    "title": "Use GITHUB_TOKEN for authentication in workflows - GitHub Docs"
+  },
+  {
+    "key": "runbookops",
+    "url": "https://github.com/TrainWithShubham/runbookops",
+    "status": 200,
+    "final_url": "https://github.com/TrainWithShubham/runbookops",
+    "title": "GitHub - TrainWithShubham/runbookops: Inspect agent investigations, cited runbooks, MCP tools, and human-approved fixes. Run locally or on AWS AgentCore. \u00b7 GitH"
+  },
+  {
+    "key": "temporal-workflow",
+    "url": "https://docs.temporal.io/workflow-execution",
+    "status": 200,
+    "final_url": "https://docs.temporal.io/workflow-execution",
+    "title": "Temporal Workflow Execution overview | Temporal Documentation"
+  },
+  {
+    "key": "temporal-definition",
+    "url": "https://docs.temporal.io/workflow-definition",
+    "status": 200,
+    "final_url": "https://docs.temporal.io/workflow-definition",
+    "title": "Temporal Workflow Definition | Temporal Documentation"
+  },
+  {
+    "key": "temporal-activities",
+    "url": "https://docs.temporal.io/activities",
+    "status": 200,
+    "final_url": "https://docs.temporal.io/activities",
+    "title": "What is a Temporal Activity? | Temporal Documentation"
+  },
+  {
+    "key": "temporal-retry",
+    "url": "https://docs.temporal.io/encyclopedia/retry-policies",
+    "status": 200,
+    "final_url": "https://docs.temporal.io/encyclopedia/retry-policies",
+    "title": "What is a Temporal Retry Policy? | Temporal Documentation"
+  },
+  {
+    "key": "temporal-messages",
+    "url": "https://docs.temporal.io/encyclopedia/workflow-message-passing",
+    "status": 200,
+    "final_url": "https://docs.temporal.io/encyclopedia/workflow-message-passing",
+    "title": "Temporal Workflow message passing - Signals, Queries, & Updates | Temporal Documentation"
+  },
+  {
+    "key": "temporal-execution",
+    "url": "https://docs.temporal.io/activity-execution",
+    "status": 200,
+    "final_url": "https://docs.temporal.io/activity-execution",
+    "title": "Activity Execution | Temporal Documentation"
+  },
+  {
+    "key": "agentcore-runtime",
+    "url": "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agents-tools-runtime.html",
+    "status": 200,
+    "final_url": "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agents-tools-runtime.html",
+    "title": "Host agent or tools with Amazon Bedrock AgentCore Runtime - Amazon Bedrock AgentCore"
+  },
+  {
+    "key": "agentcore-compare",
+    "url": "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/harness-vs-runtime.html",
+    "status": 200,
+    "final_url": "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/harness-vs-runtime.html",
+    "title": "AgentCore harness vs. Runtime - Amazon Bedrock AgentCore"
+  },
+  {
+    "key": "agentcore-harness",
+    "url": "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/harness.html",
+    "status": 200,
+    "final_url": "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/harness.html",
+    "title": "AgentCore harness - Amazon Bedrock AgentCore"
+  },
+  {
+    "key": "agentcore-gateway",
+    "url": "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway.html",
+    "status": 200,
+    "final_url": "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway.html",
+    "title": "Amazon Bedrock AgentCore Gateway: A secure AI gateway for agents, tools, and models - Amazon Bedrock AgentCore"
+  },
+  {
+    "key": "agentcore-security",
+    "url": "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/harness-security.html",
+    "status": 200,
+    "final_url": "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/harness-security.html",
+    "title": "Security and access controls - Amazon Bedrock AgentCore"
+  },
+  {
+    "key": "agentcore-tools",
+    "url": "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/harness-tools.html",
+    "status": 200,
+    "final_url": "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/harness-tools.html",
+    "title": "Tools - Amazon Bedrock AgentCore"
+  },
+  {
+    "key": "models-overview",
+    "url": "https://platform.claude.com/docs/en/models/overview",
+    "status": 200,
+    "final_url": "https://platform.claude.com/docs/en/models/overview",
+    "title": "Models overview - Claude Platform Docs"
+  },
+  {
+    "key": "embeddings-intro",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/embeddings",
+    "status": 200,
+    "final_url": "https://platform.claude.com/docs/en/build-with-claude/embeddings",
+    "title": "Embeddings - Claude Platform Docs"
+  },
+  {
+    "key": "api-access",
+    "url": "https://platform.claude.com/docs/en/about-claude/api-credits-for-subscribers",
+    "status": 200,
+    "final_url": "https://platform.claude.com/docs/en/about-claude/api-credits-for-subscribers",
+    "title": "API credits for Max, Ultra, and Team plans - Claude Platform Docs"
+  },
+  {
+    "key": "local-models",
+    "url": "https://docs.ollama.com/faq",
+    "status": 200,
+    "final_url": "https://docs.ollama.com/faq",
+    "title": "Local FAQ - Ollama"
+  },
+  {
+    "key": "free-models",
+    "url": "https://openrouter.ai/docs/guides/routing/model-variants/free",
+    "status": 200,
+    "final_url": "https://openrouter.ai/docs/guides/routing/model-variants/free",
+    "title": "Free Variant - Free Model Access"
+  },
+  {
+    "key": "model-families",
+    "url": "https://openrouter.ai/models",
+    "status": 200,
+    "final_url": "https://openrouter.ai/models",
+    "title": "Compare AI Models: Pricing, Context &amp; Benchmarks | OpenRouter"
+  },
+  {
+    "key": "claude-best",
+    "url": "https://code.claude.com/docs/en/best-practices",
+    "status": 200,
+    "final_url": "https://code.claude.com/docs/en/best-practices",
+    "title": "Best practices for Claude Code - Claude Code Docs"
+  },
+  {
+    "key": "claude-memory",
+    "url": "https://code.claude.com/docs/en/memory",
+    "status": 200,
+    "final_url": "https://code.claude.com/docs/en/memory",
+    "title": "How Claude remembers your project - Claude Code Docs"
+  },
+  {
+    "key": "claude-permissions",
+    "url": "https://code.claude.com/docs/en/permissions",
+    "status": 200,
+    "final_url": "https://code.claude.com/docs/en/permissions",
+    "title": "Configure permissions - Claude Code Docs"
+  },
+  {
+    "key": "claude-skills",
+    "url": "https://code.claude.com/docs/en/skills",
+    "status": 200,
+    "final_url": "https://code.claude.com/docs/en/skills",
+    "title": "Extend Claude with skills - Claude Code Docs"
+  },
+  {
+    "key": "claude-hooks",
+    "url": "https://code.claude.com/docs/en/hooks-guide",
+    "status": 200,
+    "final_url": "https://code.claude.com/docs/en/hooks-guide",
+    "title": "Automate actions with hooks - Claude Code Docs"
+  },
+  {
+    "key": "tws-video",
+    "url": "https://www.youtube.com/watch?v=14K2noGTJ1M",
+    "status": 200,
+    "final_url": "https://www.youtube.com/watch?v=14K2noGTJ1M",
+    "title": null
+  }
+]
