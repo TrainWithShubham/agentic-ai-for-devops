@@ -1,0 +1,18 @@
+Mode: built-in image_gen
+Reference: ebook/sample-chapter/assets/tws-monogram.png
+
+Use case: ads-marketing. Create one finished portrait e-book cover poster, approximately 2:3 aspect ratio, high resolution, polished editorial graphic design. This promotes an existing beginner-friendly visual technical book by Shubham Londhe, TrainWithShubham. Use the supplied transparent purple-and-gold rocket monogram as a branding insert/reference: preserve its recognizable shape, colors and proportions, place it small and crisp beside the brand name near the upper edge. Do not invent another logo.
+
+Art direction: sophisticated dark TWS theme, near-black aubergine background #18131F with restrained violet #7243B3 and warm gold #FFCE80, warm ivory lettering, fine architectural grid barely visible. Generous margins and deliberate negative space. Powerful typographic hierarchy readable at thumbnail size. Large clean contemporary sans serif headline, not science-fiction typography. Elegant, precise, approachable, premium technical publishing. Slight localized glows and dimensional depth, no rainbow neon or noisy space background.
+
+Composition: upper region has a small rocket monogram and TrainWithShubham wordmark. Enormous confident title occupies the upper-middle, left aligned, in two or three deliberate lines. Gold accents emphasize AI. Below the title, a distinctive sculptural/isometric illustration: a central violet agent hub linked by tidy gold paths to a runbook/document stack, a terminal window, a tool module, and a human-approval shield/check gate. Forms look like beautifully crafted matte objects and crisp vector-inspired symbols, with warm rim light and soft restrained shadows. The overall network is purposeful and clearly legible, more editorial illustration than a screenshot. Lower region holds subtitle, author and small book metadata. Keep text limited; no tiny fake code, no robot faces, no stock humanoid robot, no laptop mockup, no book mockup, no extraneous badges, no dates, no promises of certification or guaranteed jobs.
+
+Exact visible text only:
+"TrainWithShubham"
+"AGENTIC AI"
+"FOR DEVOPS"
+"A beginner's visual guide"
+"SHUBHAM LONDHE"
+"24 CHAPTERS  /  89 PAGES"
+
+Render every word accurately, using coherent typography and excellent spacing. This must be a finished flat poster image, straight-on, edge-to-edge, no frame or surrounding room.
