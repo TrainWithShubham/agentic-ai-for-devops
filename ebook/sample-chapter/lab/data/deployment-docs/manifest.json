@@ -1,9 +1,0 @@
-[
-  {"id":"deploy-process","file":"release-process.md","version":3,"current":true,"roles":["engineer","release-manager"]},
-  {"id":"deploy-policy","file":"deployment-policy.txt","version":2,"current":true,"roles":["engineer","release-manager"]},
-  {"id":"rollback-checklist","file":"rollback-checklist.pdf","version":2,"current":true,"roles":["engineer","release-manager"]},
-  {"id":"release-incident","file":"release-incident.docx","version":1,"current":true,"roles":["engineer","release-manager"]},
-  {"id":"deploy-architecture","file":"deployment-architecture.pptx","version":1,"current":true,"roles":["engineer","release-manager"]},
-  {"id":"deploy-old","file":"old-release-process.md","version":1,"current":false,"roles":["engineer","release-manager"]},
-  {"id":"restricted-operations","file":"restricted-operations.txt","version":1,"current":true,"roles":["release-manager"]}
-]

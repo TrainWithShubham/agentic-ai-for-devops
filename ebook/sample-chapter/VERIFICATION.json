@@ -1,47 +1,21 @@
 {
   "reviewed_on": "2026-11-13",
-  "scope": "Sample chapter and standalone companion lab; not the complete ebook",
-  "pdf": {
-    "pages": 23,
-    "link_annotations": 39,
-    "body_overflow_characters": 0,
-    "python_listings_parse": true,
-    "visual_review": "All 23 rendered pages reviewed, with detailed page checks during layout revision; no clipping or overlap found",
-    "sha256": "a122326d91e95c05895875a9afaeb5003a50723f8b509606bb7a6e55ccb892f8"
-  },
-  "lab": {
-    "standalone_checks_passed": 6,
-    "fresh_archive_checks_passed": 6,
-    "archive_files": 18,
-    "formats": [
-      "PDF",
-      "DOCX",
-      "PPTX",
-      "MD",
-      "TXT"
-    ],
-    "document_ids": 7,
-    "initial_chunks": 18,
-    "semantic_model": "BAAI/bge-small-en-v1.5",
-    "embedding_dimensions": 384,
-    "fresh_base_environment": "Keyword mode tested without fastembed or the capstone application",
-    "sha256": "d6f95b8fe87363c2063121631d7d0f9b422e831d1baa477188455744367e92d6"
-  },
-  "live_sample": {
-    "provider": "OpenRouter",
-    "model": "cohere/north-mini-code:free",
-    "source_id_present": true,
-    "provider_reported_cost": 0,
-    "total_tokens": 391,
-    "fallback_used": false,
-    "scope": "One successful sample; not a source-support or reliability benchmark"
-  },
-  "cloud_resources_created": false,
+  "edition": "Standalone visual chapter",
+  "pages": 10,
+  "previous_pages": 23,
+  "reader_word_count": 870,
+  "reader_references_to_external_exercises_or_implementation": 0,
+  "visual_review": "All 10 pages reviewed as rendered images; final publication raster pixels match reviewed revision exactly",
+  "text_outside_page_safe_area": 0,
+  "external_source_links": 4,
+  "icon_license_attachment": true,
+  "vector_artwork": true,
+  "pdf_sha256": "3d6c8d1f911c6fb5f93bb80b0601c0106b77f9db7ad2c1eedbdcd38ec6f67961",
+  "model_calls": 0,
+  "aws_resources_created": false,
   "limits": [
-    "No OCR, complex-layout coverage or production authorization",
-    "Free model capacity and availability can change",
-    "No broad model-quality benchmark or load test",
-    "No tagged-PDF accessibility certification",
-    "Temporal and AgentCore are outside this sample"
+    "Conceptual illustrations, not executable system validation",
+    "Fictional operational policies and answers",
+    "No tagged-PDF accessibility certification"
   ]
 }

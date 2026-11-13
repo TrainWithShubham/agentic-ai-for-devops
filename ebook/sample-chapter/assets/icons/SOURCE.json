@@ -1,0 +1,10 @@
+{
+  "project": "Lucide",
+  "revision": "64502ae56389321a922bd498709d4184b0e61543",
+  "url": "https://github.com/lucide-icons/lucide",
+  "license": "ISC",
+  "aliases": {
+    "filter": "funnel",
+    "triangle-alert": "triangle-exclamation-point"
+  }
+}
