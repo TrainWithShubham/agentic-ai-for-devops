@@ -1,62 +1,39 @@
-# Open this before teaching
+# Instructor start page
 
-Run application commands from the standalone [`runbookops`](https://github.com/TrainWithShubham/runbookops) checkout; this repository contains the teaching material.
+Teach from `v2`. Modules 1–5 now use independent course examples, not a completed application. See the [timed curriculum](../CURRICULUM.md).
 
-The teaching material is on `v2`; the application is on `main` in the separate RunbookOps repository. The previous course is preserved separately on `v1`. The course editions are published on separate branches; `main` remains unchanged and no PR was created.
-
-## First five minutes
+## Before opening the class
 
 ```bash
-uv sync --frozen --extra aws
-uv run runbookops preflight
-uv run runbookops demo
-uv run runbookops evaluate
+uv sync --frozen --extra semantic
+uv run python scripts/check_course.py
+uv run python scripts/verify_docs.py
+uv run python -m course_labs.models
+uv run python -m course_labs.prompts --live
+uv run python -m course_labs.agent --live
+uv run python -m course_labs.rag --backend semantic
 ```
 
-The offline demo must show HTTP 503, Bagha denied approval, and HTTP 200 after Jethalal approves. This checks the full application without consuming free API quota. Run one live check after configuring your own ignored key file:
+The live commands need your private ignored configuration and current free capacity. They must not silently become paid/offline calls. The semantic run prepares the local model cache. Keep the corresponding keyword/offline commands ready.
 
-```bash
-uv run runbookops --mode openrouter --embedding semantic demo
-```
+Use a clean course terminal and a large font. Have three artifacts visible during teaching: the short source file, its terminal output and the input evidence. Do not open a large application during the first five modules. Reveal one boundary at a time.
 
-Learners bring individual OpenRouter keys. Your AWS account is only used for the instructor deployment. Claude Pro and the application's model API are separate.
+## Day 1 tabs
 
-## Teaching tabs
+- Module pages 1–3 and their synthetic CI/deployment fixtures.
+- `prompts/ci-system.txt`, `course_labs/agent.py`, `course_labs/tools.py`.
+- `course_labs/mcp_server.py`, client output and `course_labs/graph.py`.
+- `course_labs/rag.py`, the manifest and `.state/deployment-index.json`.
+- The completed exercise solutions for catch-up.
 
-1. [Curriculum](../CURRICULUM.md): exact 180-minute schedules, activities, explanations, and hiring evidence.
-2. [Lesson index](../lessons/README.md): commands, coding prompts, and checks for each topic.
-3. [Recovery commands](../checkpoints/README.md): catch-up points without changing branches.
-4. [Teaching notes](TEACHING_NOTES.md): pacing, questions, and live-call allocation.
-5. [Verification](VERIFICATION.md): tests and saved live evidence, with limits stated.
-6. [Decisions](../DECISIONS.md): choices, errors, and corrections made during the build.
+## Day 2 tabs
 
-## Day 2 cloud demo
+Start with modules 4–5 and the small security/operations/evaluation examples. After the break, introduce [module 6](../module-6/README.md), switch explicitly to its separate checkout and open its UI.
 
-The verified deployment was deleted on November 12 (India time) at your request. Use the deployment guide to recreate it before the cloud segment; the commands below require a fresh deployment:
+AgentCore is part of the Day 2 demonstration. The previous AWS resources were deleted; [module 6](../module-6/README.md#instructor-agentcore-demo) has the current rebuild, probe, paid smoke and presenter commands. A fresh successful invocation is required before describing the demo as ready. Do not use old deployment scripts from historical course notes.
 
-```bash
-uv run --extra aws python deploy/agentcore/invoke.py
-uv run --extra aws python deploy/agentcore/logs.py
-```
+Never share AWS credentials, private signing keys or model keys. The instructor owns cloud usage and cleanup. The browser/API bridge stays local. Prepare the cloud deployment before class, not during the fifteen-minute demo.
 
-The endpoint hosts LangGraph on AgentCore Runtime and persists state in DynamoDB. Managed AgentCore Harness is a separate architecture. Cloud provisioning is not a learner task.
+## Remaining rehearsal
 
-If network or provider access fails, identify [the saved results](VERIFICATION.md#reviewable-evidence) as historical evidence, then continue the local learner exercise. The trace viewer works with the supplied saved OpenRouter run:
-
-```bash
-uv run python scripts/trace_report.py --input instructor/evidence/openrouter-capstone.json
-```
-
-## Before November 14
-
-Recheck the named free model on November 13, rehearse the lesson timing, and send the [setup instructions](../lessons/00-setup/README.md). A small volunteer rehearsal is still useful for finding laptop and network issues. The technical checks do not substitute for that rehearsal.
-
-After the workshop, use the project [cleanup instructions](https://github.com/TrainWithShubham/runbookops/blob/main/deploy/agentcore/README.md#cleanup). The AWS resources remain available until you run cleanup.
-
-## Visual teaching harness
-
-```bash
-uv run runbookops --mode offline serve --demo-auth --port 8002
-```
-
-Open `http://127.0.0.1:8002/`. Use Bagha for investigation and Jethalal for approval. The TWS purple/gold boxes expose prompts, model calls, RAG chunks, MCP discovery, tools, and state without a separate frontend setup. See [the run guide](https://github.com/TrainWithShubham/runbookops/blob/main/RUNBOOK.md).
+Confirm class start times and a support channel with attendees. Run a timed rehearsal, verify one learner laptop and send [setup](../setup/README.md). Technical checks cannot establish that 50–100 attendees will finish every edit on time.

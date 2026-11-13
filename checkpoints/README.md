@@ -1,21 +1,18 @@
-# Recover during a lab
+# Recovery checkpoints
 
-Application commands and paths below refer to the standalone [`runbookops`](https://github.com/TrainWithShubham/runbookops) checkout. Course exercises are the exception where noted.
+Run these commands from the course root. Each concept example works without the final project checkout. Offline examples need no model key.
 
-The repository contains a completed application and short isolated examples. You can return to a working flow without discarding your changes.
+| Module | Working example | Completed learner edit |
+|---|---|---|
+| 1 | `uv run python -m course_labs.prompts` | Compare your prompt with `prompts/ci-system.txt` |
+| 2 | `uv run python -m course_labs.agent` | `uv run python scripts/check_exercise.py ci --solution` |
+| 2: MCP | `uv run python -m course_labs.mcp_client` | Inspect discovered tools and the actual log result |
+| 2: graph | `uv run python -m course_labs.graph` | Identify the state and model/tools nodes |
+| 3 | `uv run python -m course_labs.rag` | `uv run python scripts/check_exercise.py rag --solution` |
+| 4 | `uv run python -m course_labs.security` | `uv run python scripts/check_exercise.py approval --solution` |
+| 5 | `uv run python -m course_labs.operations` | `uv run python scripts/check_exercise.py evaluation --solution` |
+| 5: evaluations | `uv run python -m course_labs.evaluations` | Explain the deliberately bad candidate's failures |
 
-| Point in the course | Recovery command |
-|---|---|
-| First model call | `uv run python examples/first_call.py` |
-| Read-only tool | `uv run python examples/simple_agent.py` |
-| Knowledge extraction | `uv run python examples/rag_pipeline.py` |
-| Retrieval | `uv run runbookops index` then `uv run runbookops search "checkout payment runbook"` |
-| MCP connection | `uv run python examples/mcp_client.py` |
-| Approval and full recovery | `uv run runbookops demo` |
-| Identity checks | `uv run python scripts/demo_identity.py` |
-| Outcome evaluation | `uv run runbookops evaluate` |
-| Completed health exercise | `python3 scripts/check_exercise.py health --solution` (course checkout) |
+The [module-6 page](../module-6/README.md) owns the separate project and cloud-demo recovery instructions.
 
-Offline commands need no API key. For a live example, add its documented mode flag. Keep live requests limited; restarting a demo creates a new isolated simulator incident rather than deleting your previous evidence.
-
-Save learner edits before comparing with `solutions`. There is no destructive reset script and no need to check out another branch mid-class. These are executable recovery points, not separate copies of the entire application.
+Save your work before comparing with `solutions`. There is no destructive reset command and no need to switch branches during class. To check the full course, run `uv run python scripts/check_course.py` and `uv run python scripts/verify_docs.py`.

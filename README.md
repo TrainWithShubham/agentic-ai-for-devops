@@ -1,50 +1,48 @@
 # Agentic AI for DevOps
 
-A two-day live workshop on November 14 and 15, 2026. Three hours each day, including breaks and questions.
+A practical two-day workshop for freshers and working DevOps engineers. November 14–15, 2026: three hours each day, including breaks and questions.
 
-Learn how an agent uses system instructions, company knowledge, operational tools, identity checks, and human approval to investigate an incident. The capstone is RunbookOps: a fictional Gada Electronics checkout failure, diagnosed and repaired through a local simulator.
+Learn the concepts through CI failure analysis and deployment-document RAG. Run small examples, inspect their evidence and make a short code change. The integrated project is introduced in module 6 on Day 2.
+
+## Syllabus
+
+| Day | Module | Practical |
+|---|---|---|
+| 1 | [1. AI foundations and system prompts](module-1/README.md) | Explain a CI failure with evidence |
+| 1 | [2. Agents, tool calling and MCP](module-2/README.md) | Follow a bounded tool loop, graph state and MCP exchange |
+| 1 | [3. RAG pipelines](module-3/README.md) | Retrieve deployment guidance from five document formats |
+| 2 | [4. Identity, guardrails and approval](module-4/README.md) | Reject unauthorized and changed proposals |
+| 2 | [5. Agent harnesses and operations](module-5/README.md) | Inspect cache/routing/trace behavior and evaluation failures |
+| 2 | [6. RunbookOps capstone and AgentCore demo](module-6/README.md) | Modify and verify the standalone project |
+
+Read the [curriculum](CURRICULUM.md) for exact timing, outcomes and topic depth.
 
 ## Start here
 
-1. Read the [curriculum and timing](CURRICULUM.md).
-2. Complete [setup](lessons/00-setup/README.md).
-3. Follow the [lessons](lessons/README.md).
-4. Open [module 6 — RunbookOps capstone](module-6/README.md).
-
-**The application now lives in [TrainWithShubham/runbookops](https://github.com/TrainWithShubham/runbookops).** Clone it separately to run the UI, CLI, examples, tests, and deployment tools. This repository contains the course material and learner exercises.
-
-## The two days
-
-| Day | Topics |
-|---|---|
-| Day 1 | AI foundations, system prompts, a simple agent, mixed-format RAG, and MCP |
-| Day 2 | Identity, approval, guardrails, caching and routing, observability, evaluations, and an instructor AgentCore Runtime demo |
-
-Learners use their own OpenRouter keys for live inference. Offline practice needs no API key or AWS account. AWS demonstrations use instructor credentials, which are never shared. A coding assistant subscription does not supply the application's model API access.
-
-## Working with two repositories
-
-Keep the course checkout open for reading. Run `uv`, application commands, and runnable examples from the **RunbookOps checkout**. Application paths such as `src/runbookops`, `resources`, and `examples` refer to that repository.
-
-The health exercise stays here in `exercises`, with its completed version in `solutions`. From this course checkout:
-
 ```bash
-python3 scripts/check_exercise.py health --solution
-python3 scripts/verify_docs.py
+git clone --branch v2 https://github.com/TrainWithShubham/agentic-ai-for-devops.git
+cd agentic-ai-for-devops
+uv sync --frozen
+uv run python -m course_labs.prompts
+uv run python -m course_labs.agent
+uv run python -m course_labs.rag
 ```
 
-| Here in the course | In RunbookOps |
-|---|---|
-| Curriculum and lessons | Application source and UI |
-| Learner exercises and solutions | Runnable examples and synthetic knowledge |
-| Instructor delivery notes | Tests, coverage gates, and app CI |
-| Recovery instructions and historical course evidence | Run guide, API/security docs, and deployment tools |
+These are labeled offline demonstrations. No API key, AWS account or final-project checkout is needed for modules 1–5. See [setup](setup/README.md) for live inference and optional semantic retrieval.
 
-See [recovery commands](checkpoints/README.md), [instructor start page](instructor/START_HERE.md), and [teaching notes](instructor/TEACHING_NOTES.md).
+```bash
+uv run python scripts/check_course.py
+uv run python scripts/verify_docs.py
+```
 
-## Course editions
+## How the material works
 
-- `v1`: original course with KubeHealer, Temporal, and the CI analyzer.
-- `v2`: updated lessons and exercises, with RunbookOps linked as a separate application.
+`module-1` through `module-5` contain explanations, commands, bounded coding prompts and checks. `course_labs` contains their small independent examples. `data` contains synthetic CI evidence and deployment documents. Learner edits live in `exercises`; completed versions live in `solutions`.
 
-`main` and `v1` remain unchanged. Application development continues on `main` in the new RunbookOps repository. [DECISIONS.md](DECISIONS.md) records the course's implementation history and repository split.
+Module 6 links to [RunbookOps](https://github.com/TrainWithShubham/runbookops), a separate application. Its source, UI, tests and AWS deployment stay there. The earlier modules do not import it or depend on its incident/story.
+
+[Recovery checkpoints](checkpoints/README.md) · [Instructor start page](instructor/START_HERE.md) · [Verification](instructor/VERIFICATION.md) · [Decisions](DECISIONS.md)
+
+## Editions
+
+`v1` preserves the previous course. `v2` contains the concept-first redesign and independent labs. `main` is unchanged by this work.

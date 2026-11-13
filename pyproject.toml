@@ -1,0 +1,25 @@
+[project]
+name = "agentic-devops-course-labs"
+version = "0.1.0"
+description = "Small, independent Agentic AI examples for DevOps engineers"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+  "fastmcp==3.4.11",
+  "httpx==0.28.1",
+  "langgraph==1.2.20",
+  "pypdf==6.21.4",
+  "python-docx==1.2.0",
+  "python-dotenv==1.2.4",
+  "python-pptx==1.0.2",
+]
+[project.optional-dependencies]
+semantic = ["fastembed==0.9.1"]
+authoring = ["reportlab==4.4.10"]
+[dependency-groups]
+dev = ["ruff==0.15.7"]
+[tool.uv]
+package = false
+[tool.ruff]
+line-length = 110
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]

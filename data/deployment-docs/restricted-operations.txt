@@ -1,0 +1,3 @@
+Document ID: restricted-operations. Version 1. Updated 2026-11-13. Synthetic training material.
+Release-manager-only exercise: signing-key rotation is reviewed separately from application deployment.
+This text contains no real key. Engineers should not receive this restricted excerpt through retrieval or a shared cache.

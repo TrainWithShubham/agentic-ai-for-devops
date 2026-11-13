@@ -1,57 +1,30 @@
-# November delivery plan
+# Delivery plan — November 14–15, 2026
 
-Run application commands from the standalone [`runbookops`](https://github.com/TrainWithShubham/runbookops) checkout; this repository contains the teaching material.
+The November 13 redesign separates concepts from the final application. Modules 1–5 use independent CI/deployment-document examples. Module 6 introduces the standalone project and the instructor AgentCore demonstration.
 
-Course dates: 14 and 15 November 2026. Expected attendance: 50 to 100. Each day is 180 minutes including breaks and questions. Exact start times are not yet specified.
+## November 13 preparation
 
-## Before the first session
+1. Check the new course lockfile and run all deterministic examples/checks.
+2. Inspect document extraction and a real local semantic search before class.
+3. Check a free model's current catalog entry and actual prompt/tool exchange with private credentials.
+4. Rehearse both 180-minute schedules, including a ten-minute break and fifteen minutes of Q&A each day.
+5. Prepare the final project checkout separately. Recreate the instructor AWS deployment, run its health probe and paid role/approval smoke, then open the presenter UI.
+6. Send learner setup, the optional Day 2 project preparation link, exact session start times and the support channel.
 
-| Date | Work | Evidence needed |
-|---|---|---|
-| November 11 | Preserve existing modules, prepare the V2 branch and docs, choose model-access approach | Separate branch and explicit build status |
-| November 12 | Build the local checkout simulator, knowledge loaders/retrieval, agent, and MCP tools; implement approval and role checks | One incident runs from failure to approved recovery, with denial checks |
-| November 13 | Validate OpenRouter and backup-provider tool calling, deploy the instructor Runtime demo, rehearse both days, freeze learner setup | Clean-machine install, free-account request budget, small-group rehearsal, recorded fallback, timed rehearsal |
-| November 14 | Deliver Day 1 | Learners save the working investigation checkpoint |
-| November 15 | Deliver Day 2 | Learners save capstone evidence and actual evaluation results |
+Items requiring instructor participation, current cloud resources or attendee machines remain preparation until explicitly verified. Do not infer readiness from a saved trace or an automated test.
 
-The technical build was completed on November 11. Use November 12–13 for instructor rehearsal and the final provider check. Freeze the core when it works. Move optional integrations to follow-up material rather than rushing untested setup into class.
+## Day 1
 
-## Build order
+Teach modules 1–3. Capture a CI recommendation and retrieved deployment evidence. Keep source IDs visible. Do not introduce the integrated project as a dependency.
 
-1. Seeded checkout incident and read-only operational tools.
-2. Company knowledge in PDF, DOCX, PPTX, MD, and TXT; tested extraction and local embeddings.
-3. Bounded LangGraph investigation using retrieved evidence and MCP tools.
-4. Proposal, role-authorized approval, persistence, expiry, and replay protection.
-5. Scenario runner and structured traces, including denied and failed cases.
-6. Individual OpenRouter keys, free-only model configuration, measured call budget, and a tested backup provider.
-7. Same application on AgentCore Runtime, with the same MCP tools and external DynamoDB checkpoint/approval storage.
-8. Lesson prompts, starter/completed checkpoints, devcontainer, troubleshooting, and saved rehearsal evidence.
+## Day 2
 
-Keep the previous course on the separate `v1` branch. Reuse small patterns after reviewing them; do not bring the old Kubernetes/Ollama prerequisites into the learner path.
+Teach modules 4–5, then take the break. Introduce module 6 and guide one bounded application change. Demonstrate denial, authorized recovery, traces and actual AgentCore invocation. Save evidence and discuss limitations.
 
-## What must be real before class
+## After the session
 
-- A complete local incident recovery, including rejection and unauthorized-approval cases.
-- A live model capable of the exact structured tool exchange used by the application.
-- A tested no-purchase learner path. Do not assume Claude Pro supplies API credits.
-- A setup check that a learner can run without AWS credentials.
-- A working checkpoint for each lab and a trace that makes failures visible.
-- A clear record of which AWS features are live and which are recorded demonstrations.
-
-## Class operations
-
-For 50 to 100 attendees, avoid live account creation and package/model downloads. Send setup instructions before class and reserve a small number of live model runs per module. Run most validation cases without provider calls.
-
-The exact support channel or helper arrangement is not yet confirmed. Provide written recovery steps so setup debugging does not stop the main session. A helper is useful if available, but do not design the labs around one being present.
-
-Keep a stable incident seed and learner-specific namespaces. One attendee must not alter another attendee's simulator state. Keep learner API keys private and publish cleanup instructions for local data and instructor AWS resources.
-
-## Scope cuts if rehearsal fails
-
-Preserve foundations, RAG inspection, MCP tools, authorized approval, and recovery verification. Keep caching/routing to a prepared configuration exercise. Use the saved Runtime evidence if cloud provisioning or service limits interfere. Managed Knowledge Bases, full OAuth provider setup, Gateway/Identity integration, and Temporal remain extensions.
-
-The implemented learner flow, OpenRouter path, and deployed Runtime have passed technical checks. See [verification](VERIFICATION.md). Timed teaching rehearsal and a volunteer group rehearsal remain instructor preparation; they are not implied by automated tests.
+Export wanted sanitized evidence, stop AWS-connected local processes and delete the dedicated cloud resources using the current application guide. Verify absence; a local shutdown does not delete cloud storage. Keep course source, learner work and historical evidence.
 
 ## Git policy
 
-Work on `v2`. Use short commit messages. Do not add co-author trailers, create a PR, change the default branch, or merge into `main` for this delivery. Do not tag an assumed historical teaching commit; identify it with the instructor first.
+Work remains on `v2`, with `main` and `v1` preserved. Do not push or create a PR unless requested. Source changes and course checks are local until publication is authorized.

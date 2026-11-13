@@ -1,0 +1,81 @@
+{
+  "verified_at": "2026-11-13T12:50:40.362293+00:00",
+  "model": "cohere/north-mini-code:free",
+  "scenarios": {
+    "prompt": {
+      "passed": true,
+      "usage": {
+        "prompt_tokens": 306,
+        "completion_tokens": 292,
+        "total_tokens": 598,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "answer": "**Evidence**  \n- The workflow runs `uv sync --frozen --no-dev` to install dependencies without dev groups (source: [ci-workflow] step \u201cInstall\u201d).  \n- The test step executes `uv run --no-sync pytest -q` but fails with \u201cNo such file or directory (os error 2)\u201d when trying to spawn `pytest` (source: [ci-log] lines \u201cFailed to spawn: `pytest`\" and \u201cNo such file or directory\u201d).  \n- The `pyproject.toml` only lists `pytest` under a dev dependency group, not under the runtime dependency groups (source: comment in [ci-workflow] excerpt).\n\n**Likely Cause**  \n`uv sync --frozen --no-dev` installs only runtime dependencies, excluding the `dev` group where `pytest` is defined. Consequently `uv run` cannot locate `pytest`, causing the spawn error.\n\n**Proposed Change**  \nAdd `pytest` to a runtime dependency group (e.g., `[dependency-groups] runtime = [\"pytest>=8,<10\"]` or remove `--no-dev` from the install step) so that `pytest` becomes available when `uv run` is invoked.\n\n**Validation**  \nAfter the change, re\u2011run the workflow\u2019s \u201cTest\u201d step; `uv run --no-sync pytest -q` should succeed (exit\u202f0). If the error persists, confirm that the updated dependency group is resolved by `uv sync`."
+    },
+    "agent": {
+      "passed": true,
+      "model_calls": 2,
+      "tools": [
+        "ci_read_workflow",
+        "ci_read_log"
+      ],
+      "answer": "**Evidence**\n- Log shows \"Failed to spawn: `pytest`\" with \"No such file or directory\" during `uv run --no-sync pytest -q` (ci-log).  \n- Workflow excerpt: `uv run --no-sync pytest -q` runs pytest after sync, but no `pytest` command is in the virtual environment (ci-workflow).  \n- `pyproject.toml` includes dev group `dev = [\"pytest>=8,<10\"]` but the workflow installs only runtime dependencies (`--no-dev`), so pytest is not installed (ci-workflow).\n\n**Cause**\nThe CI installs only runtime dependencies (`--no-dev`), so pytest (a dev-only dependency) is not present in the environment, causing the spawn error.\n\n**Proposed change**\nModify the \"Install\" step to include dev dependencies, e.g., change `uv sync --frozen --no-dev` to `uv sync --frozen`. Or explicitly add pytest to runtime dependencies if it should be runtime.\n\n**Validation**\nRun the updated workflow; `uv sync --frozen` should install dev group, making `pytest` available for the test step."
+    },
+    "rag": {
+      "passed": true,
+      "source_ids": [
+        "deploy-process",
+        "rollback-checklist",
+        "deploy-process"
+      ],
+      "usage": {
+        "prompt_tokens": 219,
+        "completion_tokens": 198,
+        "total_tokens": 417,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "answer": "What approval and validation does production rollback require?\n[deploy-process | paragraph 5] For a production rollback, restore the previous verified image digest. Run /health and /catalog smoke tests again and monitor the error rate. Use the rollback checklist for the approval and validation steps.\n[rollback-checklist | page 1] Catalog API rollback checklist\nDocument ID: rollback-checklist. Version 2. Updated 2026-11-13.\nSynthetic training document. No production access or commands.\n1. Record the incident, environment and previous healthy image digest.\n2. Obtain release-manager approval before a production rollback.\n3. Restore that exact digest through the normal deployment pipeline.\n4. Validate /health and /catalog and monitor the error rate.\n5. If validation fails, st\n[deploy-process | paragraph 4] Production promotion requires a release-manager approval. Record the image digest, change ticket and previous healthy digest before promotion. Never use a mutable latest tag as the rollback reference."
+    }
+  },
+  "paid_or_offline_fallback": false,
+  "scope": "Sampled course prompt/tool/RAG runs after corrections; not a reliability benchmark.",
+  "earlier_failures": [
+    "Reasoning-only response at the original output budget",
+    "Truncated verbose response before compact instructions and truncation handling",
+    "RAG answer with imprecise citations and unsupported retry guidance"
+  ]
+}

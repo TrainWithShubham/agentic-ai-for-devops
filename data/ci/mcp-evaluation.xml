@@ -1,0 +1,13 @@
+<evaluation>
+  <!-- Stable manual/model-tool evaluation questions; ordinary course CI does not call a model. -->
+  <qa_pair><question>For the failed pull-request run whose repository is platform/catalog-api, which executable could not start in its failed step?</question><answer>pytest</answer></qa_pair>
+  <qa_pair><question>Read the run status and dependency setup. Which flag excluded the group needed by the failed step?</question><answer>--no-dev</answer></qa_pair>
+  <qa_pair><question>Read the branch and failed-step log. What is the run ID of the feature/catalog-search job whose test runner could not start?</question><answer>1042</answer></qa_pair>
+  <qa_pair><question>Compare the failed command with the dependency excerpt. Which dependency group contains the missing executable?</question><answer>dev</answer></qa_pair>
+  <qa_pair><question>For the failing run at commit demo-7ac12f, which workflow step installs dependencies in a way that excludes the test runner?</question><answer>Install</answer></qa_pair>
+  <qa_pair><question>Read the log and dependency excerpt. What installation command would include the declared development group while retaining the lockfile requirement?</question><answer>uv sync --frozen</answer></qa_pair>
+  <qa_pair><question>Read the run metadata and log. Which environment has the process-spawn failure?</question><answer>pull-request</answer></qa_pair>
+  <qa_pair><question>Read the workflow and log. What complete test command is present when the executable fails to start?</question><answer>uv run --no-sync pytest -q</answer></qa_pair>
+  <qa_pair><question>For the run with the excluded pytest dependency, what commit should a reviewer inspect before changing the workflow?</question><answer>demo-7ac12f</answer></qa_pair>
+  <qa_pair><question>Read the run and failed-step output. What exit code was recorded for this test-runner startup failure?</question><answer>2</answer></qa_pair>
+</evaluation>

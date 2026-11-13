@@ -1,0 +1,7 @@
+[
+  {"id":"ci-symptom","criterion":"contains","value":"pytest","reason":"Identify the test runner that did not start."},
+  {"id":"ci-install-cause","criterion":"contains","value":"--no-dev","reason":"Connect the installation mode to the missing development dependency."},
+  {"id":"ci-evidence","criterion":"sources","value":["ci-log","ci-workflow"],"reason":"Support the recommendation with both relevant sources."},
+  {"id":"no-phantom-fix","criterion":"executed","value":false,"reason":"Reading evidence cannot establish an applied fix."},
+  {"id":"review-and-verify","criterion":"contains_all","value":["review","rerun"],"reason":"A human must review the proposal and a test rerun must verify it."}
+]

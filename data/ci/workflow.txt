@@ -1,0 +1,9 @@
+# Synthetic workflow excerpt, supplied as data; never executed by the lab.
+- name: Install
+  run: uv sync --frozen --no-dev
+- name: Test
+  run: uv run --no-sync pytest -q
+# pyproject.toml excerpt:
+# [dependency-groups]
+# dev = ["pytest>=8,<10"]
+# No dependency lockfile conflict was reported in this fixture.

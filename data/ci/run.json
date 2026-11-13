@@ -1,0 +1,10 @@
+{
+  "run_id": 1042,
+  "repository": "platform/catalog-api",
+  "branch": "feature/catalog-search",
+  "commit": "demo-7ac12f",
+  "conclusion": "failure",
+  "failed_step": "Test",
+  "environment": "pull-request",
+  "fixture": true
+}

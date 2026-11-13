@@ -1,0 +1,70 @@
+{
+  "recorded_at": "2026-11-13T12:57:17.605373+00:00",
+  "branch": "v2",
+  "python_regression_checks": 14,
+  "python_versions_passed": [
+    "3.11",
+    "3.12",
+    "3.13"
+  ],
+  "clean_environment_without_final_application": true,
+  "real_mcp_stdio": true,
+  "reference_mcp_inspector": "2.15.0",
+  "offline_langgraph_nodes": true,
+  "document_formats": [
+    "pdf",
+    "docx",
+    "pptx",
+    "md",
+    "txt"
+  ],
+  "retrieval_backends_verified": [
+    "keyword",
+    "local FastEmbed semantic"
+  ],
+  "course_evaluation_good_passed": 5,
+  "course_evaluation_bad_rejected": 5,
+  "supplied_exercises_checked": [
+    "ci",
+    "rag",
+    "approval",
+    "evaluation"
+  ],
+  "day_minutes": [
+    180,
+    180
+  ],
+  "capstone_minutes": 75,
+  "live_preflight": {
+    "prompt": {
+      "passed": true
+    },
+    "agent": {
+      "passed": true,
+      "model_calls": 2,
+      "tools": [
+        "ci_read_workflow",
+        "ci_read_log"
+      ]
+    },
+    "rag": {
+      "passed": true,
+      "source_ids": [
+        "deploy-process",
+        "rollback-checklist",
+        "deploy-process"
+      ]
+    }
+  },
+  "aws_resources_created": false,
+  "new_remote_workflow_run": false,
+  "remaining_instructor_tasks": [
+    "Timed rehearsal",
+    "Learner laptop/provider-capacity check",
+    "Recreate and verify module-6 AgentCore demonstration"
+  ],
+  "preserved_refs": {
+    "main": "5f328ff30333709ee3e2cb7aaae847a34108faa8",
+    "v1": "5f328ff30333709ee3e2cb7aaae847a34108faa8"
+  }
+}

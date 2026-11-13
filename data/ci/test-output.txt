@@ -1,0 +1,8 @@
+Synthetic GitHub Actions fixture — no real repository is queried.
+[Setup] Python 3.12 ready
+[Install] uv sync --frozen --no-dev
+[Install] Runtime dependencies installed successfully
+[Test] uv run --no-sync pytest -q
+[Test] error: Failed to spawn: `pytest`
+[Test] Caused by: No such file or directory (os error 2)
+[Test] Process completed with exit code 2
