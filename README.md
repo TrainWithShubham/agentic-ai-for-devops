@@ -17,6 +17,10 @@ Learn the concepts through CI failure analysis and deployment-document RAG. Run 
 
 Read the [curriculum](CURRICULUM.md) for exact timing, outcomes and topic depth.
 
+## Visual e-book
+
+Read [Agentic AI for DevOps: a visual field guide](ebook/visual-edition/README.md): 19 standalone chapters across the six modules, with Temporal and AgentCore bonuses. The [complete PDF](output/pdf/agentic-ai-for-devops-visual-ebook.pdf) uses diagrams, short explanations and fictional DevOps examples; no setup is needed to read it.
+
 ## Start here
 
 ```bash

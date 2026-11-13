@@ -1,0 +1,32 @@
+{
+  "edition_date": "2026-11-13",
+  "book_pages": 86,
+  "chapters": 19,
+  "standalone_chapter_pages": 4,
+  "primary_references": 48,
+  "reader_word_count_including_navigation": 8401,
+  "page_safe_area_overflow_characters": 0,
+  "authoring_text_box_overlap_candidates": 0,
+  "chapter_destinations_verified": 19,
+  "pdf_link_annotations": 125,
+  "asset_license_attachments": [
+    "Lucide-LICENSE.txt",
+    "SourceSerif4-OFL.txt",
+    "ibm-plex-mono-LICENSE.txt",
+    "manrope-LICENSE.txt"
+  ],
+  "standalone_pages_match_book_content_streams": 76,
+  "concept_chapters_independent_of_application": true,
+  "reader_setup_or_exercise_dependencies": false,
+  "aws_resources_created": false,
+  "model_calls": 0,
+  "pdf_sha256": "a3b806617340a10fa8e3372ef8442e0eff6242135db87b8214bbb3e737f5d0da",
+  "chapters_zip_sha256": "d05b7c6eb1a410cb26f2d4cc3e7d8f46b3ab45ae0cc235ef742d7f7f1f72e457",
+  "visual_review": "All 86 initial pages inspected. Revised pages re-rendered and inspected; unchanged pages compared at pixel level.",
+  "limits": [
+    "Conceptual content, not production-system verification",
+    "Fictional operational examples",
+    "No live cloud readiness or model-reliability claim",
+    "No tagged-PDF accessibility certification"
+  ]
+}
