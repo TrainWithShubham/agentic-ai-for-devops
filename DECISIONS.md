@@ -306,3 +306,7 @@ Rendered all 89 pages. Reviewed the new chapter, contents, guide, changed source
 ## November 13 — cover poster
 
 Created a portrait promotional cover image with the built-in image generator, using the existing TWS rocket monogram as a branding reference. Kept the established dark purple/gold palette and a short title/subtitle/author hierarchy. The illustration connects documents, a terminal, tools and an approval shield around an agent hub. Inspected the generated image for readable title, author, branding and the current 24-chapter/89-page metadata. Saved the PNG and exact generation prompt under output/imagegen. This is generated promotional artwork; the e-book PDF and its original logo assets were not replaced.
+
+## November 13 — landscape cover banner
+
+Adapted the portrait promotional artwork with the built-in image generator for the requested 1024-by-556 crop. Repositioned type and branding on the left, with the connected agent/tool illustration on the right. The generated raster was 1701 by 925, so exported it proportionally at 1024 pixels wide and cropped the single excess pixel of height with macOS sips. Verified the final file is exactly 1024 by 556 and inspected readable text and edge margins. Preserved the portrait, source generated image and book; saved the new prompt beside the banner.
